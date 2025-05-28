@@ -1,0 +1,80 @@
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.form-container {
+  max-width: 900px;
+  width: 90%;
+  background-color: #e2bda5;
+  padding: 2.5rem;
+  border-radius: 25px;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-label {
+  font-weight: light;
+  color: #000;
+}
+
+.form-control {
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  height: 40px;
+  background-color: #cb6c77;
+  border-color: #cb6c77;
+  border-radius: 8px;
+  font-weight: light;
+}
+
+.btn-primary:hover {
+  background-color: #a34e58;
+  border-color: #a34e58;
+}
+
+.paw-icon {
+  font-size: 2rem;
+  color: #bb5e69;
+  margin-right: 10px;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+/* Placeholder */
+::placeholder {
+  font-size: 1rem;
+}
+
+/* Responsive: placeholder más pequeño en móviles */
+@media (max-width: 575.98px) {
+  .form-container {
+    width: 95%;
+    padding: 1.5rem; 
+  }
+  ::placeholder {
+    font-size: 0.75rem;
+  }
+}
+
+/* Error message */
+.error-message {
+  color: red;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+/* Success message */
+.success-message {
+  color: green;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}

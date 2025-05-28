@@ -1,0 +1,176 @@
+/* Footer */
+.footer {
+  background-color: #733702; 
+  color: #F2F2F2; 
+  padding: 3rem 2rem;
+  font-family: 'Poppins', sans-serif;
+  border-top: 5px solid #BF702A;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-around;
+  gap: 2rem; 
+  max-width: 1200px;
+  margin: 0 auto; 
+  text-align: left;
+}
+
+.footer-section {
+  flex: 1; 
+  min-width: 220px;
+  padding: 1rem;
+}
+
+/* Sección de Marca y Redes Sociales */
+.footer-brand .footer-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #BF6576; 
+  text-decoration: none;
+  margin-bottom: 0.8rem;
+  display: block; /* Para que el eslogan aparezca debajo */
+}
+
+.footer-brand .footer-slogan {
+  font-size: 0.95rem;
+  color: #D9B391; 
+  margin-bottom: 1.2rem;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+
+.social-icons a {
+  color: #F2F2F2;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-icons a:hover {
+  color: #BF702A; 
+  transform: translateY(-3px);
+}
+
+/* Títulos de Sección */
+.footer-section h3 {
+  font-size: 1.3rem;
+  color: #BF702A; 
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  border-bottom: 2px solid #D9B391; 
+  padding-bottom: 0.5rem;
+  display: inline-block; 
+}
+
+/* Enlaces Rápidos */
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.7rem;
+}
+
+.footer-links a {
+  color: #F2F2F2;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #BF6576; 
+  text-decoration: underline;
+}
+
+/* Contacto */
+.footer-contact p {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  display: flex; 
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.footer-contact p svg { 
+  color: #BF702A; 
+  font-size: 1.1rem;
+  margin-top: 2px; 
+}
+
+/* Mapa */
+.footer-map .map-thumbnail {
+  width: 100%;
+  max-width: 250px; /* Tamaño máximo para la imagen del mapa */
+  height: auto;
+  border: 2px solid #BF702A; 
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin-bottom: 0.8rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-map .map-thumbnail:hover {
+  transform: scale(1.03); 
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.footer-map p {
+  font-size: 0.9rem;
+  color: #D9B391;
+}
+
+/* Parte Inferior del Footer */
+.footer-bottom {
+  text-align: center;
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(242, 242, 242, 0.2);
+  font-size: 0.9rem;
+  color: #D9B391;
+}
+
+.footer-bottom p {
+  margin: 0.5rem 0;
+}
+
+/* Media Queries para Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+  }
+
+  .footer-section {
+    min-width: 100%; 
+    margin-bottom: 1.5rem; 
+  }
+
+  .footer-section h3 {
+    text-align: center; 
+    border-bottom: none; 
+    padding-bottom: 0;
+  }
+
+  .footer-links ul {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .social-icons {
+    justify-content: center; 
+  }
+
+  .footer-contact p {
+    justify-content: center; 
+    align-items: center;
+  }
+}

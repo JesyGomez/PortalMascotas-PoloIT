@@ -1,0 +1,84 @@
+.form-container {
+  width: 100%;
+  max-width: 700px;
+  background-color: #e2bda5;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+.form-wrapper {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: flex-start; /* Cambiar a center si querés centrar verticalmente */
+  padding: 2rem;
+  min-height: 100vh; /* Para ocupar toda la altura de la pantalla */
+  background-color: white;
+}
+
+
+.form-label {
+    font-weight: light;
+    color: #000;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+}
+
+/* Botón del formulario */
+.btn-primary {
+    height: 40px;
+    background-color: #cb6c77;
+    border-color: #cb6c77;
+    border-radius: 8px;
+    font-weight: light;
+    color: white;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #a34e58;
+    border-color: #a34e58;
+}
+
+/* Icono de huellita */
+.paw-icon {
+    font-size: 2rem;
+    color: #bb5e69;
+    margin-right: 10px;
+}
+
+/* Título */
+h2 {
+    font-weight: bold;
+}
+
+/* Mensajes */
+.error-message {
+    color: #b30000;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    color: #006400;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Estilo placeholder normal */
+::placeholder {
+    font-size: 1rem;
+}
+
+/* Responsive: placeholder más pequeño en móviles */
+@media (max-width: 575.98px) {
+    ::placeholder {
+        font-size: 0.75rem;
+    }
+}

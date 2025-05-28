@@ -1,0 +1,209 @@
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #D9B391;
+  padding: 1rem 3rem;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-logo a {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #733702;
+  text-decoration: none;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar-links li {
+  list-style: none;
+}
+
+.navbar-links li a,
+.navbar-icons a,
+.dropdown span {
+  text-decoration: none;
+  color: #733702;
+  font-weight: 600;
+  font-size: 1.4rem;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.navbar-links li a:hover,
+.navbar-icons a:hover,
+.dropdown:hover span {
+  color: #BF702A;
+  transform: translateY(-3px);
+}
+
+/* ÍCONOS */
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; 
+}
+
+.logout-icon,
+.cart-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Botón del carrito con círculo */
+.cart-button {
+  border: none;
+  border-radius: 50%;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  cursor: pointer;
+}
+
+/* Ícono del carrito */
+.cart-icon {
+  font-size: 1.5rem;
+  color: #733702;
+  transition: color 0.3s ease;
+}
+
+.cart-button:hover {
+  background-color: #fde9e5;
+}
+
+.cart-button:hover .cart-icon {
+  color: #c0392b;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #F2F2F2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.7rem;
+  display: none;
+  flex-direction: column;
+  z-index: 10;
+  border-radius: 0.25rem;
+  list-style: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu li {
+  margin: 0.4rem 0;
+}
+
+.dropdown-menu li a {
+  font-size: 1rem;
+  color: #733702;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #e0c4a4;
+}
+/* BOTÓN HAMBURGUESA */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #733702;
+  cursor: pointer;
+}
+/* Botón de login en círculo */
+.login-button {
+  background-color: #f8f1ea;  /* Fondo claro, igual que el carrito */
+  border-radius: 50%;
+  padding: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+/* Ícono de login */
+.login-icon {
+  font-size: 1.5rem;
+  color: #733702;
+  transition: color 0.3s ease;
+}
+
+/* Hover: fondo más claro e ícono color rojo */
+.login-button:hover {
+  background-color: #fde9e5;
+}
+
+.login-button:hover .login-icon {
+  color: #c0392b;
+}
+
+/* RESPONSIVE: móviles y tablets */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .navbar-links {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    display: none;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .dropdown-menu {
+    position: static;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .dropdown-menu li a:hover {
+    background-color: #e8d0b7;
+  }
+
+  .navbar-icons {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    gap: 1.5rem;
+  }
+}
