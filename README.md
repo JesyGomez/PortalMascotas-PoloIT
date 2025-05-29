@@ -92,7 +92,8 @@ fetch('http://localhost:5000/login', { ... })
    CREATE TABLE usuarios (
      id INT AUTO_INCREMENT PRIMARY KEY,
      email VARCHAR(100) NOT NULL,
-     password VARCHAR(100) NOT NULL
+     password VARCHAR(100) NOT NULL,
+     rol: ENUM('admin', 'usuario')
    );
    ```
 
@@ -129,4 +130,3 @@ fetch('http://localhost:5000/login', { ... })
 
 ---
 
-Listo, ya estás preparado para contribuir 🌟
