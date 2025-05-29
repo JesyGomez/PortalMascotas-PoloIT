@@ -72,9 +72,13 @@ h2 {
   font-weight: bold;
 }
 
-/* Success message */
-.success-message {
+.mensaje-bienvenida {
   color: green;
-  margin-top: 0.5rem;
   font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  background-color: #eaffea;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #a6d6a6;
 }

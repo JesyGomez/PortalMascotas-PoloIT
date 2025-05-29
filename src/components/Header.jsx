@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "../components/context/AuthContext";
 import "../estilos/header.css";
 
-const Header = ({ isAuthenticated, onLogout, currentUser }) => {
+const Header = () => {
+  const { nombreUsuario, rol, logout } = useContext(AuthContext);
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -16,13 +19,17 @@ const Header = ({ isAuthenticated, onLogout, currentUser }) => {
         <li><Link to="/adopciones">Adopciones</Link></li>
         <li><Link to="/nosotros">Nosotros</Link></li>
         <li><Link to="/contacto">Contacto</Link></li>
+
+        {rol === "admin" && (
+          <li><Link to="/admin">Panel Admin</Link></li>
+        )}
       </ul>
 
       <div className="navbar-icons">
-        {isAuthenticated ? (
+        {nombreUsuario ? (
           <>
-            <span className="user-saludo">👋 ¡Hola, {currentUser}!</span>
-            <button onClick={onLogout} title="Cerrar sesión" className="logout-icon">
+            <span className="user-saludo">👋 ¡Hola, {nombreUsuario}!</span>
+            <button onClick={logout} title="Cerrar sesión" className="logout-icon">
               <FontAwesomeIcon icon={faRightFromBracket} />
             </button>
           </>

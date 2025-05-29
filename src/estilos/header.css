@@ -48,6 +48,8 @@
   display: flex;
   align-items: center;
   gap: 1.5rem; 
+  margin-right: 1.4rem; /* 👈 Este es el ajuste clave */
+
 }
 
 .logout-icon,
@@ -58,74 +60,6 @@
   padding: 0;
 }
 
-/* Botón del carrito con círculo */
-.cart-button {
-  border: none;
-  border-radius: 50%;
-  padding: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
-  cursor: pointer;
-}
-
-/* Ícono del carrito */
-.cart-icon {
-  font-size: 1.5rem;
-  color: #733702;
-  transition: color 0.3s ease;
-}
-
-.cart-button:hover {
-  background-color: #fde9e5;
-}
-
-.cart-button:hover .cart-icon {
-  color: #c0392b;
-}
-
-/* Dropdown */
-.dropdown {
-  position: relative;
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #F2F2F2;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 0.7rem;
-  display: none;
-  flex-direction: column;
-  z-index: 10;
-  border-radius: 0.25rem;
-  list-style: none;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: flex;
-}
-
-.dropdown-menu li {
-  margin: 0.4rem 0;
-}
-
-.dropdown-menu li a {
-  font-size: 1rem;
-  color: #733702;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.3s;
-  text-decoration: none;
-}
-
-.dropdown-menu li a:hover {
-  background-color: #e0c4a4;
-}
 /* BOTÓN HAMBURGUESA */
 .hamburger {
   display: none;
@@ -137,7 +71,7 @@
 }
 /* Botón de login en círculo */
 .login-button {
-  background-color: #f8f1ea;  /* Fondo claro, igual que el carrito */
+  background-color: #f8f1ea;  
   border-radius: 50%;
   padding: 0.6rem;
   display: flex;
@@ -164,6 +98,26 @@
   color: #c0392b;
 }
 
+/* Usuario */
+.logout-icon {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.logout-icon:hover {
+  color: red;
+  transform: scale(1.1);
+}
+
+
+.user-saludo {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #444;
+}
+
 /* RESPONSIVE: móviles y tablets */
 @media (max-width: 768px) {
   .navbar {
@@ -188,18 +142,6 @@
   .navbar-links.active {
     display: flex;
   }
-
-  .dropdown-menu {
-    position: static;
-    background-color: transparent;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  .dropdown-menu li a:hover {
-    background-color: #e8d0b7;
-  }
-
   .navbar-icons {
     width: 100%;
     justify-content: flex-end;
@@ -207,3 +149,4 @@
     gap: 1.5rem;
   }
 }
+
