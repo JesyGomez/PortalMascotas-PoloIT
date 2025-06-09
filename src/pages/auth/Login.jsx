@@ -7,7 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [mensaje, setMensaje] = useState(""); 
+  const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -17,7 +17,7 @@ const Login = () => {
     setMensaje("");
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -40,7 +40,9 @@ const Login = () => {
         setError(data.message || "Credenciales incorrectas. Intenta de nuevo.");
       }
     } catch (err) {
-      setError("Error de conexión. Asegúrate que el servidor esté funcionando.");
+      setError(
+        "Error de conexión. Asegúrate que el servidor esté funcionando."
+      );
       console.error("Error durante el login:", err);
     }
   };
@@ -57,7 +59,9 @@ const Login = () => {
         {!mensaje ? (
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="correo" className="form-label">Correo</label>
+              <label htmlFor="correo" className="form-label">
+                Correo
+              </label>
               <input
                 type="email"
                 className="form-control"
@@ -68,7 +72,9 @@ const Login = () => {
               />
             </div>
             <div className="mb-3 position-relative">
-              <label htmlFor="password" className="form-label">Contraseña</label>
+              <label htmlFor="password" className="form-label">
+                Contraseña
+              </label>
               <input
                 type="password"
                 className="form-control"
@@ -80,9 +86,15 @@ const Login = () => {
             </div>
             {error && <p className="error-message">{error}</p>}
             <div className="d-grid">
-              <button type="submit" className="btn-primary">Ingresar</button>
+              <button type="submit" className="btn-primary">
+                Ingresar
+              </button>
             </div>
             <div className="text-center">
+              <p>
+                ¿Olvidaste tu contraseña?{" "}
+                <Link to="/recuperar">Recuperala acá</Link>
+              </p>
               <p>
                 ¿No tenés cuenta? <Link to="/registro">Registrate acá</Link>
               </p>

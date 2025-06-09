@@ -4,6 +4,13 @@ from models.user_model import get_user_by_email
 from models.user_model import create_user
 from utils.jwt import generate_token  # para devolver token
 import bcrypt
+import random
+import string
+from datetime import datetime, timedelta
+from flask import request, jsonify
+from models.user_model import get_user_by_email, update_user_password
+from models.reset_model import save_reset_code, verify_reset_code
+import bcrypt
 
 def login():
     try:
@@ -62,4 +69,40 @@ def register():
         return jsonify({'message': 'Error interno del servidor'}), 500
 
 
+def request_password_reset():
+    data = request.get_json()
+    email = data.get('email')
 
+    if not email:
+        return jsonify({'msg': 'Email requerido'}), 400
+
+    user = get_user_by_email(email)
+    if not user:
+        return jsonify({'msg': 'Usuario no encontrado'}), 404
+
+    code = ''.join(random.choices(string.digits, k=6))
+    expires_at = datetime.now() + timedelta(minutes=10)
+
+    save_reset_code(email, code, expires_at)
+
+    print(f"[DEBUG] Código de verificación para {email}: {code}")  # simula envío de email
+
+    return jsonify({'msg': 'Código enviado'}), 200
+
+
+def reset_password():
+    data = request.get_json()
+    email = data.get('email')
+    code = data.get('code')
+    new_password = data.get('new_password')
+
+    if not email or not code or not new_password:
+        return jsonify({'msg': 'Todos los campos son requeridos'}), 400
+
+    if not verify_reset_code(email, code):
+        return jsonify({'msg': 'Código inválido o expirado'}), 400
+
+    hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+    update_user_password(email, hashed)
+
+    return jsonify({'msg': 'Contraseña actualizada correctamente'}), 200

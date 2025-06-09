@@ -9,6 +9,14 @@ app.config.from_object(config['development'])  # ← Esto carga DevelopmentConfi
 CORS(app)
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
+@app.route('/')
+def home():
+    return "Servidor Flask funcionando. Usa las rutas /api/register etc."
+# @app.route('/api/register', methods=['POST'])
+# def register():
+#     data = request.json
+#     # acá podrías hacer algo con data
+#     return jsonify({"message": "Registro recibido", "data": data}), 201
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -51,3 +51,11 @@ def create_user(data):
     finally:
         cursor.close()
         conn.close()
+
+def update_user_password(email, hashed_password):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET password=%s WHERE email=%s", (hashed_password, email))
+    conn.commit()
+    cursor.close()
+    conn.close()

@@ -10,7 +10,7 @@ import RegistroMascota from "./pages/RegistroMascotas";
 import AdminPage from "./pages/AdminPage";
 import { useContext } from "react";
 import { AuthContext } from "./components/context/AuthContext";
-
+import RecuperarContrasenia from "./pages/auth/RecuperarContrasenia";
 
 function App() {
   const { rol } = useContext(AuthContext); // 👈🏼
@@ -27,6 +27,7 @@ function App() {
             element={rol === "admin" ? <AdminPage /> : <Navigate to="/" />}
           />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/recuperar" element={<RecuperarContrasenia />} />
           <Route path="/registro-mascota" element={<RegistroMascota />} />
           <Route path="/adopciones" element={<Adopciones />} />
         </Routes>
