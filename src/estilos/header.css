@@ -1,4 +1,4 @@
-/* Navbar */
+/* ========== NAVBAR PRINCIPAL ========== */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -6,7 +6,8 @@
   background-color: #D9B391;
   padding: 1rem 3rem;
   font-family: 'Segoe UI', sans-serif;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
 }
 
 .navbar-logo a {
@@ -16,6 +17,15 @@
   text-decoration: none;
 }
 
+.logo-img {
+  height: 50px;
+  width: auto;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  object-fit: contain;
+}
+
+/* ========== LINKS Y DROPDOWNS ========== */
 .navbar-links {
   list-style: none;
   display: flex;
@@ -42,21 +52,13 @@
   color: #BF702A;
   transform: translateY(-3px);
 }
-.logo-img {
-  height: 50px;
-  width: auto;
-  border-radius: 50%;
-  margin-left: 1.5rem; 
-  object-fit: contain;
-}
 
-/* ÍCONOS */
+/* ========== ÍCONOS Y BOTONES ========== */
 .navbar-icons {
   display: flex;
   align-items: center;
-  gap: 1.5rem; 
-  margin-right: 1.4rem; 
-
+  gap: 1.5rem;
+  margin-right: 1.4rem;
 }
 
 .logout-icon,
@@ -65,66 +67,21 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  font-size: 1.2rem;
 }
 
-
-.dropdown {
-  position: relative;
+.logout-icon:hover {
+  color: red;
+  transform: scale(1.1);
 }
 
-.dropdown-btn {
-  font-size: 1.3rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #733702;
+.user-saludo {
+  margin-right: 10px;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  color: #444;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #fff;
-  min-width: 200px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.dropdown-menu li {
-  list-style: none;
-}
-
-.dropdown-menu li a,
-.dropdown-menu li button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  width: 100%;
-  text-decoration: none;
-  color: #333;
-  background: none;
-  border: none;
-  text-align: left;
-  font-size: 14px;
-}
-
-.dropdown-menu li a:hover,
-.dropdown-menu li button:hover {
-  background-color: #f0f0f0;
-}
-
-.dropdown-logout {
-  color: #c0392b;
-  font-weight: bold;
-}
-
-
+/* ========== BOTÓN PUBLICAR ========== */
 .btn-publicar {
   margin-left: 15px;
   padding: 6px 12px;
@@ -132,8 +89,8 @@
   color: white !important;
   border: none;
   border-radius: 25px;
-  font-weight: 200; /* más finita */
-  font-size: 0.45rem; /* más chica */
+  font-weight: 200;
+  font-size: 0.45rem;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
@@ -153,19 +110,9 @@
   display: block;
 }
 
-
-/* BOTÓN HAMBURGUESA */
-.hamburger {
-  display: none;
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: #733702;
-  cursor: pointer;
-}
-/* Botón de login en círculo */
+/* ========== BOTÓN LOGIN EN CÍRCULO ========== */
 .login-button {
-  background-color: #f8f1ea;  
+  background-color: #f8f1ea;
   border-radius: 50%;
   padding: 0.6rem;
   display: flex;
@@ -176,14 +123,12 @@
   text-decoration: none;
 }
 
-/* Ícono de login */
 .login-icon {
   font-size: 1.5rem;
   color: #733702;
   transition: color 0.3s ease;
 }
 
-/* Hover: fondo más claro e ícono color rojo */
 .login-button:hover {
   background-color: #fde9e5;
 }
@@ -192,34 +137,90 @@
   color: #c0392b;
 }
 
-/* Usuario */
-.logout-icon {
+/* ========== DROPDOWN GENERAL ========== */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdown-btn,
+.dropdown-toggle {
   background: none;
   border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.logout-icon:hover {
-  color: red;
-  transform: scale(1.1);
-}
-
-
-.user-saludo {
-  margin-right: 10px;
+  color: inherit;
   font-weight: bold;
-  color: #444;
+  cursor: pointer;
+  font-size: 1.1em;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* RESPONSIVE: móviles y tablets */
-@media (max-width: 768px) {
-  .navbar {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-  }
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  min-width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
 
+.dropdown-menu li {
+  list-style: none;
+  margin: 5px 0;
+}
+
+.dropdown-menu li a,
+.dropdown-menu li button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  width: 100%;
+  text-decoration: none;
+  color: #333;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-menu li a:hover,
+.dropdown-menu li button:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-logout {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+/* ========== HAMBURGUESA (Responsive) ========== */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #733702;
+  cursor: pointer;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
   .hamburger {
     display: block;
   }
@@ -236,6 +237,7 @@
   .navbar-links.active {
     display: flex;
   }
+
   .navbar-icons {
     width: 100%;
     justify-content: flex-end;
@@ -243,4 +245,3 @@
     gap: 1.5rem;
   }
 }
-

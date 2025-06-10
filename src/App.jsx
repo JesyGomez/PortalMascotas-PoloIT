@@ -11,7 +11,11 @@ import AdminPage from "./pages/AdminPage";
 import { useContext } from "react";
 import { AuthContext } from "./components/context/AuthContext";
 import RecuperarContrasenia from "./pages/auth/RecuperarContrasenia";
-
+import Donaciones from "./pages/Donaciones";
+import Jornadas from "./pages/Jornadas";
+import MiCuenta from "./pages/MiCuenta";
+import Contacto from "./pages/Contacto";
+import Nosotros from "./pages/Nosotros";
 function App() {
   const { rol } = useContext(AuthContext); // 👈🏼
 
@@ -22,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route
             path="/admin/*"
             element={rol === "admin" ? <AdminPage /> : <Navigate to="/" />}
@@ -29,7 +34,12 @@ function App() {
           <Route path="/registro" element={<Registro />} />
           <Route path="/recuperar" element={<RecuperarContrasenia />} />
           <Route path="/registro-mascota" element={<RegistroMascota />} />
+          <Route path="/donaciones" element={<Donaciones />} />
+          <Route path="/Jornadas" element={<Jornadas />} />
+          <Route path="/mi-cuenta" element={<MiCuenta />} />
           <Route path="/adopciones" element={<Adopciones />} />
+          <Route path="/contacto" element={<Contacto />} />
+
         </Routes>
       </main>
       <Footer />

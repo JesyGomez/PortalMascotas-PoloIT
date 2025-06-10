@@ -1,30 +1,37 @@
-import React, { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [rol, setRol] = useState(localStorage.getItem("rol") || null);
-  const [nombreUsuario, setNombreUsuario] = useState(localStorage.getItem("nombreUsuario") || null);
+  const [rol, setRol] = useState(null);
+  const [nombre, setNombre] = useState(null);
+  const navigate = useNavigate();
 
-  // Guardar en localStorage cuando cambia
   useEffect(() => {
-    if (rol) localStorage.setItem("rol", rol);
-    if (nombreUsuario) localStorage.setItem("nombreUsuario", nombreUsuario);
-  }, [rol, nombreUsuario]);
+    const savedRol = localStorage.getItem("rol");
+    const savedNombre = localStorage.getItem("nombre");
+    if (savedRol) setRol(savedRol);
+    if (savedNombre) setNombre(savedNombre);
+  }, []);
 
-  const login = (nombre, rol) => {
-    setNombreUsuario(nombre);
-    setRol(rol);
+  const login = (nombreUsuario, rolUsuario) => {
+    setNombre(nombreUsuario);
+    setRol(rolUsuario);
+    localStorage.setItem("nombre", nombreUsuario);
+    localStorage.setItem("rol", rolUsuario);
   };
 
   const logout = () => {
-    setNombreUsuario(null);
     setRol(null);
-    localStorage.clear();
+    setNombre(null);
+    localStorage.removeItem("rol");
+    localStorage.removeItem("nombre");
+    navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ rol, nombreUsuario, login, logout }}>
+    <AuthContext.Provider value={{ rol, nombre, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
