@@ -17,7 +17,7 @@ import MiCuenta from "./pages/MiCuenta";
 import Contacto from "./pages/Contacto";
 import Nosotros from "./pages/Nosotros";
 function App() {
-  const { rol } = useContext(AuthContext); // 👈🏼
+  const { rol } = useContext(AuthContext);
 
   return (
     <>

@@ -44,16 +44,6 @@ function Footer() {
 
         <div className="footer-section footer-map">
           <h3>Dónde Encontrarnos</h3>
-         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13134.40939023069!2d-58.852431799999995!3d-34.61332765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc8f5539f3796d%3A0xc49d37e2a225301a!2sMarcos%20Paz%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1716382025123!5m2!1ses-419!2sar"
-            width="100%" // Para que sea responsive
-            height="250" // Altura fija
-            style={{ border: 0, borderRadius: '10px' }} 
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Ubicación de nuestra tienda" 
-          ></iframe>
           <p>Visítanos o encuéntranos en Google Maps.</p>
         </div>
 

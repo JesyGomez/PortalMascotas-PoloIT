@@ -152,21 +152,20 @@
 .dropdown-toggle {
   background: none;
   border: none;
-  color: inherit;
+  color: #733702;
   font-weight: bold;
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1.2em;
   padding: 0 5px;
   display: flex;
   align-items: center;
   gap: 6px;
 }
-
-.dropdown-menu {
+.dropdown .dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #fff;
+  background-color: #D9B391;
   min-width: 220px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -175,6 +174,9 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .dropdown-menu li {

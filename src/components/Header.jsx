@@ -40,7 +40,7 @@ const Header = () => {
           <Link to="/nosotros">Nosotros</Link>
         </li>
         <li>
-          <Link to="/jornadas">Jornadas</Link>
+          <Link to="/adopciones">Adopciones</Link>
         </li>
         <li>
           <Link to="/donaciones">Donaciones</Link>
@@ -55,53 +55,57 @@ const Header = () => {
           </li>
         ) : (
           <>
-<li className="dropdown" onMouseLeave={closeDropdown}>
-  <div className="dropdown-wrapper">
-    <Link to="/mi-cuenta" className="dropdown-btn">Mi cuenta</Link>
-    <button onClick={toggleDropdown} className="dropdown-toggle">▾</button>
-  </div>
+            <li className="dropdown" onMouseLeave={closeDropdown}>
+              <button className="dropdown-toggle" onClick={toggleDropdown}>
+                Mi cuenta
+              </button>
 
-  {showDropdown && (
-    <ul className="dropdown-menu">
-      <li>
-        <Link to="/mis-publicaciones" onClick={closeDropdown}>
-          <FontAwesomeIcon icon={faBullhorn} /> Mis Publicaciones
-        </Link>
-      </li>
-      <li>
-        <Link to="/configuracion" onClick={closeDropdown}>
-          <FontAwesomeIcon icon={faGear} /> Configuración
-        </Link>
-      </li>
-      <li>
-        <Link to="/aspectos-del-sistema" onClick={closeDropdown}>
-          <FontAwesomeIcon icon={faWrench} /> Aspecto del sistema
-        </Link>
-      </li>
-      <li>
-        <Link to="/publicar" onClick={closeDropdown}>
-          <FontAwesomeIcon icon={faBullhorn} /> Publicar Mascota
-        </Link>
-      </li>
-      <li>
-        <Link to="/formulario-adopcion" onClick={closeDropdown}>
-          <FontAwesomeIcon icon={faFileAlt} /> Formulario de Adopción
-        </Link>
-      </li>
-      <li>
-        <Link to="/mi-perfil" onClick={closeDropdown}>
-          <FontAwesomeIcon icon={faAddressCard} /> Mi Perfil
-        </Link>
-      </li>
-      <li>
-        <button onClick={logout} className="dropdown-logout">
-          <FontAwesomeIcon icon={faRightFromBracket} /> Cerrar Sesión
-        </button>
-      </li>
-    </ul>
-  )}
-</li>
-
+              {showDropdown && (
+                <ul
+                  className={`dropdown-menu ${
+                    showDropdown ? "visible" : "hidden"
+                  }`}
+                >
+                  <li>
+                    <Link to="/mis-publicaciones" onClick={closeDropdown}>
+                      <FontAwesomeIcon icon={faBullhorn} /> Mis Publicaciones
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/configuracion" onClick={closeDropdown}>
+                      <FontAwesomeIcon icon={faGear} /> Configuración
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/aspectos-del-sistema" onClick={closeDropdown}>
+                      <FontAwesomeIcon icon={faWrench} /> Aspecto del sistema
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/publicar" onClick={closeDropdown}>
+                      <FontAwesomeIcon icon={faBullhorn} /> Publicar Mascota
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/formulario-adopcion" onClick={closeDropdown}>
+                      <FontAwesomeIcon icon={faFileAlt} /> Formulario de
+                      Adopción
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/mi-perfil" onClick={closeDropdown}>
+                      <FontAwesomeIcon icon={faAddressCard} /> Mi Perfil
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={logout} className="dropdown-logout">
+                      <FontAwesomeIcon icon={faRightFromBracket} /> Cerrar
+                      Sesión
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </li>
 
             {rol === "admin" && (
               <li>

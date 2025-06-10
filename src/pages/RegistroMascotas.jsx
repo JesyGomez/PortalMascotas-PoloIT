@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import '../estilos/registro-mascotas.css';
+import React, { useState } from "react";
+import "../estilos/registro-mascotas.css";
 
 const RegistroMascota = () => {
-  // Estados para cada campo del formulario de mascota
-  const [fotoMascota, setFotoMascota] = useState(null); // Para el archivo de imagen
-  const [tipoMascota, setTipoMascota] = useState('');
-  const [razaMascota, setRazaMascota] = useState('');
-  const [nombreMascota, setNombreMascota] = useState('');
-  const [edadMascota, setEdadMascota] = useState('');
-  const [saludMascota, setSaludMascota] = useState('');
-  const [caracteristicasFisicas, setCaracteristicasFisicas] = useState('');
-  const [historial, setHistorial] = useState('');
-  const [requisitos, setRequisitos] = useState('');
-  const [infoAdicional, setInfoAdicional] = useState('');
+  const [fotoMascota, setFotoMascota] = useState(""); // URL de imagen
+  const [tipoMascota, setTipoMascota] = useState("");
+  const [razaMascota, setRazaMascota] = useState("");
+  const [nombreMascota, setNombreMascota] = useState("");
+  const [edadMascota, setEdadMascota] = useState("");
+  const [saludMascota, setSaludMascota] = useState("");
+  const [tamanioMascota, setTamanioMascota] = useState("");
+  const [sexoMascota, setSexoMascota] = useState("");
+  const [estadodeAdopcion, setestadodeAdopcion] = useState("");
+  const [zonaOciudad, setzonaOciudad] = useState("");
+  const [infoAdicional, setInfoAdicional] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -20,45 +20,59 @@ const RegistroMascota = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+const token = localStorage.getItem("token");
 
-    // Preparar los datos para enviar al backend
-    // Si manejas imágenes, deberías usar FormData
-    const formData = new FormData();
-    formData.append('fotoMascota', fotoMascota); // Agrega la foto
-    formData.append('tipoMascota', tipoMascota);
-    formData.append('razaMascota', razaMascota);
-    formData.append('nombreMascota', nombreMascota);
-    formData.append('edadMascota', edadMascota);
-    formData.append('saludMascota', saludMascota);
-    formData.append('caracteristicasFisicas', caracteristicasFisicas);
-    formData.append('historial', historial);
-    formData.append('requisitos', requisitos);
-    formData.append('infoAdicional', infoAdicional);
+const mascota = {
+  fotoMascota,
+  tipoMascota,
+  razaMascota,
+  nombreMascota,
+  edadMascota,
+  saludMascota,
+  tamanioMascota,
+  sexoMascota: sexoMascota.toLowerCase(),
+  estadodeAdopcion: estadodeAdopcion.toLowerCase(),
+  zonaOciudad,
+  infoAdicional
+};
+
 
     try {
-      // Endpoint para registro de MASCOTA (necesitarás crear este en Flask)
-      const response = await fetch('http://localhost:5000/api/auth/register_pet', {
-        method: 'POST',
-        // No Content-Type cuando usas FormData, el navegador lo configura automáticamente
-        body: formData,
-      });
-      const data = await response.json();
+const response = await fetch("http://localhost:5000/api/pets/register", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`, // Asegurate de que el token esté definido
+  },
+  body: JSON.stringify(mascota),
+});
+const data = await response.json()
 
       if (response.ok) {
-        setSuccess(data.message || 'Mascota registrada con éxito.');
-        // Opcional: limpiar el formulario o redirigir
-        // Resetear todos los estados a sus valores iniciales aquí
+        setSuccess(data.message || "Mascota registrada con éxito.");
+        // Limpio formulario
+        setFotoMascota("");
+        setTipoMascota("");
+        setRazaMascota("");
+        setNombreMascota("");
+        setEdadMascota("");
+        setSaludMascota("");
+        setTamanioMascota("");
+        setSexoMascota("");
+        setestadodeAdopcion("");
+        setzonaOciudad("");
+        setInfoAdicional("");
       } else {
-        setError(data.message || 'Error al registrar la mascota.');
+        setError(data.message || "Error al registrar la mascota.");
       }
     } catch (err) {
-      setError('Error de conexión al registrar la mascota.');
-      console.error('Error durante el registro de mascota:', err);
+      setError("Error de conexión al registrar la mascota.");
+      console.error("Error durante el registro de mascota:", err);
     }
   };
 
   return (
-    <div className="form-wrapper"> 
+    <div className="form-wrapper">
       <div className="form-container">
         <div className="text-center mb-4">
           <span className="paw-icon">🐾</span>
@@ -66,17 +80,23 @@ const RegistroMascota = () => {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="fotoMascota" className="form-label">Foto de la mascota</label>
+            <label htmlFor="fotoMascota" className="form-label">
+              URL de la foto de la mascota
+            </label>
             <input
+              type="url"
               className="form-control"
-              type="file"
               id="fotoMascota"
-              onChange={(e) => setFotoMascota(e.target.files[0])} // Captura el archivo
-              required // Puede ser opcional dependiendo de tu lógica
+              placeholder="https://ejemplo.com/imagen.jpg"
+              value={fotoMascota}
+              onChange={(e) => setFotoMascota(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="tipoMascota" className="form-label">Tipo de mascota</label>
+            <label htmlFor="tipoMascota" className="form-label">
+              Tipo de mascota
+            </label>
             <select
               className="form-select"
               id="tipoMascota"
@@ -91,7 +111,9 @@ const RegistroMascota = () => {
             </select>
           </div>
           <div className="mb-3">
-            <label htmlFor="razaMascota" className="form-label">Raza</label>
+            <label htmlFor="razaMascota" className="form-label">
+              Raza
+            </label>
             <input
               type="text"
               className="form-control"
@@ -102,7 +124,9 @@ const RegistroMascota = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="nombreMascota" className="form-label">Nombre</label>
+            <label htmlFor="nombreMascota" className="form-label">
+              Nombre
+            </label>
             <input
               type="text"
               className="form-control"
@@ -110,10 +134,13 @@ const RegistroMascota = () => {
               placeholder="Ej: Max"
               value={nombreMascota}
               onChange={(e) => setNombreMascota(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="edadMascota" className="form-label">Edad aproximada</label>
+            <label htmlFor="edadMascota" className="form-label">
+              Edad aproximada
+            </label>
             <input
               type="number"
               className="form-control"
@@ -124,7 +151,9 @@ const RegistroMascota = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="saludMascota" className="form-label">Estado de salud</label>
+            <label htmlFor="saludMascota" className="form-label">
+              Salud
+            </label>
             <input
               type="text"
               className="form-control"
@@ -135,40 +164,65 @@ const RegistroMascota = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="caracteristicasFisicas" className="form-label">Características físicas</label>
+            <label htmlFor="sexoMascota" className="form-label">
+              Sexo de la mascota
+            </label>
+            <select
+              className="form-select"
+              id="sexoMascota"
+              value={sexoMascota}
+              onChange={(e) => setSexoMascota(e.target.value)}
+              required
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="hembra">Hembra</option>
+              <option value="macho">Macho</option>
+              <option value="desconocido">Desconocido</option>
+            </select>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="tamanioMascota" className="form-label">
+              Tamaño
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="tamanioMascota"
+              placeholder="Ej: Pequeño, mediano, grande"
+              value={tamanioMascota}
+              onChange={(e) => setTamanioMascota(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="estadodeAdopcion" className="form-label">
+              Estado de Adopción
+            </label>
             <textarea
               className="form-control"
-              id="caracteristicasFisicas"
+              id="estadodeAdopcion"
               rows="2"
-              placeholder="Color, tamaño, pelaje, etc."
-              value={caracteristicasFisicas}
-              onChange={(e) => setCaracteristicasFisicas(e.target.value)}
+              placeholder="disponible, en tránsito, etc."
+              value={estadodeAdopcion}
+              onChange={(e) => setestadodeAdopcion(e.target.value)}
             ></textarea>
           </div>
           <div className="mb-3">
-            <label htmlFor="historial" className="form-label">Historial de comportamiento/vida</label>
-            <textarea
+            <label htmlFor="zonaOciudad" className="form-label">
+              Zona o Ciudad
+            </label>
+            <input
+              type="text"
               className="form-control"
-              id="historial"
-              rows="3"
-              placeholder="Ej: Amigable con niños, fue rescatado de la calle..."
-              value={historial}
-              onChange={(e) => setHistorial(e.target.value)}
-            ></textarea>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="requisitos" className="form-label">Requisitos para adopción</label>
-            <textarea
-              className="form-control"
-              id="requisitos"
-              rows="2"
-              placeholder="Ej: Hogar con jardín, sin otras mascotas, etc."
-              value={requisitos}
-              onChange={(e) => setRequisitos(e.target.value)}
-            ></textarea>
+              id="zonaOciudad"
+              placeholder="Ej: San Luis, Córdoba, etc."
+              value={zonaOciudad}
+              onChange={(e) => setzonaOciudad(e.target.value)}
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="infoAdicional" className="form-label">Información adicional (opcional)</label>
+            <label htmlFor="infoAdicional" className="form-label">
+              Información adicional (opcional)
+            </label>
             <textarea
               className="form-control"
               id="infoAdicional"
@@ -183,7 +237,9 @@ const RegistroMascota = () => {
           {success && <p className="success-message">{success}</p>}
 
           <div className="d-grid">
-            <button type="submit" className="btn-primary">Registrar Mascota</button>
+            <button type="submit" className="btn-primary">
+              Registrar Mascota
+            </button>
           </div>
         </form>
       </div>
