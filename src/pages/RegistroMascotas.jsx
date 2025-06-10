@@ -76,7 +76,7 @@ const data = await response.json()
       <div className="form-container">
         <div className="text-center mb-4">
           <span className="paw-icon">🐾</span>
-          <h2 className="d-inline">Registro de Mascota</h2>
+          <h2 className="d-inline">Registrar Mascota</h2>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">

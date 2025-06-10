@@ -28,7 +28,7 @@ function Footer() {
           <h3>Navegación</h3>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/adopciones">Adopciones</Link></li>
+            <li><Link to="/jornadas">Jornadas</Link></li>
             <li><Link to="/nosotros">Nosotros</Link></li>
             <li><Link to="/contacto">Contacto</Link></li>
             <li><Link to="/login">Mi Cuenta</Link></li>

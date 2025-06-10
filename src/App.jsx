@@ -16,6 +16,12 @@ import Jornadas from "./pages/Jornadas";
 import MiCuenta from "./pages/MiCuenta";
 import Contacto from "./pages/Contacto";
 import Nosotros from "./pages/Nosotros";
+import MisPublicaciones from "./pages/MisPublicaciones";
+import Configuracion from "./pages/Configuracion";
+import AspectosSistema from "./pages/AspectosSistema";
+import PublicarMascota from "./pages/PublicarMascota";
+import FormularioAdopcion from "./pages/FormularioAdopcion";
+import MiPerfil from "./pages/MiPerfil";
 function App() {
   const { rol } = useContext(AuthContext);
 
@@ -37,9 +43,14 @@ function App() {
           <Route path="/donaciones" element={<Donaciones />} />
           <Route path="/Jornadas" element={<Jornadas />} />
           <Route path="/mi-cuenta" element={<MiCuenta />} />
+          <Route path="/mis-publicaciones" element={<MisPublicaciones />} />
+          <Route path="/configuracion" element={<Configuracion />} />
+          <Route path="/aspectos-del-sistema" element={<AspectosSistema />} />
+          <Route path="/publicar" element={<PublicarMascota />} />
+          <Route path="/formulario-adopcion" element={<FormularioAdopcion />} />
+          <Route path="/mi-perfil" element={<MiPerfil />} />
           <Route path="/adopciones" element={<Adopciones />} />
           <Route path="/contacto" element={<Contacto />} />
-
         </Routes>
       </main>
       <Footer />
@@ -48,4 +59,3 @@ function App() {
 }
 
 export default App;
-
