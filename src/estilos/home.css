@@ -1,0 +1,94 @@
+.home-hero {
+  background: url('/public/fondoInicio.jpg') no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.home-acciones {
+  background-color: white;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.btn-voluntariado,
+.btn-transito {
+  background-color: #bb6b75;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-voluntariado:hover,
+.btn-transito:hover {
+  background-color: #a3535e;
+}
+
+.home-nosotros {
+  background-color: #ffffff;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.nosotros-wrapper {
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nosotros-corazon {
+  max-width: 300px;
+  height: auto;
+}
+
+.nosotros-caja {
+  background: linear-gradient(to right, #735F4D80, #D9B391);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.nosotros-caja h2 {
+  font-size: 1.8rem;
+  color: #8c4c32;
+  margin-bottom: 1rem;
+}
+
+.nosotros-caja p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.home-banner {
+  background-color: #f0d3b8;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 1.1rem;
+  color: #8c4c32;
+  font-weight: 500;
+}
+
+.home-banner strong {
+  display: block;
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  color: #a3533b;
+}
