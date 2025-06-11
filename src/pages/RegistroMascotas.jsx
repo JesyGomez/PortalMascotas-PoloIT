@@ -20,33 +20,32 @@ const RegistroMascota = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-const mascota = {
-  fotoMascota,
-  tipoMascota,
-  razaMascota,
-  nombreMascota,
-  edadMascota,
-  saludMascota,
-  tamanioMascota,
-  sexoMascota: sexoMascota.toLowerCase(),
-  estadodeAdopcion: estadodeAdopcion.toLowerCase(),
-  zonaOciudad,
-  infoAdicional
-};
-
+    const mascota = {
+      nombre: nombreMascota,
+      especie: tipoMascota,
+      raza: razaMascota,
+      edad: edadMascota,
+      sexo: sexoMascota.toLowerCase(),
+      imagen_url: fotoMascota,
+      estado: estadodeAdopcion.toLowerCase(),
+      salud: saludMascota,
+      tamanio: tamanioMascota,
+      ubicacion: zonaOciudad,
+      info_adicional: infoAdicional,
+    };
 
     try {
-const response = await fetch("http://localhost:5000/api/pets/register", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // Asegurate de que el token esté definido
-  },
-  body: JSON.stringify(mascota),
-});
-const data = await response.json()
+      const response = await fetch("http://localhost:5000/api/pets/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Asegurate de que el token esté definido
+        },
+        body: JSON.stringify(mascota),
+      });
+      const data = await response.json();
 
       if (response.ok) {
         setSuccess(data.message || "Mascota registrada con éxito.");

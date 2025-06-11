@@ -11,41 +11,46 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setMensaje("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError(null);
+  setMensaje("");
 
-    try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  if (!email || !password) {
+    setError("Por favor, completa todos los campos.");
+    return;
+  }
 
-      const data = await response.json();
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (response.ok) {
-        login(data.nombre, data.rol);
-        setMensaje(`🐾 ¡Bienvenido/a, ${data.nombre}!`);
+    const data = await response.json();
 
-        setTimeout(() => {
-          if (data.rol === "admin") {
-            navigate("/admin/dashboard");
-          } else {
-            navigate("/");
-          }
-        }, 2000);
-      } else {
-        setError(data.message || "Credenciales incorrectas. Intenta de nuevo.");
-      }
-    } catch (err) {
-      setError(
-        "Error de conexión. Asegúrate que el servidor esté funcionando."
-      );
-      console.error("Error durante el login:", err);
+    if (response.ok && data.token && data.nombre && data.rol) {
+      localStorage.setItem("token", data.token);
+      login(data.nombre, data.rol);
+      setMensaje(`🐾 ¡Bienvenido/a, ${data.nombre}!`);
+
+      setTimeout(() => {
+        if (data.rol === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      }, 2000);
+    } else {
+      setError(data.message || "Credenciales incorrectas. Intenta de nuevo.");
     }
-  };
+  } catch (err) {
+    setError("Error de conexión. Asegúrate que el servidor esté funcionando.");
+    console.error("Error durante el login:", err);
+  }
+};
+
 
   return (
     <div className="form-wrapper">
