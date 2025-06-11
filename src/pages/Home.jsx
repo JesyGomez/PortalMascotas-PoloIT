@@ -1,19 +1,15 @@
 import React from 'react';
+import '../estilos/home.css'; // Asegurate de crear este archivo si no existe
 
 const Home = () => {
   return (
-    <div className="home">
-      <h1>Bienvenidos al Home</h1>
-      <div className="mascotas-lista">
-        {/* Aquí iría un componente tipo <MascotaCard /> con la info */}
-        <div className="card-mascota">
-          <img src="https://via.placeholder.com/150" alt="Mascota" />
-          <h2>Aquí hay de Desarrollar INICIO</h2>
-          <h3>Nombre: Max</h3>
-          <p>Edad: 2 años</p>
-          <p>Raza: Mestizo</p>
-          <button>Voluntariado</button>
-          <button>Quiero ser hogar de tránsito</button>
+    <div className="home-hero">
+      <div className="home-overlay">
+        <h1>Portal Mascotas</h1>
+        <p>Encontrá, cuidá y adoptá con un clic</p>
+        <div className="home-buttons">
+          <button className="btn btn-primary">Ver mascotas</button>
+          <button className="btn btn-secondary">Quiero ayudar</button>
         </div>
       </div>
     </div>
