@@ -1,6 +1,6 @@
 // Header.jsx
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,
@@ -10,15 +10,16 @@ import {
   faAddressCard,
   faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../components/context/AuthContext";
 import "../estilos/header.css";
+import { useAuthStore } from "../hooks/useAuthStore";
 
-const Header = () => {
-  const { rol, nombre, logout } = useContext(AuthContext);
+const Header = ({isAuthenticated}) => {
+  const { user, nombre, startLogout } = useAuthStore() ;
   const [showDropdown, setShowDropdown] = useState(false);
-
+console.log(user)
   const toggleDropdown = () => setShowDropdown(!showDropdown);
   const closeDropdown = () => setShowDropdown(false);
+  const handleLogout = () => startLogout();
 
   return (
     <nav className="navbar">
@@ -49,7 +50,7 @@ const Header = () => {
           <Link to="/contacto">Contacto</Link>
         </li>
 
-        {!rol ? (
+        {!isAuthenticated ? (
           <li>
             <Link to="/login">Registro / Login</Link>
           </li>
@@ -98,7 +99,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <button onClick={logout} className="dropdown-logout">
+                    <button onClick={handleLogout} className="dropdown-logout">
                       <FontAwesomeIcon icon={faRightFromBracket} /> Cerrar
                       Sesión
                     </button>
@@ -107,11 +108,11 @@ const Header = () => {
               )}
             </li>
 
-            {rol === "admin" && (
+            {/* {rol === "admin" && (
               <li>
                 <Link to="/admin">Panel Admin</Link>
               </li>
-            )}
+            )} */}
           </>
         )}
       </ul>

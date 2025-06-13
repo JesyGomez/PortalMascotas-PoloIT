@@ -10,6 +10,15 @@ def get_user_by_email(email):
     conn.close()
     return user
 
+def get_user_by_id(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM usuarios WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
+
 
 def create_user(data):
     try:
@@ -44,13 +53,22 @@ def create_user(data):
         ))
 
         conn.commit()
-        return {'success': True}
+
+        # Obtener el ID del usuario insertado
+        user_id = cursor.lastrowid
+
+        return {
+            'success': True,
+            'id': user_id
+        }
+
     except Exception as e:
         print(f"Error al crear usuario: {e}")
         return {'success': False, 'message': 'Error interno al registrar usuario'}
     finally:
         cursor.close()
         conn.close()
+
 
 def update_user_password(email, hashed_password):
     conn = get_db_connection()

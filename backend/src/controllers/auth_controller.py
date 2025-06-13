@@ -1,16 +1,25 @@
 from werkzeug.exceptions import BadRequest
 from flask import request, jsonify
-from models.user_model import get_user_by_email
-from models.user_model import create_user
-from utils.jwt import generate_token  # para devolver token
+from utils.jwt import generate_token, decode_token
 import bcrypt
 import random
 import string
 from datetime import datetime, timedelta
-from flask import request, jsonify
-from models.user_model import get_user_by_email, update_user_password
+from models.user_model import get_user_by_email, update_user_password, create_user, get_user_by_id
 from models.reset_model import save_reset_code, verify_reset_code
-import bcrypt
+
+
+# Función para construir respuestas de autenticación
+def build_auth_response(user_id, nombre, rol):
+    token = generate_token(user_id, rol)
+    return jsonify({
+        'message': 'Operación exitosa',
+        'token': token,
+        'nombre': nombre,
+        'rol': rol,
+        'uid': user_id
+    })
+
 
 def login():
     try:
@@ -24,19 +33,11 @@ def login():
         user = get_user_by_email(email)
 
         if user:
-            # Convertir a bytes la password que vino por POST
             password_bytes = password.encode('utf-8')
             hashed_password = user['password'].encode('utf-8') if isinstance(user['password'], str) else user['password']
 
-            # Comparar el password ingresado con el hash guardado
             if bcrypt.checkpw(password_bytes, hashed_password):
-                token = generate_token(user['id'], user['rol'])  # devolver un JWT
-                return jsonify({
-                    'message': 'Login exitoso',
-                    'token': token,
-                    'nombre': user['nombre'],
-                    'rol': user['rol']
-                })
+                return build_auth_response(user['id'], user['nombre'], user['rol'])
             else:
                 return jsonify({'message': 'Contraseña incorrecta'}), 401
         else:
@@ -45,6 +46,7 @@ def login():
     except Exception as e:
         print(f"[ERROR en login]: {e}")
         return jsonify({'message': 'Error interno del servidor', 'error': str(e)}), 500
+
 
 def register():
     try:
@@ -57,13 +59,17 @@ def register():
             if not data.get(field):
                 return jsonify({'message': f'El campo {field} es requerido'}), 400
 
+        data['rol'] = data.get('rol', 'usuario')
+
         result = create_user(data)
+        print("Resultado de create_user:", result)
+        print("Resultado de create_user:", data)
 
         if not result['success']:
-            return jsonify({'error': result.get('message', 'Error al registrar usuario')}), 400
+            return jsonify({'message': result.get('message', 'Error al registrar usuario')}), 400
+        
+        return build_auth_response(result['id'], data['nombre'], data['rol']), 201
 
-        return jsonify({'message': 'Usuario registrado con éxito'}), 201
-    
     except Exception as e:
         print(f"[ERROR en register]: {e}")
         return jsonify({'message': 'Error interno del servidor'}), 500
@@ -74,11 +80,11 @@ def request_password_reset():
     email = data.get('email')
 
     if not email:
-        return jsonify({'msg': 'Email requerido'}), 400
+        return jsonify({'message': 'Email requerido'}), 400
 
     user = get_user_by_email(email)
     if not user:
-        return jsonify({'msg': 'Usuario no encontrado'}), 404
+        return jsonify({'message': 'Usuario no encontrado'}), 404
 
     code = ''.join(random.choices(string.digits, k=6))
     expires_at = datetime.now() + timedelta(minutes=10)
@@ -87,7 +93,7 @@ def request_password_reset():
 
     print(f"[DEBUG] Código de verificación para {email}: {code}")  # simula envío de email
 
-    return jsonify({'msg': 'Código enviado'}), 200
+    return jsonify({'message': 'Código enviado'}), 200
 
 
 def reset_password():
@@ -97,12 +103,37 @@ def reset_password():
     new_password = data.get('new_password')
 
     if not email or not code or not new_password:
-        return jsonify({'msg': 'Todos los campos son requeridos'}), 400
+        return jsonify({'message': 'Todos los campos son requeridos'}), 400
 
     if not verify_reset_code(email, code):
-        return jsonify({'msg': 'Código inválido o expirado'}), 400
+        return jsonify({'message': 'Código inválido o expirado'}), 400
 
     hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
     update_user_password(email, hashed)
 
-    return jsonify({'msg': 'Contraseña actualizada correctamente'}), 200
+    return jsonify({'message': 'Contraseña actualizada correctamente'}), 200
+
+
+def renew_token():
+    try:
+        auth_header = request.headers.get('Authorization')
+
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({'message': 'Token no proporcionado'}), 401
+
+        token = auth_header.split(' ')[1]
+        decoded = decode_token(token)
+
+        user_id = decoded.get('user_id')
+        rol = decoded.get('rol')
+
+        user = get_user_by_id(user_id)
+        print(f"info {token}: {decoded}")
+        if not user:
+            return jsonify({'message': 'Usuario no encontrado'}), 404
+
+        return build_auth_response(user_id, user['nombre'], rol), 200
+
+    except Exception as e:
+        print(f"[ERROR en renew_token]: {e}")
+        return jsonify({'message': 'Token inválido o expirado'}), 401
