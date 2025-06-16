@@ -2,7 +2,8 @@ from werkzeug.exceptions import BadRequest
 from flask import request, jsonify
 from models.user_model import get_user_by_email
 from models.user_model import create_user
-from utils.jwt import generate_token  # para devolver token
+from models.user_model import update_user_info as update_user_model
+from utils.jwt import generate_token, decode_token  # para devolver token
 import bcrypt
 import random
 import string
@@ -11,7 +12,7 @@ from flask import request, jsonify
 from models.user_model import get_user_by_email, update_user_password
 from models.reset_model import save_reset_code, verify_reset_code
 import bcrypt
-
+from db import get_db_connection
 def login():
     try:
         data = request.get_json()
@@ -106,3 +107,50 @@ def reset_password():
     update_user_password(email, hashed)
 
     return jsonify({'msg': 'Contraseña actualizada correctamente'}), 200
+
+def get_user_info():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'message': 'Token no proporcionado'}), 401
+
+    token = auth_header.split(" ")[1]
+
+    try:
+        user_data = decode_token(token)
+    except Exception as e:
+        return jsonify({'message': 'Token inválido'}), 401
+
+    user_id = user_data.get('user_id')
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT id, nombre, email, rol, localidad FROM usuarios WHERE id = %s", (user_id,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({'message': 'Usuario no encontrado'}), 404
+        return jsonify(user), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener usuario: {str(e)}'}), 500
+
+def update_user_info():
+    try:
+        data = request.get_json()
+        user_id = data.get('id')
+        nombre = data.get('nombre')
+        email = data.get('email')
+        ciudad = data.get('localidad')
+
+        if not all([user_id, nombre, email, ciudad]):
+            return jsonify({'message': 'Faltan campos requeridos'}), 400
+
+        success = update_user_model(user_id, nombre, email, ciudad)
+
+        if success:
+            return jsonify({'message': 'Usuario actualizado con éxito'}), 200
+        else:
+            return jsonify({'message': 'Error al actualizar usuario'}), 500
+
+    except Exception as e:
+        print(f"[ERROR en update_user_info]: {e}")
+        return jsonify({'message': 'Error interno del servidor'}), 500

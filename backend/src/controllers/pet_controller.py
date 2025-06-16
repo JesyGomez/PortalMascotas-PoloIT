@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from db import get_db_connection
 from utils.jwt import decode_token
 from models.pet_model import insert_pet
 
@@ -37,3 +38,26 @@ def register_pet():
         return jsonify({'message': result['message']}), 500
 
     return jsonify({'message': 'Mascota registrada con éxito'}), 201
+
+def get_user_pets():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'message': 'Token no proporcionado'}), 401
+
+    token = auth_header.split(" ")[1]
+    try:
+        user_data = decode_token(token)
+    except Exception as e:
+        return jsonify({'message': 'Token inválido'}), 401
+
+    user_id = user_data.get('user_id')
+    
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT id, nombre, edad, estado, imagen_url FROM mascotas WHERE id_usuario = %s"
+        cursor.execute(query, (user_id,))
+        mascotas = cursor.fetchall()
+        return jsonify(mascotas), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500

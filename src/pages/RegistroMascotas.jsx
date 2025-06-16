@@ -41,7 +41,7 @@ const RegistroMascota = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Asegurate de que el token esté definido
+          Authorization: `Bearer ${token}`, 
         },
         body: JSON.stringify(mascota),
       });

@@ -59,3 +59,22 @@ def update_user_password(email, hashed_password):
     conn.commit()
     cursor.close()
     conn.close()
+def update_user_info(user_id, nombre, email, ciudad):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        query = """
+            UPDATE usuarios
+            SET nombre = %s, email = %s, localidad = %s
+            WHERE id = %s
+        """
+        cursor.execute(query, (nombre, email, ciudad, user_id))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Error al actualizar usuario: {e}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()

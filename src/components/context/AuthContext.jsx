@@ -4,34 +4,69 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [rol, setRol] = useState(null);
-  const [nombre, setNombre] = useState(null);
+  const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(true); // 👈 nuevo estado
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedRol = localStorage.getItem("rol");
-    const savedNombre = localStorage.getItem("nombre");
-    if (savedRol) setRol(savedRol);
-    if (savedNombre) setNombre(savedNombre);
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      fetch("http://localhost:5000/api/auth/user-info", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Token inválido");
+          return res.json();
+        })
+        .then((data) => {
+          setUsuario(data);
+          localStorage.setItem("nombre", data.nombre);
+          localStorage.setItem("rol", data.rol);
+        })
+        .catch((err) => {
+          console.error("Error cargando usuario:", err);
+          logout(); // Limpieza si el token es inválido
+        })
+        .finally(() => {
+          setLoading(false); // ✅ una vez terminado
+        });
+    } else {
+      setLoading(false); // ✅ sin token también termina de cargar
+    }
   }, []);
 
-  const login = (nombreUsuario, rolUsuario) => {
-    setNombre(nombreUsuario);
-    setRol(rolUsuario);
-    localStorage.setItem("nombre", nombreUsuario);
-    localStorage.setItem("rol", rolUsuario);
-  };
+const login = (usuarioCompleto, token) => {
+  setUsuario(usuarioCompleto); // 👈 esto es suficiente
+  localStorage.setItem("token", token);
+  localStorage.setItem("nombre", usuarioCompleto.nombre);
+  localStorage.setItem("rol", usuarioCompleto.rol);
+};
+
+
 
   const logout = () => {
-    setRol(null);
-    setNombre(null);
-    localStorage.removeItem("rol");
+    setUsuario(null);
     localStorage.removeItem("nombre");
+    localStorage.removeItem("rol");
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ rol, nombre, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        usuario,
+        setUsuario,
+        rol: usuario?.rol || null,
+        nombre: usuario?.nombre || null,
+        loading,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

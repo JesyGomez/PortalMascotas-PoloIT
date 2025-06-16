@@ -32,8 +32,8 @@ const handleSubmit = async (e) => {
 
     if (response.ok && data.token && data.nombre && data.rol) {
       localStorage.setItem("token", data.token);
-      login(data.nombre, data.rol);
-      setMensaje(`🐾 ¡Bienvenido/a, ${data.nombre}!`);
+      login({ nombre: data.nombre, rol: data.rol }, data.token); 
+      setMensaje(`🐾 ¡Bienvenid@, ${data.nombre}!`);
 
       setTimeout(() => {
         if (data.rol === "admin") {
