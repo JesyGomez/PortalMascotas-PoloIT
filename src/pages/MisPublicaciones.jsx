@@ -18,13 +18,16 @@ function MisPublicaciones() {
     const fetchMascotas = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/pets/user", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:5000/api/mascotas/usuario",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) throw new Error("Error al obtener las mascotas");
 
@@ -61,10 +64,21 @@ function MisPublicaciones() {
     fetchUserInfo();
   }, []);
 
-  const abrirModalEdicion = (mascota) => {
-    setMascotaSeleccionada(mascota);
+const abrirModalEdicion = async (mascota) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:5000/api/mascotas/${mascota.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Error al traer datos completos");
+    const mascotaCompleta = await res.json();
+    setMascotaSeleccionada(mascotaCompleta);
     setMostrarModal(true);
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   const cerrarModal = () => {
     setMostrarModal(false);
@@ -76,7 +90,7 @@ function MisPublicaciones() {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        `http://localhost:5000/api/pets/${mascotaEditada.id}`,
+        `http://localhost:5000/api/mascotas/${mascotaEditada.id}`,
         {
           method: "PUT",
           headers: {
@@ -102,7 +116,7 @@ function MisPublicaciones() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`http://localhost:5000/api/pets/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/mascotas/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -146,9 +160,7 @@ function MisPublicaciones() {
             <p>
               <strong>Acerca de</strong>
             </p>
-            <p>
-              🏠 {usuario?.organizacion || "Tu Organización - Refugio - ONGs"}
-            </p>
+            <p>🏠 {usuario?.organizacion || "Tu Organización - Refugio - ONGs"}</p>
             <p>📍 {usuario?.localidad || "Tu Ubicación"}</p>
 
             <p>
@@ -223,22 +235,53 @@ function MisPublicaciones() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+
+                  // Aquí enviamos toda la info completa para evitar 400
                   editarMascota(mascotaSeleccionada);
                 }}
               >
+                <label>Nombre</label>
                 <input
                   type="text"
-                  value={mascotaSeleccionada.nombre}
+                  value={mascotaSeleccionada.nombre || ""}
                   onChange={(e) =>
                     setMascotaSeleccionada({
                       ...mascotaSeleccionada,
                       nombre: e.target.value,
                     })
                   }
+                  required
                 />
+
+                <label>Especie</label>
                 <input
                   type="text"
-                  value={mascotaSeleccionada.edad}
+                  value={mascotaSeleccionada.especie || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      especie: e.target.value,
+                    })
+                  }
+                  required
+                />
+
+                <label>Raza</label>
+                <input
+                  type="text"
+                  value={mascotaSeleccionada.raza || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      raza: e.target.value,
+                    })
+                  }
+                />
+
+                <label>Edad</label>
+                <input
+                  type="text"
+                  value={mascotaSeleccionada.edad || ""}
                   onChange={(e) =>
                     setMascotaSeleccionada({
                       ...mascotaSeleccionada,
@@ -246,8 +289,38 @@ function MisPublicaciones() {
                     })
                   }
                 />
+
+                <label>Sexo</label>
                 <select
-                  value={mascotaSeleccionada.estado}
+                  value={mascotaSeleccionada.sexo || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      sexo: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">Seleccionar sexo</option>
+                  <option value="macho">Macho</option>
+                  <option value="hembra">Hembra</option>
+                  <option value="desconocido">Desconocido</option>
+                </select>
+
+                <label>Imagen URL</label>
+                <input
+                  type="text"
+                  value={mascotaSeleccionada.imagen_url || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      imagen_url: e.target.value,
+                    })
+                  }
+                />
+
+                <label>Estado</label>
+                <select
+                  value={mascotaSeleccionada.estado || ""}
                   onChange={(e) =>
                     setMascotaSeleccionada({
                       ...mascotaSeleccionada,
@@ -255,10 +328,58 @@ function MisPublicaciones() {
                     })
                   }
                 >
+                  <option value="disponible">Disponible</option>
                   <option value="adopción">Adopción</option>
                   <option value="tránsito">Tránsito</option>
                   <option value="adoptado">Adoptado</option>
                 </select>
+
+                <label>Salud</label>
+                <input
+                  type="text"
+                  value={mascotaSeleccionada.salud || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      salud: e.target.value,
+                    })
+                  }
+                />
+
+                <label>Tamaño</label>
+                <input
+                  type="text"
+                  value={mascotaSeleccionada.tamanio || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      tamanio: e.target.value,
+                    })
+                  }
+                />
+
+                <label>Ubicación</label>
+                <input
+                  type="text"
+                  value={mascotaSeleccionada.ubicacion || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      ubicacion: e.target.value,
+                    })
+                  }
+                />
+
+                <label>Info Adicional</label>
+                <textarea
+                  value={mascotaSeleccionada.info_adicional || ""}
+                  onChange={(e) =>
+                    setMascotaSeleccionada({
+                      ...mascotaSeleccionada,
+                      info_adicional: e.target.value,
+                    })
+                  }
+                />
 
                 <button type="submit">Guardar Cambios</button>
                 <button type="button" onClick={cerrarModal}>

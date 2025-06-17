@@ -37,7 +37,7 @@ const RegistroMascota = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/pets/register", {
+      const response = await fetch("http://localhost:5000/api/mascotas/registrar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

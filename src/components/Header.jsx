@@ -1,6 +1,6 @@
 // Header.jsx
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,
@@ -9,16 +9,19 @@ import {
   faWrench,
   faAddressCard,
   faFileAlt,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../components/context/AuthContext";
 import "../estilos/header.css";
 
 const Header = () => {
-  const { rol, nombre, logout } = useContext(AuthContext);
+  const { rol, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
   const closeDropdown = () => setShowDropdown(false);
+  const toggleMenu = () => setMenuAbierto(!menuAbierto);
 
   return (
     <nav className="navbar">
@@ -32,26 +35,42 @@ const Header = () => {
         </Link>
       </div>
 
-      <ul className="navbar-links">
+      <button className="hamburger" onClick={toggleMenu}>
+        <FontAwesomeIcon icon={faBars} />
+      </button>
+
+      <ul className={`navbar-links ${menuAbierto ? "active" : ""}`}>
         <li>
-          <Link to="/">Inicio</Link>
+          <Link to="/" onClick={() => setMenuAbierto(false)}>
+            Inicio
+          </Link>
         </li>
         <li>
-          <Link to="/nosotros">Nosotros</Link>
+          <Link to="/nosotros" onClick={() => setMenuAbierto(false)}>
+            Nosotros
+          </Link>
         </li>
         <li>
-          <Link to="/jornadas">Jornadas</Link>
+          <Link to="/jornadas" onClick={() => setMenuAbierto(false)}>
+            Jornadas
+          </Link>
         </li>
         <li>
-          <Link to="/donaciones">Donaciones</Link>
+          <Link to="/donaciones" onClick={() => setMenuAbierto(false)}>
+            Donaciones
+          </Link>
         </li>
         <li>
-          <Link to="/contacto">Contacto</Link>
+          <Link to="/contacto" onClick={() => setMenuAbierto(false)}>
+            Contacto
+          </Link>
         </li>
 
         {!rol ? (
           <li>
-            <Link to="/login">Registro / Login</Link>
+            <Link to="/login" onClick={() => setMenuAbierto(false)}>
+              Registro / Login
+            </Link>
           </li>
         ) : (
           <>
@@ -61,11 +80,7 @@ const Header = () => {
               </button>
 
               {showDropdown && (
-                <ul
-                  className={`dropdown-menu ${
-                    showDropdown ? "visible" : "hidden"
-                  }`}
-                >
+                <ul className="dropdown-menu">
                   <li>
                     <Link to="/mis-publicaciones" onClick={closeDropdown}>
                       <FontAwesomeIcon icon={faBullhorn} /> Mis Publicaciones
@@ -108,8 +123,10 @@ const Header = () => {
             </li>
 
             {rol === "admin" && (
-              <li>
-                <Link to="/admin">Panel Admin</Link>
+              <li className="admin-link">
+                <Link to="/admin" onClick={() => setMenuAbierto(false)}>
+                  Panel Admin
+                </Link>
               </li>
             )}
           </>

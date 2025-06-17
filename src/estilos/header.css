@@ -34,6 +34,7 @@
 
 .navbar-links li {
   list-style: none;
+  margin-right: 0.5rem;
 }
 
 .navbar-links li a,
@@ -164,7 +165,6 @@
 .dropdown .dropdown-menu {
   position: absolute;
   top: 100%;
-  right: 0;
   background-color: #D9B391;
   min-width: 220px;
   border: 1px solid #ddd;
@@ -177,6 +177,8 @@
   visibility: visible;
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
+  right: 1rem; /* o 1.5rem */
+  margin-top: 0.5rem; /* separa del botón */
 }
 
 .dropdown-menu li {
@@ -219,14 +221,18 @@
   border: none;
   color: #733702;
   cursor: pointer;
+  margin-right: 1.5rem; /* Le da aire del borde derecho */
 }
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
+.navbar {
+    padding: 1rem 1.5rem;
+  }
   .hamburger {
     display: block;
+    
   }
-
   .navbar-links {
     width: 100%;
     flex-direction: column;
@@ -245,5 +251,15 @@
     justify-content: flex-end;
     margin-top: 1rem;
     gap: 1.5rem;
+  }
+}
+.admin-link {
+  margin-right: 1rem; /* Podés ajustar el valor */
+}
+
+@media (max-width: 768px) {
+  .admin-link {
+    align-self: flex-end;
+    margin-right: 0.5rem;
   }
 }

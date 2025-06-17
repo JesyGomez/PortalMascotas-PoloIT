@@ -3,7 +3,13 @@ import '../../estilos/dashboard.css';
 
 const MascotasCrud = () => {
   const [mascotas, setMascotas] = useState([]);
-  const [form, setForm] = useState({ nombre: '', especie: '', edad: '', descripcion: '' });
+  const [form, setForm] = useState({
+    nombre: '',
+    especie: '',
+    edad: '',
+    descripcion: '',
+    estado: 'Disponible',
+  });
   const [editandoId, setEditandoId] = useState(null);
 
   useEffect(() => {
@@ -40,7 +46,7 @@ const MascotasCrud = () => {
         body: JSON.stringify(form),
       });
 
-      setForm({ nombre: '', especie: '', edad: '', descripcion: '' });
+      setForm({ nombre: '', especie: '', edad: '', descripcion: '', estado: 'Disponible' });
       setEditandoId(null);
       fetchMascotas();
     } catch (err) {
@@ -63,42 +69,119 @@ const MascotasCrud = () => {
   };
 
   return (
-    <div className="admin-dashboard">
-      <h2>Gestión de Mascotas 🐶🐱</h2>
+    <div className="container">
+      <h2 className="mt-4">Gestión de Mascotas 🐾</h2>
 
-      <form className="crud-form" onSubmit={handleSubmit}>
-        <input name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} required />
-        <input name="especie" placeholder="Especie" value={form.especie} onChange={handleChange} required />
-        <input name="edad" type="number" placeholder="Edad" value={form.edad} onChange={handleChange} required />
-        <textarea name="descripcion" placeholder="Descripción" value={form.descripcion} onChange={handleChange} required />
-        <button type="submit">{editandoId ? 'Actualizar' : 'Agregar'}</button>
+      {/* Formulario */}
+      <form className="row g-3 mb-4" onSubmit={handleSubmit}>
+        <div className="col-md-3">
+          <input
+            name="nombre"
+            className="form-control"
+            placeholder="Nombre"
+            value={form.nombre}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-3">
+          <input
+            name="especie"
+            className="form-control"
+            placeholder="Especie"
+            value={form.especie}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-2">
+          <input
+            name="edad"
+            type="number"
+            className="form-control"
+            placeholder="Edad"
+            value={form.edad}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-4">
+          <textarea
+            name="descripcion"
+            className="form-control"
+            placeholder="Descripción"
+            value={form.descripcion}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-3">
+          <select
+            name="estado"
+            className="form-select"
+            value={form.estado}
+            onChange={handleChange}
+          >
+            <option value="Disponible">Disponible</option>
+            <option value="En tránsito">En tránsito</option>
+            <option value="Adoptado">Adoptado</option>
+          </select>
+        </div>
+        <div className="col-12 text-end">
+          <button type="submit" className="btn btn-success">
+            {editandoId ? 'Actualizar Mascota' : 'Agregar Mascota'}
+          </button>
+        </div>
       </form>
 
-      <table className="crud-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Especie</th>
-            <th>Edad</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {mascotas.map((mascota) => (
-            <tr key={mascota.id}>
-              <td>{mascota.nombre}</td>
-              <td>{mascota.especie}</td>
-              <td>{mascota.edad}</td>
-              <td>{mascota.descripcion}</td>
-              <td>
-                <button onClick={() => handleEdit(mascota)}>Editar</button>
-                <button onClick={() => handleDelete(mascota.id)}>Eliminar</button>
-              </td>
+      {/* Tabla */}
+      <div className="table-responsive">
+        <table className="table table-bordered table-striped table-hover align-middle">
+          <thead className="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Especie</th>
+              <th>Edad</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {mascotas.map((mascota) => (
+              <tr key={mascota.id}>
+                <td>{mascota.nombre}</td>
+                <td>{mascota.especie}</td>
+                <td>{mascota.edad}</td>
+                <td>{mascota.descripcion}</td>
+                <td>
+                  <span
+                    className={`badge ${
+                      mascota.estado === 'Disponible'
+                        ? 'bg-success'
+                        : mascota.estado === 'En tránsito'
+                        ? 'bg-warning text-dark'
+                        : 'bg-secondary'
+                    }`}
+                  >
+                    {mascota.estado}
+                  </span>
+                </td>
+                <td>
+                  <div className="btn-group">
+                    <button className="btn btn-warning btn-sm" onClick={() => handleEdit(mascota)}>
+                      Editar
+                    </button>
+                    <button className="btn btn-danger btn-sm" onClick={() => handleDelete(mascota.id)}>
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -84,9 +84,11 @@
 }
 
 .tarjeta-mascota img {
-  width: 100%;
+  /* width: 100%; */
   height: 150px;
   object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
 }
 
 .info-mascota h3 {
@@ -126,44 +128,72 @@
   color: white;
   text-align: center;
 }
-.modal-contenido p {
-  margin-bottom: 1rem;
+.modal-contenido form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem; /* espacio entre columnas y filas */
+}
+.modal-contenido label{
   color: white;
-  text-align: center;
+}
+.modal-contenido input,
+.modal-contenido select {
+  width: 100%; /* para que llenen la columna */
+  box-sizing: border-box;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #444;
+  background-color: #333;
+  color: white;
+  transition: border-color 0.3s;
 }
 
-.modal-contenido form {
+.modal-contenido input:focus,
+.modal-contenido select:focus {
+  outline: none;
+  border-color: #0f0;
+  box-shadow: 0 0 6px #0f0;
+}
+
+/* Para los botones, que queden debajo del grid ocupando toda la fila */
+
+.modal-contenido .botones {
+  grid-column: 1 / -1; /* ocupa las 2 columnas */
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 1rem;
   gap: 1rem;
 }
 
-.modal-contenido input,
-.modal-contenido select {
-  padding: 0.5rem;
+.modal-contenido button[type="submit"],
+.modal-contenido button[type="button"] {
+  flex: 1;
+  padding: 0.7rem 0;
+  font-weight: 700;
   font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
 }
 
 .modal-contenido button[type="submit"] {
-  background-color: green;
+  background-color: #28a745;
   color: white;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
+}
+
+.modal-contenido button[type="submit"]:hover {
+  background-color: #1e7e34;
 }
 
 .modal-contenido button[type="button"] {
-  background-color: red;
+  background-color: #dc3545;
   color: white;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
+}
+
+.modal-contenido button[type="button"]:hover {
+  background-color: #a71d2a;
 }
 .avatar-imagen {
   width: 100px;
