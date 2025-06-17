@@ -1,32 +1,85 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../components/context/AuthContext";
 import "../estilos/configuracion.css";
 
 function Configuracion() {
-  const [nombre, setNombre] = useState('Jesy');
-  const [email, setEmail] = useState('jesy@email.com');
-  const [tema, setTema] = useState('claro');
-  const [idioma, setIdioma] = useState('es');
-  const [notificaciones, setNotificaciones] = useState({
-    intereses: true,
-    mensajes: true,
-    recordatorios: false,
+  const { usuario } = useContext(AuthContext);
+
+  const [formData, setFormData] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    provincia: "",
+    localidad: "",
+    calle: "",
+    imagenDePerfil: "",
   });
 
-  // Estado para mostrar el modal
   const [mostrarModal, setMostrarModal] = useState(false);
 
-  const handleGuardarCambios = (e) => {
-    e.preventDefault();
-    console.log({ nombre, email, tema, idioma, notificaciones });
-    alert("Configuración guardada 😎");
+  useEffect(() => {
+    console.log("Usuario recibido:", usuario);
+
+    if (usuario) {
+      setFormData({
+        nombre: usuario.nombre || "",
+        apellido: usuario.apellido || "",
+        email: usuario.email || "",
+        provincia: usuario.provincia || "",
+        localidad: usuario.localidad || "",
+        calle: usuario.calle || "",
+        imagenDePerfil: usuario.imagenDePerfil || "",
+      });
+    }
+  }, [usuario]);
+console.log("📦 Enviando datos:", formData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Función para confirmar eliminación
+  const handleGuardarCambios = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+
+    // Validar campos requeridos antes de enviar
+    const { nombre, apellido, email } = formData;
+    if (!nombre.trim() || !apellido.trim() || !email.trim()) {
+      alert("Por favor completa nombre, apellido y email antes de guardar.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/update-user", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(
+          `Error del servidor: ${data.message || "Error al actualizar perfil"}`
+        );
+        throw new Error(data.message || "Error al actualizar perfil");
+      }
+
+      alert("Cambios guardados 😎");
+    } catch (err) {
+      console.error(err);
+      alert("Ocurrió un error al guardar");
+    }
+  };
+
   const confirmarEliminacion = () => {
-    // Aquí harías la llamada al backend para eliminar la cuenta
-    alert("Cuenta eliminada. :(");
+    alert("Cuenta eliminada 🫥");
     setMostrarModal(false);
-    // Luego redireccionar o hacer logout
+    // Logout o redirección
   };
 
   return (
@@ -36,78 +89,89 @@ function Configuracion() {
 
         <form onSubmit={handleGuardarCambios}>
           <section>
-            <h2>Datos de Usuario</h2>
+            <h2>Datos Personales</h2>
             <label>
               Nombre:
-              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+              <input
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Apellido:
+              <input
+                name="apellido"
+                value={formData.apellido}
+                onChange={handleChange}
+              />
             </label>
             <label>
               Email:
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </label>
           </section>
 
           <section>
-            <h2>Preferencias</h2>
+            <h2>Dirección</h2>
             <label>
-              Tema:
-              <select value={tema} onChange={(e) => setTema(e.target.value)}>
-                <option value="claro">Claro</option>
-                <option value="oscuro">Oscuro</option>
-              </select>
+              Provincia:
+              <input
+                name="provincia"
+                value={formData.provincia}
+                onChange={handleChange}
+              />
             </label>
-
             <label>
-              Idioma:
-              <select value={idioma} onChange={(e) => setIdioma(e.target.value)}>
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-              </select>
+              Localidad:
+              <input
+                name="localidad"
+                value={formData.localidad}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Calle:
+              <input
+                name="calle"
+                value={formData.calle}
+                onChange={handleChange}
+              />
             </label>
           </section>
 
           <section>
-            <h2>Notificaciones por email</h2>
+            <h2>Foto de Perfil (opcional)</h2>
             <label>
+              Imagen URL:
               <input
-                type="checkbox"
-                checked={notificaciones.intereses}
-                onChange={(e) =>
-                  setNotificaciones({ ...notificaciones, intereses: e.target.checked })
-                }
+                name="imagenDePerfil"
+                value={formData.imagenDePerfil}
+                onChange={handleChange}
               />
-              Interés en mis publicaciones
-            </label>
-
-            <label>
-              <input
-                type="checkbox"
-                checked={notificaciones.mensajes}
-                onChange={(e) =>
-                  setNotificaciones({ ...notificaciones, mensajes: e.target.checked })
-                }
-              />
-              Nuevos mensajes
-            </label>
-
-            <label>
-              <input
-                type="checkbox"
-                checked={notificaciones.recordatorios}
-                onChange={(e) =>
-                  setNotificaciones({ ...notificaciones, recordatorios: e.target.checked })
-                }
-              />
-              Recordatorios de seguimiento
             </label>
           </section>
 
           <button type="submit">Guardar cambios</button>
         </form>
 
-        <div style={{ marginTop: '2rem' }}>
+        <div className="extra-info">
+          <p>
+            <strong>Rol:</strong> {usuario?.rol}
+          </p>
+          <p>
+            <strong>Miembro desde:</strong>{" "}
+            {new Date(usuario?.creado_en).toLocaleDateString()}
+          </p>
+        </div>
+
+        <div style={{ marginTop: "2rem" }}>
           <button
-            type="button"
             className="btn-delete-account"
             onClick={() => setMostrarModal(true)}
           >
@@ -115,15 +179,24 @@ function Configuracion() {
           </button>
         </div>
 
-        {/* Modal */}
         {mostrarModal && (
           <div className="modal-backdrop">
             <div className="modal-content">
               <h3>Confirmar eliminación</h3>
-              <p>¿Estás seguro que querés eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+              <p>
+                ¿Estás seguro que querés eliminar tu cuenta? Esta acción no se
+                puede deshacer.
+              </p>
               <div className="modal-buttons">
-                <button className="btn-cancel" onClick={() => setMostrarModal(false)}>Cancelar</button>
-                <button className="btn-confirm" onClick={confirmarEliminacion}>Eliminar</button>
+                <button
+                  className="btn-cancel"
+                  onClick={() => setMostrarModal(false)}
+                >
+                  Cancelar
+                </button>
+                <button className="btn-confirm" onClick={confirmarEliminacion}>
+                  Eliminar
+                </button>
               </div>
             </div>
           </div>
@@ -132,4 +205,5 @@ function Configuracion() {
     </div>
   );
 }
+
 export default Configuracion;

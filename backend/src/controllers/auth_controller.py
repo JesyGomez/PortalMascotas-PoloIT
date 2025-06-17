@@ -2,7 +2,6 @@ from werkzeug.exceptions import BadRequest
 from flask import request, jsonify
 from models.user_model import get_user_by_email
 from models.user_model import create_user
-from models.user_model import update_user_info as update_user_model
 from utils.jwt import generate_token, decode_token  # para devolver token
 import bcrypt
 import random
@@ -13,6 +12,7 @@ from models.user_model import get_user_by_email, update_user_password
 from models.reset_model import save_reset_code, verify_reset_code
 import bcrypt
 from db import get_db_connection
+
 def login():
     try:
         data = request.get_json()
@@ -125,32 +125,60 @@ def get_user_info():
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, nombre, email, rol, localidad FROM usuarios WHERE id = %s", (user_id,))
+        # cursor.execute("SELECT id, nombre, email, rol, localidad FROM usuarios WHERE id = %s", (user_id,))
+        cursor.execute("""
+            SELECT id, nombre, apellido, email, provincia, localidad, calle, puntajeUsuario, habilitado_adoptar, habilitado_dador, imagenDePerfil, rol
+            FROM usuarios WHERE id = %s
+        """, (user_id,))
         user = cursor.fetchone()
         if not user:
             return jsonify({'message': 'Usuario no encontrado'}), 404
         return jsonify(user), 200
     except Exception as e:
         return jsonify({'message': f'Error al obtener usuario: {str(e)}'}), 500
+def campo_valido(valor):
+    return valor is not None and isinstance(valor, str) and valor.strip() != ''
 
-def update_user_info():
+def update_user_info_controller():
     try:
         data = request.get_json()
-        user_id = data.get('id')
-        nombre = data.get('nombre')
-        email = data.get('email')
-        ciudad = data.get('localidad')
+        print("📥 Datos recibidos:", data)
 
-        if not all([user_id, nombre, email, ciudad]):
-            return jsonify({'message': 'Faltan campos requeridos'}), 400
+        campos_validos = ['nombre', 'apellido', 'email', 'provincia', 'localidad', 'calle', 'imagenDePerfil']
+        if not all(campo in data for campo in campos_validos):
+            return jsonify({"error": "Faltan campos requeridos"}), 400
 
-        success = update_user_model(user_id, nombre, email, ciudad)
+        conn = get_db_connection()
+        cursor = conn.cursor()
 
-        if success:
-            return jsonify({'message': 'Usuario actualizado con éxito'}), 200
-        else:
-            return jsonify({'message': 'Error al actualizar usuario'}), 500
+        sql = """
+        UPDATE usuarios
+        SET nombre=%s,
+            apellido=%s,
+            provincia=%s,
+            localidad=%s,
+            calle=%s,
+            imagenDePerfil=%s
+        WHERE email=%s
+        """
+
+        valores = (
+            data["nombre"],
+            data["apellido"],
+            data["provincia"],
+            data["localidad"],
+            data["calle"],
+            data["imagenDePerfil"],
+            data["email"]
+        )
+
+        cursor.execute(sql, valores)
+        conn.commit()
+        cursor.close()
+
+        return jsonify({"mensaje": "Usuario actualizado correctamente"}), 200
 
     except Exception as e:
-        print(f"[ERROR en update_user_info]: {e}")
-        return jsonify({'message': 'Error interno del servidor'}), 500
+        print("❌ Error al actualizar usuario:", e)
+        return jsonify({"error": "Error interno del servidor"}), 500
+

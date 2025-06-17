@@ -11,7 +11,7 @@ function MisPublicaciones() {
   const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
 
   const iniciales = usuario
-    ? (usuario.nombre?.[0] || "") + (usuario.email?.[0] || "")
+    ? (usuario.nombre?.[0] || "") + (usuario.apellido?.[0] || "")
     : "";
 
   useEffect(() => {
@@ -128,7 +128,16 @@ function MisPublicaciones() {
       <div className="publicaciones-content">
         <aside className="perfil-usuario">
           <div className="avatar">
-            <div className="avatar-icon">😊</div>
+            {usuario?.imagenDePerfil ? (
+              <img
+                src={usuario.imagenDePerfil}
+                alt="Avatar del usuario"
+                className="avatar-imagen"
+              />
+            ) : (
+              <h2>Usuario</h2>
+            )}
+
             <div className="iniciales">{iniciales.toUpperCase()}</div>
           </div>
           <h2>{usuario?.nombre || "Usuario"}</h2>
@@ -137,7 +146,9 @@ function MisPublicaciones() {
             <p>
               <strong>Acerca de</strong>
             </p>
-            <p>🏠 {usuario?.organizacion || "Tu Organización - Refugio - ONGs"}</p>
+            <p>
+              🏠 {usuario?.organizacion || "Tu Organización - Refugio - ONGs"}
+            </p>
             <p>📍 {usuario?.localidad || "Tu Ubicación"}</p>
 
             <p>
@@ -153,10 +164,13 @@ function MisPublicaciones() {
               <img src={mascota.imagen_url} alt={mascota.nombre} />
               <div className="info-mascota">
                 <h3>{mascota.nombre}</h3>
-                <p>{mascota.edad}</p>
+                <p>{mascota.edad} Años</p>
                 <p className="estado">{mascota.estado}</p>
                 <div className="acciones">
-                  <button className="editar" onClick={() => abrirModalEdicion(mascota)}>
+                  <button
+                    className="editar"
+                    onClick={() => abrirModalEdicion(mascota)}
+                  >
                     Editar
                   </button>
                   <button
@@ -179,7 +193,8 @@ function MisPublicaciones() {
             <div className="modal-contenido">
               <h2>¿Eliminar publicación?</h2>
               <p>
-                ¿Estás seguro de que querés eliminar a <strong>{mascotaAEliminar.nombre}</strong>?
+                ¿Estás seguro de que querés eliminar a{" "}
+                <strong>{mascotaAEliminar.nombre}</strong>?
               </p>
               <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                 <button
@@ -190,7 +205,10 @@ function MisPublicaciones() {
                 >
                   Sí, eliminar
                 </button>
-                <button type="button" onClick={() => setMostrarModalEliminar(false)}>
+                <button
+                  type="button"
+                  onClick={() => setMostrarModalEliminar(false)}
+                >
                   Cancelar
                 </button>
               </div>

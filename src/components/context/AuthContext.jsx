@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    // console.log(token);
 
     if (token) {
       fetch("http://localhost:5000/api/auth/user-info", {
@@ -39,11 +40,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 const login = (usuarioCompleto, token) => {
-  setUsuario(usuarioCompleto); // 👈 esto es suficiente
   localStorage.setItem("token", token);
-  localStorage.setItem("nombre", usuarioCompleto.nombre);
-  localStorage.setItem("rol", usuarioCompleto.rol);
+  
+  // ⚠️ NO usamos directamente usuarioCompleto porque puede estar incompleto
+  fetch("http://localhost:5000/api/auth/user-info", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setUsuario(data);
+      localStorage.setItem("nombre", data.nombre);
+      localStorage.setItem("rol", data.rol);
+    });
 };
+
 
 
 
