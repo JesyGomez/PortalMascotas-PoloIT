@@ -3,6 +3,8 @@ from db import get_db_connection
 from utils.jwt import decode_token
 from models.pet_model import insert_pet
 
+# REGISTRAR NUEVA MASCOTA
+
 def register_pet():
     auth_header = request.headers.get('Authorization')
     print("Authorization header:", auth_header)
@@ -10,11 +12,10 @@ def register_pet():
     if not auth_header or not auth_header.startswith('Bearer '):
         return jsonify({'message': 'Token no proporcionado'}), 401
 
-    token = auth_header.split(" ")[1]  # <-- acá sacás el token
-
+    token = auth_header.split(" ")[1]
     try:
         user_data = decode_token(token)
-    except Exception as e:
+    except Exception:
         return jsonify({"error": "Token inválido"}), 401
 
     if not user_data:
@@ -24,63 +25,24 @@ def register_pet():
 
     data = request.get_json()
 
-    required_fields = ['nombre', 'especie', 'raza', 'edad', 'sexo', 'imagen_url', 'estado', 'salud', 'tamanio', 'ubicacion', 'info_adicional']
-
+    required_fields = ['nombre', 'especie', 'raza', 'edad', 'sexo', 'imagen_url', 'salud', 'tamanio', 'ubicacion', 'info_adicional']
     for field in ['nombre', 'especie']:
         if not data.get(field):
             return jsonify({'message': f'Campo {field} requerido'}), 400
 
     mascota_data = {field: data.get(field) for field in required_fields}
+    mascota_data['estado'] = 'ofrecimiento_pendiente'  # Estado inicial controlado
 
     result = insert_pet(mascota_data, user_id)
-
     if not result['success']:
         return jsonify({'message': result['message']}), 500
 
-    return jsonify({'message': 'Mascota registrada con éxito'}), 201
+    return jsonify({'message': 'Mascota registrada y pendiente de revisión'}), 201
+
+
+# MASCOTAS DEL USUARIO
 
 def get_user_pets():
-    auth_header = request.headers.get('Authorization')
-    if not auth_header or not auth_header.startswith('Bearer '):
-        return jsonify({'message': 'Token no proporcionado'}), 401
-
-    token = auth_header.split(" ")[1]
-    try:
-        user_data = decode_token(token)
-    except Exception as e:
-        return jsonify({'message': 'Token inválido'}), 401
-
-    user_id = user_data.get('user_id')
-    
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        query = "SELECT id, nombre, edad, estado, imagen_url FROM mascotas WHERE id_usuario = %s"
-        cursor.execute(query, (user_id,))
-        mascotas = cursor.fetchall()
-        return jsonify(mascotas), 200
-    except Exception as e:
-        return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
-
-# obtengo todas las mascotas (para admin)
-def get_all_pets():
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        query = """
-            SELECT id, nombre, especie, raza, edad, sexo, imagen_url, estado, salud, tamanio, ubicacion, info_adicional
-            FROM mascotas
-        """
-        cursor.execute(query)
-        mascotas = cursor.fetchall()
-        return jsonify(mascotas), 200
-    except Exception as e:
-        return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
-
-from flask import request, jsonify
-from utils.jwt import decode_token
-
-def update_pet(pet_id):
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
         return jsonify({'message': 'Token no proporcionado'}), 401
@@ -91,12 +53,51 @@ def update_pet(pet_id):
     except Exception:
         return jsonify({'message': 'Token inválido'}), 401
 
+    user_id = user_data.get('user_id')
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT id, nombre, edad, estado, imagen_url FROM mascotas WHERE id_usuario = %s", (user_id,))
+        mascotas = cursor.fetchall()
+        return jsonify(mascotas), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
+
+
+# TODAS LAS MASCOTAS (ADMIN)
+
+def get_all_pets():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT id, nombre, especie, raza, edad, sexo, imagen_url, estado, salud, tamanio, ubicacion, info_adicional
+            FROM mascotas
+        """)
+        mascotas = cursor.fetchall()
+        return jsonify(mascotas), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
+
+
+# ACTUALIZAR UNA MASCOTA (Admin o usuario)
+
+def update_pet(pet_id):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'message': 'Token no proporcionado'}), 401
+
+    token = auth_header.split(" ")[1]
+    try:
+        decode_token(token)
+    except Exception:
+        return jsonify({'message': 'Token inválido'}), 401
+
     data = request.get_json()
-    # Validar que data no sea None
     if not data:
         return jsonify({'message': 'No hay datos para actualizar'}), 400
 
-    # Validar campos mínimos para no fallar con KeyError
     required_fields = ['nombre', 'especie']
     for field in required_fields:
         if field not in data:
@@ -105,8 +106,7 @@ def update_pet(pet_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-
-        query = """
+        cursor.execute("""
         UPDATE mascotas SET
             nombre = %s,
             especie = %s,
@@ -120,9 +120,7 @@ def update_pet(pet_id):
             ubicacion = %s,
             info_adicional = %s
         WHERE id = %s
-        """
-
-        cursor.execute(query, (
+        """, (
             data['nombre'],
             data['especie'],
             data.get('raza'),
@@ -140,8 +138,11 @@ def update_pet(pet_id):
         conn.commit()
         return jsonify({'message': 'Mascota actualizada con éxito'}), 200
     except Exception as e:
-        print(f"[ERROR update_pet]: {e}")  # Loguea el error para debug
+        print(f"[ERROR update_pet]: {e}")
         return jsonify({'message': f'Error al actualizar mascota: {str(e)}'}), 500
+
+
+# OBTENER UNA MASCOTA POR ID
 
 def get_pet(pet_id):
     auth_header = request.headers.get('Authorization')
@@ -150,13 +151,13 @@ def get_pet(pet_id):
 
     token = auth_header.split(" ")[1]
     try:
-        user_data = decode_token(token)
+        decode_token(token)
     except Exception:
         return jsonify({'message': 'Token inválido'}), 401
 
     try:
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)  # Para obtener dicts
+        cursor = conn.cursor(dictionary=True)
         cursor.execute('SELECT * FROM mascotas WHERE id = %s', (pet_id,))
         mascota = cursor.fetchone()
         if not mascota:
@@ -166,6 +167,8 @@ def get_pet(pet_id):
         print(f"[ERROR get_pet]: {e}")
         return jsonify({'message': 'Error al obtener mascota'}), 500
 
+
+# ELIMINAR MASCOTA
 
 def delete_pet(pet_id):
     try:

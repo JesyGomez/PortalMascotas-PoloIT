@@ -143,13 +143,6 @@
   position: relative;
 }
 
-.dropdown-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.dropdown-btn,
 .dropdown-toggle {
   background: none;
   border: none;
@@ -162,9 +155,13 @@
   align-items: center;
   gap: 6px;
 }
+
+/* dropdown-menu solo visible si está en DOM */
 .dropdown .dropdown-menu {
   position: absolute;
   top: 100%;
+  right: 1rem;
+  margin-top: 0.5rem;
   background-color: #D9B391;
   min-width: 220px;
   border: 1px solid #ddd;
@@ -174,11 +171,7 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 0.2s ease-in-out;
-  right: 1rem; /* o 1.5rem */
-  margin-top: 0.5rem; /* separa del botón */
+  pointer-events: auto;
 }
 
 .dropdown-menu li {
@@ -212,6 +205,7 @@
   color: #c0392b;
   font-weight: bold;
 }
+
 
 /* ========== HAMBURGUESA (Responsive) ========== */
 .hamburger {

@@ -7,7 +7,7 @@ const MascotasCrud = () => {
     nombre: '',
     especie: '',
     edad: '',
-    descripcion: '',
+    info_adicional: '',
     estado: 'Disponible',
   });
   const [editandoId, setEditandoId] = useState(null);
@@ -18,16 +18,17 @@ const MascotasCrud = () => {
 
   const fetchMascotas = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/mascotas');
+      const token = localStorage.getItem('token'); 
+      const response = await fetch('http://localhost:5000/api/mascotas/', {
+        headers: {
+          'Authorization': `Bearer ${token}`, 
+        },
+      });
       const data = await response.json();
       setMascotas(data);
     } catch (err) {
       console.error('Error al cargar mascotas:', err);
     }
-  };
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -38,15 +39,25 @@ const MascotasCrud = () => {
       : 'http://localhost:5000/api/mascotas';
 
     const method = editandoId ? 'PUT' : 'POST';
+    const token = localStorage.getItem('token');
 
     try {
       await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify(form),
       });
 
-      setForm({ nombre: '', especie: '', edad: '', descripcion: '', estado: 'Disponible' });
+      setForm({
+        nombre: '',
+        especie: '',
+        edad: '',
+        info_adicional: '',
+        estado: 'Disponible',
+      });
       setEditandoId(null);
       fetchMascotas();
     } catch (err) {
@@ -54,19 +65,38 @@ const MascotasCrud = () => {
     }
   };
 
-  const handleEdit = (mascota) => {
-    setForm(mascota);
-    setEditandoId(mascota.id);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await fetch(`http://localhost:5000/api/mascotas/${id}`, { method: 'DELETE' });
-      fetchMascotas();
-    } catch (err) {
-      console.error('Error al eliminar mascota:', err);
-    }
-  };
+const handleEdit = (mascota) => {
+  setForm({
+    nombre: mascota.nombre,
+    especie: mascota.especie,
+    edad: mascota.edad,
+    info_adicional: mascota.info_adicional,
+    estado: mascota.estado,
+  });
+  setEditandoId(mascota.id);
+};
+
+
+const handleDelete = async (id) => {
+  const token = localStorage.getItem('token');
+  try {
+    await fetch(`http://localhost:5000/api/mascotas/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    fetchMascotas();
+  } catch (err) {
+    console.error('Error al eliminar mascota:', err);
+  }
+};
+
 
   return (
     <div className="container">
@@ -107,10 +137,10 @@ const MascotasCrud = () => {
         </div>
         <div className="col-md-4">
           <textarea
-            name="descripcion"
+            name="info_adicional"
             className="form-control"
             placeholder="Descripción"
-            value={form.descripcion}
+            value={form.info_adicional}
             onChange={handleChange}
             required
           />
@@ -125,6 +155,7 @@ const MascotasCrud = () => {
             <option value="Disponible">Disponible</option>
             <option value="En tránsito">En tránsito</option>
             <option value="Adoptado">Adoptado</option>
+            <option value="Pendiente">Pendiente</option>
           </select>
         </div>
         <div className="col-12 text-end">
@@ -153,7 +184,7 @@ const MascotasCrud = () => {
                 <td>{mascota.nombre}</td>
                 <td>{mascota.especie}</td>
                 <td>{mascota.edad}</td>
-                <td>{mascota.descripcion}</td>
+                <td>{mascota.info_adicional}</td>
                 <td>
                   <span
                     className={`badge ${

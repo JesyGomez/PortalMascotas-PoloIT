@@ -1,5 +1,4 @@
-// Header.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,10 +17,30 @@ const Header = () => {
   const { rol, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
+  
+  // Ref para detectar click afuera
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
   const closeDropdown = () => setShowDropdown(false);
   const toggleMenu = () => setMenuAbierto(!menuAbierto);
+
+  // Hook para cerrar dropdown si clickeo fuera
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+    if (showDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
 
   return (
     <nav className="navbar">
@@ -74,7 +93,7 @@ const Header = () => {
           </li>
         ) : (
           <>
-            <li className="dropdown" onMouseLeave={closeDropdown}>
+            <li className="dropdown" ref={dropdownRef}>
               <button className="dropdown-toggle" onClick={toggleDropdown}>
                 Mi cuenta
               </button>
