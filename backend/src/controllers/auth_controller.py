@@ -1,7 +1,7 @@
 from werkzeug.exceptions import BadRequest
 from flask import request, jsonify
 from models.user_model import get_user_by_email
-from models.user_model import create_user
+from models.user_model import create_user, delete_user
 from utils.jwt import generate_token, decode_token  # para devolver token
 import bcrypt
 import random
@@ -182,3 +182,21 @@ def update_user_info_controller():
         print("❌ Error al actualizar usuario:", e)
         return jsonify({"error": "Error interno del servidor"}), 500
 
+def delete_user_controller():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'message': 'Token no proporcionado'}), 401
+
+    token = auth_header.split(" ")[1]
+    try:
+        user_data = decode_token(token)
+        user_id = user_data.get("user_id")
+
+        success = delete_user(user_id)
+        if success:
+            return jsonify({'message': 'Cuenta eliminada correctamente'}), 200
+        else:
+            return jsonify({'message': 'No se pudo eliminar la cuenta'}), 500
+    except Exception as e:
+        print("[ERROR en delete_user_controller]:", e)
+        return jsonify({'message': 'Error al eliminar cuenta'}), 500

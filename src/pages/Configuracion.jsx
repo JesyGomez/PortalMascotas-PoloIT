@@ -76,11 +76,29 @@ console.log("📦 Enviando datos:", formData);
     }
   };
 
-  const confirmarEliminacion = () => {
-    alert("Cuenta eliminada 🫥");
-    setMostrarModal(false);
-    // Logout o redirección
-  };
+const confirmarEliminacion = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/delete-user", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      alert("Cuenta eliminada correctamente 🫥");
+      localStorage.removeItem("token");
+      window.location.href = "/"; // o redirect a login
+    } else {
+      alert("No se pudo eliminar la cuenta");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error al intentar eliminar la cuenta");
+  }
+};
+
 
   return (
     <div className="config-wrapper">

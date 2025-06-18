@@ -176,7 +176,7 @@ const abrirModalEdicion = async (mascota) => {
               <img src={mascota.imagen_url} alt={mascota.nombre} />
               <div className="info-mascota">
                 <h3>{mascota.nombre}</h3>
-                <p>{mascota.edad} Años</p>
+                <p>{mascota.edad}</p>
                 <p className="estado">{mascota.estado}</p>
                 <div className="acciones">
                   <button

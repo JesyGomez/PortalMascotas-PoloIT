@@ -127,3 +127,16 @@ def update_user_info_full(user_id, nombre, apellido, email, provincia, localidad
                 conn.close()
             except Exception as e:
                 print(f"[WARN] Error cerrando conexión: {e}")
+def delete_user(user_id):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM usuarios WHERE id = %s", (user_id,))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"[ERROR en delete_user]: {e}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()

@@ -143,13 +143,12 @@ def update_pet(pet_id):
 
 
 # OBTENER UNA MASCOTA POR ID
-
 def get_pet(pet_id):
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
         return jsonify({'message': 'Token no proporcionado'}), 401
 
-    token = auth_header.split(" ")[1]
+    token = auth_header.split(" ")[1].strip()
     try:
         decode_token(token)
     except Exception:
@@ -166,6 +165,32 @@ def get_pet(pet_id):
     except Exception as e:
         print(f"[ERROR get_pet]: {e}")
         return jsonify({'message': 'Error al obtener mascota'}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+# def get_pet(pet_id):
+#     auth_header = request.headers.get('Authorization')
+#     if not auth_header or not auth_header.startswith('Bearer '):
+#         return jsonify({'message': 'Token no proporcionado'}), 401
+
+#     token = auth_header.split(" ")[1]
+#     try:
+#         decode_token(token)
+#     except Exception:
+#         return jsonify({'message': 'Token inválido'}), 401
+
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute('SELECT * FROM mascotas WHERE id = %s', (pet_id,))
+#         mascota = cursor.fetchone()
+#         if not mascota:
+#             return jsonify({'message': 'Mascota no encontrada'}), 404
+#         return jsonify(mascota), 200
+#     except Exception as e:
+#         print(f"[ERROR get_pet]: {e}")
+#         return jsonify({'message': 'Error al obtener mascota'}), 500
 
 
 # ELIMINAR MASCOTA

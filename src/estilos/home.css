@@ -92,3 +92,77 @@
   margin-top: 0.5rem;
   color: #a3533b;
 }
+.custom-pagination .page-item {
+  position: relative;
+  margin: 0 0.4rem;
+}
+
+/* Botón con forma hexagonal y fondo blanco */
+.custom-pagination .page-link {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(191, 101, 118, 1);
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  clip-path: polygon(
+    50% 0%,
+    95% 25%,
+    95% 75%,
+    50% 100%,
+    5% 75%,
+    5% 25%
+  );
+  padding: 0;
+  border: none;
+}
+
+/* El borde rosa es un pseudo-elemento detrás del hexágono */
+.custom-pagination .page-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(191, 101, 118, 1);
+  clip-path: inherit;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+/* Hover: fondo rosa fuerte (pseudo se oculta), texto blanco */
+.custom-pagination .page-link:hover {
+  background-color: white;
+  color: rgb(191, 101, 118, 1);
+}
+
+/* Hover: ocultamos borde para simular que se rellena */
+.custom-pagination .page-link:hover::before {
+  background-color: transparent;
+}
+
+/* Active (página actual) */
+.custom-pagination .page-item.active .page-link {
+  background-color: white;
+  color: rgb(191, 101, 118, 1);
+}
+
+.custom-pagination .page-item.active .page-link::before {
+  background-color: transparent;
+}
+
+@media (max-width: 576px) {
+  .custom-pagination .page-link {
+    width: 40px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+}

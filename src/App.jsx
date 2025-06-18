@@ -22,6 +22,8 @@ import AspectosSistema from "./pages/AspectosSistema";
 import PublicarMascota from "./pages/PublicarMascota";
 import FormularioAdopcion from "./pages/FormularioAdopcion";
 import MiPerfil from "./pages/MiPerfil";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
   const { rol } = useContext(AuthContext);
 
