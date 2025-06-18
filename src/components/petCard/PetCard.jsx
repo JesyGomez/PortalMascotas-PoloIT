@@ -22,6 +22,23 @@ const PetCard = ({ pet }) => {
       icon: "💛",
     },
   };
+  const handleShare = () => {
+    const shareData = {
+      title: `Conocé a ${nombre}`,
+      text: `${nombre} es un/a ${sexo} de ${edad}. Tamaño: ${tamanio}. ${info_adicional}`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .then(() => console.log("Compartido con éxito"))
+        .catch((err) => console.error("Error al compartir", err));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Enlace copiado al portapapeles");
+    }
+  };
 
   return (
     <Card className="pet-card shadow rounded-4 m-2">
@@ -35,7 +52,7 @@ const PetCard = ({ pet }) => {
           <strong>{estado}</strong>
         </div>
         <span>
-          <Button variant="light" className="icon-btn">
+          <Button variant="light" className="icon-btn" onClick={handleShare}>
             <i className="bi bi-share-fill"></i>
           </Button>
         </span>
@@ -85,26 +102,7 @@ const PetCard = ({ pet }) => {
               <strong>Descripción:</strong> {info_adicional}
             </p>
 
-            <Button className="btn"
-              variant="outline-primary"
-              onClick={() => {
-                const shareData = {
-                  title: `Conocé a ${nombre}`,
-                  text: `${nombre} es un/a ${sexo} de ${edad} años/tamaño: ${tamanio}. ${info_adicional}`,
-                  url: window.location.href, // o una ruta específica si tenemos detalles
-                };
-
-                if (navigator.share) {
-                  navigator
-                    .share(shareData)
-                    .then(() => console.log("Compartido con éxito"))
-                    .catch((err) => console.error("Error al compartir", err));
-                } else {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("Enlace copiado al portapapeles");
-                }
-              }}
-            >
+            <Button className="icon-btn" onClick={handleShare}>
               <i className="bi bi-share-fill me-2"></i>Compartir
             </Button>
           </Modal.Body>
