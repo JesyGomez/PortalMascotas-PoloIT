@@ -95,3 +95,66 @@
   cursor: pointer;
   background-color: rgba(92, 64, 51, 0.15);
 }
+/* ======= MODAL ESTILOS ======= */
+
+.modal-header {
+  background-color: #f7e3d0;
+  border-bottom: 1px solid #dcbfa6;
+  color: #8b4513;
+}
+.ver-mas {
+  color: #fff; /* Blanco */
+  font-weight: 500;
+  cursor: pointer;
+
+}
+
+.ver-mas:hover {
+  color: #f0f0f0; /* Un blanco más suave al pasar el mouse */
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  color: #a0522d;
+}
+
+.modal-body {
+  background-color: #fff8f2;
+  color: #8b4513;
+  font-size: 1rem;
+  padding: 2rem 1.5rem;
+  border-radius: 0 0 12px 12px;
+}
+
+.modal-body img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.modal-body p {
+  margin: 0.5rem 0;
+}
+
+.modal-body strong {
+  color: #a0522d;
+}
+
+.modal-footer {
+  background-color: #f7e3d0;
+  border-top: 1px solid #dcbfa6;
+}
+
+.btn-outline-primary {
+  border-color: #a0522d;
+  color: #a0522d;
+}
+
+.btn-outline-primary:hover {
+  background-color: #a0522d;
+  color: white;
+}

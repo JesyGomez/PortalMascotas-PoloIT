@@ -1,8 +1,16 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import "./PetCard.css";
+import { Modal } from "react-bootstrap";
+import { useState } from "react";
+
 const PetCard = ({ pet }) => {
-  const { nombre, edad, sexo, tamanio, descripcion, estado, imagen_url } = pet;
+  const { nombre, edad, sexo, tamanio, info_adicional, estado, imagen_url } =
+    pet;
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
 
   const estadoConfig = {
     Adoptado: {
@@ -28,7 +36,7 @@ const PetCard = ({ pet }) => {
         </div>
         <span>
           <Button variant="light" className="icon-btn">
-          <i className="bi bi-share-fill"></i>
+            <i className="bi bi-share-fill"></i>
           </Button>
         </span>
       </div>
@@ -47,9 +55,60 @@ const PetCard = ({ pet }) => {
           <strong>Tamaño:</strong> {tamanio}
         </p>
 
-        <p className="descripcion">
-          {descripcion} <span className="text">... más</span>
+        <p className="info_adicional text-muted small">
+          {info_adicional?.slice(0, 10)}...
+          <span className="ver-mas" onClick={handleShow}>
+            Ver más
+          </span>
         </p>
+
+        <Modal show={showModal} onHide={handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{nombre}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="text-center">
+            <img
+              src={imagen_url}
+              alt={nombre}
+              className="img-fluid rounded mb-3"
+            />
+            <p>
+              <strong>Edad:</strong> {edad}
+            </p>
+            <p>
+              <strong>Sexo:</strong> {sexo}
+            </p>
+            <p>
+              <strong>Tamaño:</strong> {tamanio}
+            </p>
+            <p>
+              <strong>Descripción:</strong> {info_adicional}
+            </p>
+
+            <Button className="btn"
+              variant="outline-primary"
+              onClick={() => {
+                const shareData = {
+                  title: `Conocé a ${nombre}`,
+                  text: `${nombre} es un/a ${sexo} de ${edad} años/tamaño: ${tamanio}. ${info_adicional}`,
+                  url: window.location.href, // o una ruta específica si tenemos detalles
+                };
+
+                if (navigator.share) {
+                  navigator
+                    .share(shareData)
+                    .then(() => console.log("Compartido con éxito"))
+                    .catch((err) => console.error("Error al compartir", err));
+                } else {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert("Enlace copiado al portapapeles");
+                }
+              }}
+            >
+              <i className="bi bi-share-fill me-2"></i>Compartir
+            </Button>
+          </Modal.Body>
+        </Modal>
 
         <div className="d-flex justify-content-around align-items-center gap-3 my-3 flex-wrap">
           <Button variant="light" className="btn-marron" size="sm">
