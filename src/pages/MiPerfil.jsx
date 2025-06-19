@@ -12,7 +12,7 @@ function MiPerfil() {
       setFormData({
         nombre: usuario.nombre || "",
         email: usuario.email || "",
-        ciudad: usuario.localidad || "",
+        localidad: usuario.localidad || "",
       });
     }
   }, [usuario]);
@@ -26,7 +26,7 @@ function MiPerfil() {
 
     const fetchPublicaciones = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/pets/user", {
+        const res = await fetch("http://localhost:5000/api/mascotas/usuario", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Error al obtener publicaciones");
@@ -80,8 +80,8 @@ function MiPerfil() {
     <div className="perfil-wrapper">
       <div className="perfil-card">
         <div className="perfil-foto">
-          {usuario.foto ? (
-            <img src={usuario.foto} alt="Foto de perfil" />
+          {usuario.imagenDePerfil ? (
+            <img src={usuario.imagenDePerfil} alt="Foto de perfil" />
           ) : (
             <div className="icono-usuario">👩‍💻</div>
           )}
