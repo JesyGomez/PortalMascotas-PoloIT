@@ -71,14 +71,93 @@ def get_all_pets():
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("""
+
+        # Paginación
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 6))
+        offset = (page - 1) * limit
+
+        # Filtros múltiples desde query params
+        especie = request.args.getlist('especie')      # puede haber más de uno
+        estado = request.args.getlist('estado')
+        tamanio = request.args.getlist('tamanio')
+        ubicacion = request.args.getlist('ubicacion')
+        nombre = request.args.get('nombre')            # texto libre
+
+        filtros = []
+        valores = []
+
+        # Armado de cláusulas dinámicas
+        if especie:
+            filtros.append(f"especie IN ({','.join(['%s'] * len(especie))})")
+            valores += especie
+        if estado:
+            filtros.append(f"estado IN ({','.join(['%s'] * len(estado))})")
+            valores += estado
+        if tamanio:
+            filtros.append(f"tamanio IN ({','.join(['%s'] * len(tamanio))})")
+            valores += tamanio
+        if ubicacion:
+            filtros.append(f"ubicacion IN ({','.join(['%s'] * len(ubicacion))})")
+            valores += ubicacion
+        if nombre:
+            filtros.append("nombre LIKE %s")
+            valores.append(f"%{nombre}%")
+
+        # Generar SQL final
+        where_clause = f"WHERE {' AND '.join(filtros)}" if filtros else ""
+
+        query = f"""
             SELECT id, nombre, especie, raza, edad, sexo, imagen_url, estado, salud, tamanio, ubicacion, info_adicional
             FROM mascotas
-        """)
+            {where_clause}
+            LIMIT %s OFFSET %s
+        """
+
+        cursor.execute(query, valores + [limit, offset])
         mascotas = cursor.fetchall()
-        return jsonify(mascotas), 200
+
+        # Conteo total (sin paginar)
+        count_query = f"SELECT COUNT(*) AS total FROM mascotas {where_clause}"
+        cursor.execute(count_query, valores)
+        total = cursor.fetchone()['total']
+
+        return jsonify({
+            'data': mascotas,
+            'page': page,
+            'limit': limit,
+            'total': total,
+            'total_pages': (total + limit - 1) // limit
+        }), 200
+
     except Exception as e:
         return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
+
+def obtener_filtros():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    filtros = {}
+
+    for campo in ['ubicacion', 'especie', 'estado', 'tamanio']:
+        cursor.execute(f"SELECT DISTINCT {campo} FROM mascotas")
+        resultados = cursor.fetchall()
+        filtros[campo] = [fila[0] for fila in resultados if fila[0] is not None]
+
+    return jsonify(filtros)
+
+# def get_all_pets():
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute("""
+#             SELECT id, nombre, especie, raza, edad, sexo, imagen_url, estado, salud, tamanio, ubicacion, info_adicional
+#             FROM mascotas
+#         """)
+#         mascotas = cursor.fetchall()
+#         return jsonify(mascotas), 200
+#     except Exception as e:
+#         return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
 
 
 # ACTUALIZAR UNA MASCOTA (Admin o usuario)
