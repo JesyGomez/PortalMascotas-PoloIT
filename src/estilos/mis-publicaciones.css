@@ -1,3 +1,23 @@
+.perfil-usuario h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #8b4a23;
+  margin: 0.5rem 0;
+}
+
+.perfil-usuario p {
+  margin: 0.3rem 0;
+  color: #4e2f1d;
+  font-size: 1rem;
+}
+
+.perfil-usuario p strong {
+  display: block;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: #aa4b6b;
+}
 .mis-publicaciones {
   padding: 2rem;
   background-color: #fff;
@@ -84,7 +104,7 @@
 }
 
 .tarjeta-mascota img {
-  /* width: 100%; */
+  width: 100%;
   height: 150px;
   object-fit: cover;
   border-radius: 10px;
@@ -94,8 +114,12 @@
 .info-mascota h3 {
   margin: 0.5rem 0 0;
   font-size: 1.2rem;
+  font-weight: bold;
 }
+.info-mascota p{
+  font-weight: bold;
 
+}
 .info-mascota .estado {
   font-weight: bold;
   color: #8b4a23;

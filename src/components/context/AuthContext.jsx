@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // console.log(token);
 
     if (token) {
       fetch("http://localhost:5000/api/auth/user-info", {
@@ -55,9 +54,6 @@ const login = (usuarioCompleto, token) => {
       localStorage.setItem("rol", data.rol);
     });
 };
-
-
-
 
   const logout = () => {
     setUsuario(null);

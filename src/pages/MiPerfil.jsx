@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../components/context/AuthContext";
 import "../estilos/mi-perfil.css";
+import Swal from "sweetalert2";
 
 function MiPerfil() {
   const { usuario, loading, logout, setUsuario } = useContext(AuthContext);
@@ -13,9 +14,14 @@ function MiPerfil() {
         nombre: usuario.nombre || "",
         email: usuario.email || "",
         localidad: usuario.localidad || "",
+        apellido: usuario.apellido || "",
+        provincia: usuario.provincia || "",
+        calle: usuario.calle || "",
+        imagenDePerfil: usuario.imagenDePerfil || "",
       });
     }
   }, [usuario]);
+
 
   // Estados para cantidad de publicaciones y adopciones
   const [cantidadPublicaciones, setCantidadPublicaciones] = useState(0);
@@ -47,31 +53,44 @@ function MiPerfil() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleGuardar = async () => {
-    const token = localStorage.getItem("token");
+const handleGuardar = async () => {
+  const token = localStorage.getItem("token");
 
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/update-user", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/update-user", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
 
-      if (!res.ok) {
-        throw new Error("Error al actualizar el perfil");
-      }
-
-      const updatedUser = await res.json();
-      setUsuario(updatedUser);
-      setModalOpen(false);
-    } catch (err) {
-      console.error("Error al guardar:", err);
-      alert("Hubo un error al actualizar tu perfil");
+    if (!res.ok) {
+      throw new Error("Error al actualizar el perfil");
     }
-  };
+
+    const updatedUser = await res.json();
+    setUsuario(updatedUser);
+    setModalOpen(false);
+
+    Swal.fire({
+      icon: "success",
+      title: "¡Perfil actualizado!",
+      text: "Tus cambios se guardaron correctamente.",
+      confirmButtonColor: "#3085d6",
+    });
+  } catch (err) {
+    console.error("Error al guardar:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Hubo un error al actualizar tu perfil.",
+      confirmButtonColor: "#d33",
+    });
+  }
+};
+
 
   if (loading) return <p>Cargando...</p>;
   if (!usuario) return <p>Usuario no autenticado</p>;

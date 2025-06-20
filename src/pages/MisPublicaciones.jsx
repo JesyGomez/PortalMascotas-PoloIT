@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../components/context/AuthContext";
 import "../estilos/mis-publicaciones.css";
+import Swal from "sweetalert2";
 
 function MisPublicaciones() {
   const [publicaciones, setPublicaciones] = useState([]);
   const { usuario, setUsuario } = useContext(AuthContext);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mascotaSeleccionada, setMascotaSeleccionada] = useState(null);
-  const [mascotaAEliminar, setMascotaAEliminar] = useState(null);
-  const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
 
   const iniciales = usuario
     ? (usuario.nombre?.[0] || "") + (usuario.apellido?.[0] || "")
@@ -18,19 +17,15 @@ function MisPublicaciones() {
     const fetchMascotas = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(
-          "http://localhost:5000/api/mascotas/usuario",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("http://localhost:5000/api/mascotas/usuario", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) throw new Error("Error al obtener las mascotas");
-
         const data = await response.json();
         setPublicaciones(data);
       } catch (error) {
@@ -53,7 +48,6 @@ function MisPublicaciones() {
         });
 
         if (!res.ok) throw new Error("No se pudo obtener el usuario");
-
         const user = await res.json();
         setUsuario(user);
       } catch (err) {
@@ -64,21 +58,20 @@ function MisPublicaciones() {
     fetchUserInfo();
   }, []);
 
-const abrirModalEdicion = async (mascota) => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/mascotas/${mascota.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error("Error al traer datos completos");
-    const mascotaCompleta = await res.json();
-    setMascotaSeleccionada(mascotaCompleta);
-    setMostrarModal(true);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
+  const abrirModalEdicion = async (mascota) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`http://localhost:5000/api/mascotas/${mascota.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Error al traer datos completos");
+      const mascotaCompleta = await res.json();
+      setMascotaSeleccionada(mascotaCompleta);
+      setMostrarModal(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const cerrarModal = () => {
     setMostrarModal(false);
@@ -88,18 +81,15 @@ const abrirModalEdicion = async (mascota) => {
   const editarMascota = async (mascotaEditada) => {
     try {
       const token = localStorage.getItem("token");
-
-      const res = await fetch(
-        `http://localhost:5000/api/mascotas/${mascotaEditada.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(mascotaEditada),
-        }
-      );
+console.log("Objeto a enviar:", mascotaEditada);
+      const res = await fetch(`http://localhost:5000/api/mascotas/${mascotaEditada.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(mascotaEditada),
+      });
 
       if (!res.ok) throw new Error("Error al editar mascota");
 
@@ -107,15 +97,31 @@ const abrirModalEdicion = async (mascota) => {
         prev.map((m) => (m.id === mascotaEditada.id ? mascotaEditada : m))
       );
       cerrarModal();
+      Swal.fire("¡Guardado!", "La publicación fue actualizada correctamente.", "success");
     } catch (err) {
       console.error("Error al actualizar mascota:", err);
+      Swal.fire("Error", "No se pudo editar la publicación.", "error");
     }
+  };
+
+  const confirmarEliminacion = (mascota) => {
+    Swal.fire({
+      title: `¿Eliminar a ${mascota.nombre}?`,
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        eliminarMascotaConfirmada(mascota.id);
+      }
+    });
   };
 
   const eliminarMascotaConfirmada = async (id) => {
     try {
       const token = localStorage.getItem("token");
-
       const res = await fetch(`http://localhost:5000/api/mascotas/${id}`, {
         method: "DELETE",
         headers: {
@@ -126,8 +132,10 @@ const abrirModalEdicion = async (mascota) => {
       if (!res.ok) throw new Error("Error al eliminar mascota");
 
       setPublicaciones((prev) => prev.filter((m) => m.id !== id));
+      Swal.fire("¡Eliminado!", "La publicación fue eliminada correctamente.", "success");
     } catch (err) {
       console.error("Error al eliminar mascota:", err);
+      Swal.fire("Error", "No se pudo eliminar la publicación.", "error");
     }
   };
 
@@ -140,35 +148,31 @@ const abrirModalEdicion = async (mascota) => {
       </header>
 
       <div className="publicaciones-content">
-        <aside className="perfil-usuario">
-          <div className="avatar">
-            {usuario?.imagenDePerfil ? (
-              <img
-                src={usuario.imagenDePerfil}
-                alt="Avatar del usuario"
-                className="avatar-imagen"
-              />
-            ) : (
-              <h2>Usuario</h2>
-            )}
+<aside className="perfil-usuario">
+  <div className="avatar">
+    {usuario?.imagenDePerfil ? (
+      <img
+        src={usuario.imagenDePerfil}
+        alt="Avatar del usuario"
+        className="avatar-imagen"
+      />
+    ) : (
+      <h2>Usuario</h2>
+    )}
+    <div className="iniciales">{iniciales.toUpperCase()}</div>
+  </div>
+  <h2>{usuario?.nombre || "Usuario"}</h2>
 
-            <div className="iniciales">{iniciales.toUpperCase()}</div>
-          </div>
-          <h2>{usuario?.nombre || "Usuario"}</h2>
+  <div className="info">
+    <p><strong>Acerca de</strong></p>
+    <p>🏠 {usuario?.organizacion || "Tu Organización - Refugio - ONGs"}</p>
+    <p>📍 {usuario?.localidad || "Tu Ubicación"}</p>
 
-          <div className="info">
-            <p>
-              <strong>Acerca de</strong>
-            </p>
-            <p>🏠 {usuario?.organizacion || "Tu Organización - Refugio - ONGs"}</p>
-            <p>📍 {usuario?.localidad || "Tu Ubicación"}</p>
+    <p><strong>Contacto</strong></p>
+    <p>✉️ {usuario?.email || "sin-email@ejemplo.com"}</p>
+  </div>
+</aside>
 
-            <p>
-              <strong>Contacto</strong>
-            </p>
-            <p>✉️ {usuario?.email || "sin-email@ejemplo.com"}</p>
-          </div>
-        </aside>
 
         <section className="lista-publicaciones">
           {publicaciones.map((mascota) => (
@@ -179,19 +183,10 @@ const abrirModalEdicion = async (mascota) => {
                 <p>{mascota.edad}</p>
                 <p className="estado">{mascota.estado}</p>
                 <div className="acciones">
-                  <button
-                    className="editar"
-                    onClick={() => abrirModalEdicion(mascota)}
-                  >
+                  <button className="editar" onClick={() => abrirModalEdicion(mascota)}>
                     Editar
                   </button>
-                  <button
-                    className="eliminar"
-                    onClick={() => {
-                      setMascotaAEliminar(mascota);
-                      setMostrarModalEliminar(true);
-                    }}
-                  >
+                  <button className="eliminar" onClick={() => confirmarEliminacion(mascota)}>
                     Eliminar
                   </button>
                 </div>
@@ -200,34 +195,6 @@ const abrirModalEdicion = async (mascota) => {
           ))}
         </section>
 
-        {mostrarModalEliminar && mascotaAEliminar && (
-          <div className="modal-overlay">
-            <div className="modal-contenido">
-              <h2>¿Eliminar publicación?</h2>
-              <p>
-                ¿Estás seguro de que querés eliminar a{" "}
-                <strong>{mascotaAEliminar.nombre}</strong>?
-              </p>
-              <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
-                <button
-                  onClick={() => {
-                    eliminarMascotaConfirmada(mascotaAEliminar.id);
-                    setMostrarModalEliminar(false);
-                  }}
-                >
-                  Sí, eliminar
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMostrarModalEliminar(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
         {mostrarModal && mascotaSeleccionada && (
           <div className="modal-overlay">
             <div className="modal-contenido">
@@ -235,8 +202,6 @@ const abrirModalEdicion = async (mascota) => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-
-                  // Aquí enviamos toda la info completa para evitar 400
                   editarMascota(mascotaSeleccionada);
                 }}
               >
@@ -328,6 +293,7 @@ const abrirModalEdicion = async (mascota) => {
                     })
                   }
                 >
+                  <option value="opcion">Elija una opción</option>
                   <option value="disponible">Disponible</option>
                   <option value="adopción">Adopción</option>
                   <option value="tránsito">Tránsito</option>

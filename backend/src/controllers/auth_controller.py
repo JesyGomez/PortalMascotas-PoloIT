@@ -138,7 +138,6 @@ def get_user_info():
         return jsonify({'message': f'Error al obtener usuario: {str(e)}'}), 500
 def campo_valido(valor):
     return valor is not None and isinstance(valor, str) and valor.strip() != ''
-
 def update_user_info_controller():
     try:
         data = request.get_json()
@@ -149,7 +148,7 @@ def update_user_info_controller():
             return jsonify({"error": "Faltan campos requeridos"}), 400
 
         conn = get_db_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         sql = """
         UPDATE usuarios
@@ -174,9 +173,16 @@ def update_user_info_controller():
 
         cursor.execute(sql, valores)
         conn.commit()
-        cursor.close()
 
-        return jsonify({"mensaje": "Usuario actualizado correctamente"}), 200
+        # 🚀 Traer el usuario actualizado
+        cursor.execute("SELECT id, nombre, apellido, email, provincia, localidad, calle, puntajeUsuario, habilitado_adoptar, habilitado_dador, imagenDePerfil, rol FROM usuarios WHERE email = %s", (data["email"],))
+        updated_user = cursor.fetchone()
+        return jsonify(updated_user), 200
+
+
+    except Exception as e:
+        print("❌ Error al actualizar usuario:", e)
+        return jsonify({"error": "Error interno del servidor"}), 500
 
     except Exception as e:
         print("❌ Error al actualizar usuario:", e)
