@@ -21,6 +21,7 @@ import Configuracion from "./pages/Configuracion";
 import AspectosSistema from "./pages/AspectosSistema";
 import PublicarMascota from "./pages/PublicarMascota";
 import FormularioAdopcion from "./pages/FormularioAdopcion";
+import NotFound from "./components/NotFound";
 import MiPerfil from "./pages/MiPerfil";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/mi-perfil" element={<MiPerfil />} />
           <Route path="/adopciones" element={<Adopciones />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

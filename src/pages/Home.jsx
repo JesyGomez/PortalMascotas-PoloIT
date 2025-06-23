@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PetCard from "../components/petCard/PetCard";
 import FiltroSidebar from "../components/filtroSidebar";
+import Loader from "../components/Loader";
 import "../estilos/home.css";
 
 const Home = () => {
@@ -8,8 +9,9 @@ const Home = () => {
   const [filtros, setFiltros] = useState({});
   const [paginaActual, setPaginaActual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
-
+  const [loading, setLoading] = useState(true); 
   useEffect(() => {
+    setLoading(true);
     const queryParams = new URLSearchParams();
 
     // Armamos query string con filtros múltiples
@@ -29,6 +31,7 @@ const Home = () => {
       .then((data) => {
         setMascotas(data.data || []);
         setTotalPaginas(data.total_pages || 1);
+        setLoading(false);
       })
       .catch((err) => console.error("Error al cargar mascotas:", err));
   }, [filtros, paginaActual]);
@@ -65,6 +68,10 @@ const Home = () => {
             <FiltroSidebar filtros={filtros} setFiltros={setFiltros} />
           </aside>
           <main className="col-md-9">
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
             <div className="d-flex flex-wrap justify-content-center">
               {mascotas.map((pet) => (
                 <PetCard key={pet.id} pet={pet} />
@@ -90,6 +97,8 @@ const Home = () => {
                 ))}
               </ul>
             </nav>
+            </>
+            )}
           </main>
         </div>
       </div>
