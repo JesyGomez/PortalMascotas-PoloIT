@@ -19,13 +19,13 @@ const MascotasCrud = () => {
   const fetchMascotas = async () => {
     try {
       const token = localStorage.getItem('token'); 
-      const response = await fetch('http://localhost:5000/api/mascotas/', {
+      const response = await fetch('http://localhost:5000/api/mascotas/?limit=1000', {
         headers: {
           'Authorization': `Bearer ${token}`, 
         },
       });
       const data = await response.json();
-      setMascotas(data);
+      setMascotas(data.data);
     } catch (err) {
       console.error('Error al cargar mascotas:', err);
     }
@@ -127,7 +127,7 @@ const handleDelete = async (id) => {
         <div className="col-md-2">
           <input
             name="edad"
-            type="number"
+            type="text"
             className="form-control"
             placeholder="Edad"
             value={form.edad}
@@ -179,7 +179,7 @@ const handleDelete = async (id) => {
             </tr>
           </thead>
           <tbody>
-            {mascotas.map((mascota) => (
+      {mascotas && mascotas.map(mascota => (
               <tr key={mascota.id}>
                 <td>{mascota.nombre}</td>
                 <td>{mascota.especie}</td>

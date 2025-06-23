@@ -10,6 +10,7 @@ const Registro = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [hogarTransito, setHogarTransito] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,7 +27,7 @@ const Registro = () => {
       const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, apellido, email, password }),
+        body: JSON.stringify({ nombre, apellido, email, password, hogarTransito }),
       });
       const data = await response.json();
 
@@ -67,7 +68,7 @@ const Registro = () => {
           <div className="form-container">
             <div className="text-center mb-4">
               <span className="paw-icon">🐾</span>
-              <h2 className="d-inline">Registrarse</h2>
+              <h2 className="d-inline">Crear Cuenta</h2>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
@@ -139,6 +140,18 @@ const Registro = () => {
                   placeholder="Repite tu contraseña"
                   required
                 />
+              </div>
+              <div className="mb-3 form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="hogarTransito"
+                  checked={hogarTransito}
+                  onChange={(e) => setHogarTransito(e.target.checked)}
+                />
+                <label className="form-check-label" htmlFor="hogarTransito">
+                  Quiero ser hogar de tránsito
+                </label>
               </div>
 
               {error && <p className="error-message">{error}</p>}

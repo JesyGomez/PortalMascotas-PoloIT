@@ -1,59 +1,65 @@
-    .cabecera {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .registro {
-        max-width: 900px;
-        width: 90%;
-        background-color: #e2bda5;
-        padding: 2.5rem;
-        border-radius: 25px;
-        margin: 20px auto;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+.registro {
+  max-width: 900px;
+  width: 90%;
+  background-color: #e2bda5;
+  padding: 2.5rem;
+  border-radius: 25px;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
-    .form-label {
-        font-weight: light;
-        color: #000;
-    }
+.form-label {
+  font-weight: light;
+  color: #000;
+}
 
-    .form-control,
-    .form-select {
-        border-radius: 10px;
-    }
+.form-control,
+.form-select {
+  border-radius: 10px;
+}
+.form-check-input:checked {
+  justify-content: center;
+  background-color: #d48ac7;
+  border-color: #d48ac7;
+}
 
-    .boton-registro {
-        height: 40px;
-        background-color: #cb6c77;
-        border-color: #cb6c77;
-        border-radius: 8px;
-        font-weight: light;
-    }
+.boton-registro {
+  height: 40px;
+  background-color: #cb6c77;
+  border-color: #cb6c77;
+  border-radius: 8px;
+  font-weight: light;
+}
 
-    .boton-registro:hover {
-        background-color: #a34e58;
-        border-color: #a34e58;
-    }
+.boton-registro:hover {
+  background-color: #a34e58;
+  border-color: #a34e58;
+}
 
-    .paw-icon {
-        font-size: 2rem;
-        color: #bb5e69;
-        margin-right: 10px;
-    }
+.paw-icon {
+  font-size: 2rem;
+  color: #bb5e69;
+  margin-right: 10px;
+}
 
-    h2 {
-        font-weight: bold;
-    }
+h2 {
+  font-style: italic;
+  font-weight: bold;
+}
 
-    /* Estilo placeholder normal */
-    ::placeholder {
-        font-size: 1rem;
-    }
+/* Estilo placeholder normal */
+::placeholder {
+  font-size: 1rem;
+}
 .login-wrapper {
   display: flex;
-  flex-direction: row-reverse; 
+  flex-direction: row-reverse;
   min-height: 100vh;
 }
 
@@ -98,10 +104,9 @@
   }
 }
 
-
-    /* Responsive: placeholder más pequeño en móviles */
-    @media (max-width: 575.98px) {
-        ::placeholder {
-            font-size: 0.75rem;
-        }
-    }
+/* Responsive: placeholder más pequeño en móviles */
+@media (max-width: 575.98px) {
+  ::placeholder {
+    font-size: 0.75rem;
+  }
+}

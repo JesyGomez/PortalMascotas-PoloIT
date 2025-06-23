@@ -160,8 +160,6 @@ def obtener_filtros():
 #         return jsonify({'message': f'Error al obtener mascotas: {str(e)}'}), 500
 
 
-# ACTUALIZAR UNA MASCOTA (Admin o usuario)
-
 def update_pet(pet_id):
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
@@ -177,45 +175,50 @@ def update_pet(pet_id):
     if not data:
         return jsonify({'message': 'No hay datos para actualizar'}), 400
 
-    required_fields = ['nombre', 'especie']
-    for field in required_fields:
-        if field not in data:
-            return jsonify({'message': f'Campo {field} requerido para actualizar'}), 400
-
     try:
         conn = get_db_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
+
+        # Obtener datos actuales
+        cursor.execute("SELECT * FROM mascotas WHERE id = %s", (pet_id,))
+        mascota_actual = cursor.fetchone()
+        if not mascota_actual:
+            return jsonify({'message': 'Mascota no encontrada'}), 404
+
+        # Usar valores nuevos si vienen, si no dejar los existentes
+        updated_data = {
+            'nombre': data.get('nombre', mascota_actual['nombre']),
+            'especie': data.get('especie', mascota_actual['especie']),
+            'raza': data.get('raza', mascota_actual['raza']),
+            'edad': data.get('edad', mascota_actual['edad']),
+            'sexo': data.get('sexo', mascota_actual['sexo']),
+            'imagen_url': data.get('imagen_url', mascota_actual['imagen_url']),
+            'estado': data.get('estado', mascota_actual['estado']),
+            'salud': data.get('salud', mascota_actual['salud']),
+            'tamanio': data.get('tamanio', mascota_actual['tamanio']),
+            'ubicacion': data.get('ubicacion', mascota_actual['ubicacion']),
+            'info_adicional': data.get('info_adicional', mascota_actual['info_adicional']),
+        }
+
         cursor.execute("""
-        UPDATE mascotas SET
-            nombre = %s,
-            especie = %s,
-            raza = %s,
-            edad = %s,
-            sexo = %s,
-            imagen_url = %s,
-            estado = %s,
-            salud = %s,
-            tamanio = %s,
-            ubicacion = %s,
-            info_adicional = %s
-        WHERE id = %s
-        """, (
-            data['nombre'],
-            data['especie'],
-            data.get('raza'),
-            data.get('edad'),
-            data.get('sexo', 'desconocido'),
-            data.get('imagen_url'),
-            data.get('estado', 'disponible'),
-            data.get('salud'),
-            data.get('tamanio'),
-            data.get('ubicacion'),
-            data.get('info_adicional'),
-            pet_id
-        ))
+            UPDATE mascotas SET
+                nombre = %s,
+                especie = %s,
+                raza = %s,
+                edad = %s,
+                sexo = %s,
+                imagen_url = %s,
+                estado = %s,
+                salud = %s,
+                tamanio = %s,
+                ubicacion = %s,
+                info_adicional = %s
+            WHERE id = %s
+        """, (*updated_data.values(), pet_id))
 
         conn.commit()
         return jsonify({'message': 'Mascota actualizada con éxito'}), 200
+
     except Exception as e:
         print(f"[ERROR update_pet]: {e}")
         return jsonify({'message': f'Error al actualizar mascota: {str(e)}'}), 500

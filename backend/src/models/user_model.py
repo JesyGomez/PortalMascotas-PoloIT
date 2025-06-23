@@ -24,13 +24,14 @@ def create_user(data):
         # Hashear la contraseña
         password_bytes = data.get('password').encode('utf-8')
         hashed_password = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
-
+        # ✅ Capturar el valor de hogarTransito correctamente
+        hogar_transito = data.get('hogarTransito', False)
         # Insertar nuevo usuario
         cursor.execute("""
             INSERT INTO usuarios 
-                (nombre, apellido, email, password, provincia, localidad, calle, puntajeUsuario, habilitado_adoptar, habilitado_dador, imagenDePerfil, rol)
+                (nombre, apellido, email, password, provincia, localidad, calle, puntajeUsuario, habilitado_adoptar, habilitado_dador, imagenDePerfil, rol, hogar_transito)
             VALUES 
-                (%s, %s, %s, %s, %s, %s, %s, 0, false, false, %s, %s)
+                (%s, %s, %s, %s, %s, %s, %s, 0, false, false, %s, %s, %s)
         """, (
             data.get('nombre'),
             data.get('apellido'),
@@ -40,7 +41,8 @@ def create_user(data):
             data.get('localidad'),
             data.get('calle'),
             data.get('imagenDePerfil'),
-            data.get('rol', 'usuario')
+            data.get('rol', 'usuario'),
+            hogar_transito
         ))
 
         conn.commit()

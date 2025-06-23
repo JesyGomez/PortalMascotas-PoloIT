@@ -58,7 +58,9 @@ def register():
             if not data.get(field):
                 return jsonify({'message': f'El campo {field} es requerido'}), 400
 
+        data['hogarTransito'] = data.get('hogarTransito', False)
         result = create_user(data)
+        print("🧪 Resultado de create_user:", result)  # <--- Y esto también
 
         if not result['success']:
             return jsonify({'error': result.get('message', 'Error al registrar usuario')}), 400
