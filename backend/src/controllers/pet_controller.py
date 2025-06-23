@@ -172,6 +172,8 @@ def update_pet(pet_id):
         return jsonify({'message': 'Token inválido'}), 401
 
     data = request.get_json()
+    print("📨 Datos recibidos en el backend:", data)
+
     if not data:
         return jsonify({'message': 'No hay datos para actualizar'}), 400
 
@@ -217,6 +219,7 @@ def update_pet(pet_id):
         """, (*updated_data.values(), pet_id))
 
         conn.commit()
+        print("✅ Commit ejecutado correctamente")
         return jsonify({'message': 'Mascota actualizada con éxito'}), 200
 
     except Exception as e:

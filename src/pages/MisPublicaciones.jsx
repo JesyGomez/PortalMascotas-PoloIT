@@ -78,31 +78,50 @@ function MisPublicaciones() {
     setMascotaSeleccionada(null);
   };
 
-  const editarMascota = async (mascotaEditada) => {
-    try {
-      const token = localStorage.getItem("token");
-console.log("Objeto a enviar:", mascotaEditada);
-      const res = await fetch(`http://localhost:5000/api/mascotas/${mascotaEditada.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(mascotaEditada),
-      });
+const editarMascota = async (mascotaEditada) => {
+  try {
+    const token = localStorage.getItem("token");
 
-      if (!res.ok) throw new Error("Error al editar mascota");
+    // 🔐 Solo incluimos los campos no vacíos para evitar pisar con null o ""
+    const camposAEnviar = {};
+    const campos = [
+      "nombre", "especie", "raza", "edad", "sexo", "imagen_url",
+      "estado", "salud", "tamanio", "ubicacion", "info_adicional"
+    ];
 
-      setPublicaciones((prev) =>
-        prev.map((m) => (m.id === mascotaEditada.id ? mascotaEditada : m))
-      );
-      cerrarModal();
-      Swal.fire("¡Guardado!", "La publicación fue actualizada correctamente.", "success");
-    } catch (err) {
-      console.error("Error al actualizar mascota:", err);
-      Swal.fire("Error", "No se pudo editar la publicación.", "error");
-    }
-  };
+    campos.forEach((campo) => {
+      const valor = mascotaEditada[campo];
+      if (valor !== undefined && valor !== "") {
+        camposAEnviar[campo] = valor;
+      }
+    });
+
+    console.log("📤 Enviando datos:", camposAEnviar);
+
+    const res = await fetch(`http://localhost:5000/api/mascotas/${mascotaEditada.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(camposAEnviar),
+    });
+
+    if (!res.ok) throw new Error("Error al editar mascota");
+
+    // Actualizar estado con datos nuevos
+    setPublicaciones((prev) =>
+      prev.map((m) => (m.id === mascotaEditada.id ? { ...m, ...camposAEnviar } : m))
+    );
+    cerrarModal();
+
+    Swal.fire("¡Guardado!", "La publicación fue actualizada correctamente.", "success");
+  } catch (err) {
+    console.error("Error al actualizar mascota:", err);
+    Swal.fire("Error", "No se pudo editar la publicación.", "error");
+  }
+};
+
 
   const confirmarEliminacion = (mascota) => {
     Swal.fire({
@@ -296,7 +315,7 @@ console.log("Objeto a enviar:", mascotaEditada);
                   <option value="opcion">Elija una opción</option>
                   <option value="disponible">Disponible</option>
                   <option value="adopción">Adopción</option>
-                  <option value="tránsito">Tránsito</option>
+                  <option value="en tránsito">En Tránsito</option>
                   <option value="adoptado">Adoptado</option>
                 </select>
 
