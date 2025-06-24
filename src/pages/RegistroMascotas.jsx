@@ -141,10 +141,10 @@ const RegistroMascota = () => {
               Edad aproximada
             </label>
             <input
-              type="number"
+              type="text"
               className="form-control"
               id="edadMascota"
-              placeholder="Ej: 2"
+              placeholder="Edad"
               value={edadMascota}
               onChange={(e) => setEdadMascota(e.target.value)}
             />
