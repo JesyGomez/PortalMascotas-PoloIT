@@ -11,7 +11,7 @@ import { Donaciones } from "../Donaciones/pages/Donaciones";
 import { Adopciones } from "../Adopciones/pages/Adopciones";
 import { Contacto } from "../Contacto/pages/Contacto";
 import Jornadas from "../Jornadas/pages/Jornadas";
-import { Footer, Header } from "../ui";
+import { Footer, Header, NotFound } from "../ui";
 import { UserRouter } from "../User";
 
 export const AppRouter = ()=> {
@@ -49,7 +49,7 @@ export const AppRouter = ()=> {
             </>
           )}
 
-
+          <Route path="/*" element={<NotFound />} />
          
         </Routes>
       </main>
