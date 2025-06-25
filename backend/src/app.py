@@ -14,13 +14,9 @@ app.register_blueprint(auth_bp, url_prefix='/api/auth')
 def home():
     return "Servidor Flask funcionando. Usa las rutas /api/register etc."
 
-app.register_blueprint(pet_bp, url_prefix='/api')
+# app.register_blueprint(pet_bp, url_prefix='/api')
 
-# @app.route('/api/register', methods=['POST'])
-# def register():
-#     data = request.json
-#     # acá podrías hacer algo con data
-#     return jsonify({"message": "Registro recibido", "data": data}), 201
+app.register_blueprint(pet_bp, url_prefix='/api/mascotas') 
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

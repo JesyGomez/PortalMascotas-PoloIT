@@ -7,18 +7,32 @@ import string
 from datetime import datetime, timedelta
 from models.user_model import get_user_by_email, update_user_password, create_user, get_user_by_id
 from models.reset_model import save_reset_code, verify_reset_code
-
+from db import get_db_connection
 
 # Función para construir respuestas de autenticación
 def build_auth_response(user_id, nombre, rol):
-    token = generate_token(user_id, rol)
-    return jsonify({
-        'message': 'Operación exitosa',
-        'token': token,
-        'nombre': nombre,
-        'rol': rol,
-        'uid': user_id
-    })
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT id, nombre, apellido, email, provincia, localidad, calle, puntajeUsuario, 
+                   habilitado_adoptar, habilitado_dador, imagenDePerfil, rol
+            FROM usuarios WHERE id = %s
+        """, (user_id,))
+        user_data = cursor.fetchone()
+
+        if not user_data:
+            return jsonify({'message': 'Usuario no encontrado'}), 404
+        token = generate_token(user_id, rol)
+        return jsonify({
+            'token': token,
+            **user_data
+        }), 200
+    
+    except Exception as e:
+            print(f"[ERROR en build_auth_response]: {e}")
+            return jsonify({'message': 'Error interno al generar la respuesta', 'error': str(e)}), 500
 
 
 def login():
@@ -27,8 +41,8 @@ def login():
         if not data or not data.get('email') or not data.get('password'):
             return jsonify({'message': 'Email y contraseña son requeridos'}), 400
 
-        email = data.get('email')
-        password = data.get('password')
+        email = data['email']
+        password = data['password']
 
         user = get_user_by_email(email)
 
@@ -37,6 +51,7 @@ def login():
             hashed_password = user['password'].encode('utf-8') if isinstance(user['password'], str) else user['password']
 
             if bcrypt.checkpw(password_bytes, hashed_password):
+                # Usamos la función que ya arma el token y recupera todos los datos del usuario
                 return build_auth_response(user['id'], user['nombre'], user['rol'])
             else:
                 return jsonify({'message': 'Contraseña incorrecta'}), 401
@@ -46,7 +61,6 @@ def login():
     except Exception as e:
         print(f"[ERROR en login]: {e}")
         return jsonify({'message': 'Error interno del servidor', 'error': str(e)}), 500
-
 
 def register():
     try:
@@ -125,15 +139,114 @@ def renew_token():
         decoded = decode_token(token)
 
         user_id = decoded.get('user_id')
-        rol = decoded.get('rol')
 
         user = get_user_by_id(user_id)
-        print(f"info {token}: {decoded}")
         if not user:
             return jsonify({'message': 'Usuario no encontrado'}), 404
 
-        return build_auth_response(user_id, user['nombre'], rol), 200
+        rol = user.get('rol')
+
+        return build_auth_response(user_id, user['nombre'], rol)
 
     except Exception as e:
         print(f"[ERROR en renew_token]: {e}")
         return jsonify({'message': 'Token inválido o expirado'}), 401
+
+def get_user_info():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'message': 'Token no proporcionado'}), 401
+
+    token = auth_header.split(" ")[1]
+
+    try:
+        user_data = decode_token(token)
+    except Exception as e:
+        return jsonify({'message': 'Token inválido'}), 401
+
+    user_id = user_data.get('user_id')
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        # cursor.execute("SELECT id, nombre, email, rol, localidad FROM usuarios WHERE id = %s", (user_id,))
+        cursor.execute("""
+            SELECT id, nombre, apellido, email, provincia, localidad, calle, puntajeUsuario, habilitado_adoptar, habilitado_dador, imagenDePerfil, rol
+            FROM usuarios WHERE id = %s
+        """, (user_id,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({'message': 'Usuario no encontrado'}), 404
+        return jsonify(user), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener usuario: {str(e)}'}), 500
+def campo_valido(valor):
+    return valor is not None and isinstance(valor, str) and valor.strip() != ''
+def update_user_info_controller():
+    try:
+        data = request.get_json()
+        print("📥 Datos recibidos:", data)
+
+        campos_validos = ['nombre', 'apellido', 'email', 'provincia', 'localidad', 'calle', 'imagenDePerfil']
+        if not all(campo in data for campo in campos_validos):
+            return jsonify({"error": "Faltan campos requeridos"}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        sql = """
+        UPDATE usuarios
+        SET nombre=%s,
+            apellido=%s,
+            provincia=%s,
+            localidad=%s,
+            calle=%s,
+            imagenDePerfil=%s
+        WHERE email=%s
+        """
+
+        valores = (
+            data["nombre"],
+            data["apellido"],
+            data["provincia"],
+            data["localidad"],
+            data["calle"],
+            data["imagenDePerfil"],
+            data["email"]
+        )
+
+        cursor.execute(sql, valores)
+        conn.commit()
+
+        # 🚀 Traer el usuario actualizado
+        cursor.execute("SELECT id, nombre, apellido, email, provincia, localidad, calle, puntajeUsuario, habilitado_adoptar, habilitado_dador, imagenDePerfil, rol FROM usuarios WHERE email = %s", (data["email"],))
+        updated_user = cursor.fetchone()
+        return jsonify(updated_user), 200
+
+
+    except Exception as e:
+        print("❌ Error al actualizar usuario:", e)
+        return jsonify({"error": "Error interno del servidor"}), 500
+
+    except Exception as e:
+        print("❌ Error al actualizar usuario:", e)
+        return jsonify({"error": "Error interno del servidor"}), 500
+
+def delete_user_controller():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'message': 'Token no proporcionado'}), 401
+
+    token = auth_header.split(" ")[1]
+    try:
+        user_data = decode_token(token)
+        user_id = user_data.get("user_id")
+
+        success = delete_user(user_id)
+        if success:
+            return jsonify({'message': 'Cuenta eliminada correctamente'}), 200
+        else:
+            return jsonify({'message': 'No se pudo eliminar la cuenta'}), 500
+    except Exception as e:
+        print("[ERROR en delete_user_controller]:", e)
+        return jsonify({'message': 'Error al eliminar cuenta'}), 500
