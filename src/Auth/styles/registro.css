@@ -1,60 +1,263 @@
-    .cabecera {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fafafa;
+}
 
-    .registro {
-        max-width: 900px;
-        width: 90%;
-        background-color: #e2bda5;
-        padding: 2.5rem;
-        border-radius: 25px;
-        margin: 20px auto;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+.registro-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #fafafa;
+}
 
-    .form-label {
-        font-weight: light;
-        color: #000;
-    }
+.form-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .form-control,
-    .form-select {
-        border-radius: 10px;
-    }
+.image-right {
+  flex: 1;
+  display: none;
+  background-size: contain;
+}
 
-    .boton-registro {
-        height: 40px;
-        background-color: #cb6c77;
-        border-color: #cb6c77;
-        border-radius: 8px;
-        font-weight: light;
-    }
+@media (min-width: 768px) {
+  .image-right {
+    display: block;
+  }
+}
 
-    .boton-registro:hover {
-        background-color: #a34e58;
-        border-color: #a34e58;
-    }
+.form-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra horizontalmente el box interno */
+  width: 90%;
+  max-width: 500px;
+  background-color: rgba(217, 179, 145, 0.5);
+  padding: 2rem;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-    .paw-icon {
-        font-size: 2rem;
-        color: #bb5e69;
-        margin-right: 10px;
-    }
 
-    h2 {
-        font-weight: bold;
-    }
+.registro {
+  width: 90%;
+  max-width: 500px;
+  background-color: #d9b391;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
-    /* Estilo placeholder normal */
-    ::placeholder {
-        font-size: 1rem;
-    }
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente */
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
 
-    /* Responsive: placeholder más pequeño en móviles */
-    @media (max-width: 575.98px) {
-        ::placeholder {
-            font-size: 0.75rem;
-        }
-    }
+.paw-icon {
+  font-size: 2rem;
+  color: #bb5e69;
+  margin-right: 10px;
+}
+
+h2 {
+  font-weight: bold;
+  margin: 0;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #000;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 0.3rem;
+}
+
+.form-control:focus {
+  border-color: #cb6c77;
+  outline: none;
+  box-shadow: 0 0 0 2px #f2d1d7;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Checkbox estilo personalizado */
+.checkbox-wrapper input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #cb6c77; /* rosa */
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  margin-right: 8px;
+  background-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+  background-color: #cb6c77; /* opcional: podés dejarlo transparente */
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.boton-registro {
+  height: 40px;
+  background-color: #cb6c77;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.boton-registro:hover {
+  background-color: #a34e58;
+}
+
+.boton-registro:disabled {
+  background-color: #e0aeb3;
+  cursor: not-allowed;
+}
+
+.boton-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.boton-wrapper .boton-registro {
+  width: 200px; /* ajustá este valor a gusto */
+}
+
+.error-message {
+  color: #b00020;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.success-message {
+  color: #2e7d32;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.text-center p {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+::placeholder {
+  font-size: 1rem;
+}
+
+@media (max-width: 575.98px) {
+  ::placeholder {
+    font-size: 0.75rem;
+  }
+}
+
+/* Contenedor general: form + imagen */
+.registro-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background-color: #fff;
+  min-height: 100vh;
+  gap: 2rem;
+}
+
+/* Lado izquierdo con formulario */
+.form-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Lado derecho con imagen */
+.image-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logo superior */
+.image-right img.logo {
+  width: 160px;
+  margin-bottom: 2rem;
+}
+
+/* Imagen personas más chica */
+.image-right img.people {
+  width: 100%;
+  max-width: 650px;
+  height: auto;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+/* Responsivo: stack en vertical en pantallas chicas */
+@media (max-width: 992px) {
+  .registro-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .form-left,
+  .image-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .image-right img.logo {
+    margin-top: 2rem;
+  }
+}
