@@ -32,7 +32,7 @@ body {
 .form-box {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centra horizontalmente el box interno */
+  align-items: center; 
   width: 90%;
   max-width: 500px;
   background-color: rgba(217, 179, 145, 0.5);
@@ -54,15 +54,16 @@ body {
 .cabecera {
   display: flex;
   align-items: center;
-  justify-content: center; /* Centra horizontalmente */
+  justify-content: center;
   gap: 0.5rem;
   margin-bottom: 2rem;
 }
 
-.paw-icon {
-  font-size: 2rem;
-  color: #bb5e69;
+.icono-patita {
+  width: 50px;
+  height: auto;
   margin-right: 10px;
+  object-fit: contain;
 }
 
 h2 {
@@ -119,7 +120,7 @@ h2 {
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid #cb6c77; /* rosa */
+  border: 2px solid #cb6c77;
   border-radius: 3px;
   cursor: pointer;
   position: relative;
@@ -128,8 +129,13 @@ h2 {
   transition: all 0.2s ease;
 }
 
+.checkbox-wrapper label {
+  line-height: 1;
+  padding-top: 4px;
+}
+
 .checkbox-wrapper input[type="checkbox"]:checked {
-  background-color: #cb6c77; /* opcional: podés dejarlo transparente */
+  background-color: #cb6c77;
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked::after {
@@ -171,7 +177,7 @@ h2 {
 }
 
 .boton-wrapper .boton-registro {
-  width: 200px; /* ajustá este valor a gusto */
+  width: 200px; 
 }
 
 .error-message {
@@ -221,24 +227,25 @@ h2 {
 
 /* Lado derecho con imagen */
 .image-right {
-  flex: 1;
+flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-height: 100%;
 }
 
 /* Logo superior */
 .image-right img.logo {
   width: 160px;
+  max-height: 100px;
   margin-bottom: 2rem;
 }
 
-/* Imagen personas más chica */
 .image-right img.people {
   width: 100%;
-  max-width: 650px;
-  height: auto;
+  max-width: 500px;
+  max-height: 400px;
   object-fit: contain;
   padding: 1rem;
 }

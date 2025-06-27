@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/sesion.css";
-import { useAuthStore } from "../../hooks/useAuthStore"; // Asegurate que el path sea correcto
+import { useAuthStore } from "../../hooks/useAuthStore";
+import "../styles/login.css"; 
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
-
+  const [mostrarPassword, setMostrarPassword] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -15,12 +15,11 @@ export const Login = () => {
     status,
     user,
     errorMessage,
-    clearErrorMessage,
   } = useAuthStore();
 
   const isAuthenticating = status === "checking";
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setMensaje("");
     startLogin({ email, password });
@@ -40,64 +39,79 @@ export const Login = () => {
   }, [status, user, navigate]);
 
   return (
-    <div className="form-wrapper">
-      <div className="form-container">
-        <div className="text-center mb-4">
-          <span className="paw-icon">🐾</span>
-          <h2 className="d-inline">Iniciar Sesión</h2>
-        </div>
+    <div className="registro-wrapper">
+      <div className="form-left">
+        <div className="form-box">
+          <div className="cabecera">
+            <img src="/patitarosa.png" alt="Icono patita" className="icono-patita" />
+            <h2>Iniciar Sesión</h2>
+          </div>
 
-        {!mensaje ? (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="correo" className="form-label">
-                Correo
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="correo"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3 position-relative">
-              <label htmlFor="password" className="form-label">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <div className="d-grid">
-              <button
-                type="submit"
-                className="btn-primary"
-                disabled={isAuthenticating}
-              >
-                {isAuthenticating ? "Ingresando..." : "Ingresar"}
-              </button>
-            </div>
-            <div className="text-center">
-              <p>
-                ¿Olvidaste tu contraseña?{" "}
-                <Link to="/recuperar">Recuperala acá</Link>
-              </p>
-              <p>
-                ¿No tenés cuenta? <Link to="/registro">Registrate acá</Link>
-              </p>
-            </div>
-          </form>
-        ) : (
-          <p className="mensaje-bienvenida">{mensaje}</p>
-        )}
+          <div className="registro">
+            {!mensaje ? (
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">Correo</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="ejemplo@dominio.com"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">Contraseña</label>
+                  <div className="password-wrapper">
+                    <input
+                      type={mostrarPassword ? "text" : "password"}
+                      className="form-control"
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      placeholder="Por favor, introduzca su contraseña"
+                    />
+                    <img
+                      src="/ojo.png"
+                      alt="Mostrar contraseña"
+                      className="eye-icon"
+                      onClick={() => setMostrarPassword(!mostrarPassword)}
+                    />
+                  </div>
+                </div>
+                <div className="mb-3 checkbox-wrapper">
+                  <input type="checkbox" id="recordarme" />
+                  <label htmlFor="recordarme">Recordarme</label>
+                </div>
+
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+                <div className="boton-wrapper">
+                  <button type="submit" className="boton-registro" disabled={isAuthenticating}>
+                    {isAuthenticating ? "Ingresando..." : "INGRESAR"}
+                  </button>
+                </div>
+
+                <div className="text-center">
+                  <p>¿Olvidaste tu contraseña? <Link to="/recuperar">Recuperala acá</Link></p>
+                  <p>¿No tenés cuenta? <Link to="/registro">Registrate acá</Link></p>
+                </div>
+              </form>
+            ) : (
+              <p className="success-message">{mensaje}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Imagen a la derecha */}
+      <div className="image-right">
+        <img src="/logobg.png" alt="Logo Patitas" className="logo" />
+        <img src="/people.png" alt="Personas con mascotas" className="people" />
       </div>
     </div>
   );
