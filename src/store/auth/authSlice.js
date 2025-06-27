@@ -2,9 +2,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  status: 'not-authenticated', // 'authenticated', 'checking'
-  user: null,                  // null cuando no hay usuario
-  errorMessage: undefined
+  status: 'checking',
+  user: null,
+  errorMessage: null,
+  successMessage: null,
 };
 
 export const authSlice = createSlice({
@@ -13,30 +14,43 @@ export const authSlice = createSlice({
   reducers: {
     onChecking: (state) => {
       state.status = 'checking';
-      state.user = null;          // limpia user mientras verifica
-      state.errorMessage = undefined;
+      state.errorMessage = null;
+      state.successMessage = null;
     },
-    onLogin: (state, { payload }) => {
+    onLogin: (state, action) => {
       state.status = 'authenticated';
-      state.user = payload;       // payload contiene info del usuario (ej: { uid, nombre, rol, token })
-      state.errorMessage = undefined;
+      state.user = action.payload;
+      state.errorMessage = null;
+      state.successMessage = null;
     },
-    onLogout: (state, { payload }) => {
+    onLogout: (state, action) => {
       state.status = 'not-authenticated';
-      state.user = null;          // limpia usuario al cerrar sesión
-      state.errorMessage = payload; // puede ser mensaje de error opcional
+      state.user = null;
+      state.errorMessage = action.payload || null;
+      state.successMessage = null;
+    },
+    onRegisterSuccess: (state, action) => {
+      state.status = 'not-authenticated';
+      state.user = null;
+      state.errorMessage = null;
+      state.successMessage = action.payload;
     },
     clearErrorMessage: (state) => {
-      state.errorMessage = undefined;
-    }
-  }
+      state.errorMessage = null;
+    },
+    clearSuccessMessage: (state) => {
+      state.successMessage = null;
+    },
+  },
 });
 
 export const {
   onChecking,
   onLogin,
   onLogout,
-  clearErrorMessage
+  onRegisterSuccess,
+  clearErrorMessage,
+  clearSuccessMessage,
 } = authSlice.actions;
 
 export default authSlice.reducer;

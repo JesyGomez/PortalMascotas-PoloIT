@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Login, Registro, RecuperarContrasenia } from "../Auth";
 // import { PrivateRoute } from "../components";
 // import { useSelector } from "react-redux";
@@ -13,15 +13,17 @@ import { Contacto } from "../Contacto/pages/Contacto";
 import Jornadas from "../Jornadas/pages/Jornadas";
 import { Footer, Header, NotFound } from "../ui";
 import { UserRouter } from "../User";
+import { AdminRouter } from "../Admin";
+// import { AdminRouter } from "../Admin";
 
 export const AppRouter = ()=> {
-  const {checkAuthToken, status} = useAuthStore();
-  const isAuthenticated = status === 'authenticated';
+  const {checkAuthToken, status, user} = useAuthStore();
 
+  const isAuthenticated = status === 'authenticated';
+    console.log(isAuthenticated)
   useEffect(() => {
     checkAuthToken()
   }, [])
-  
 
   return (
     <>
@@ -40,12 +42,20 @@ export const AppRouter = ()=> {
             )
           }
 
-          {!isAuthenticated && (
+          {!isAuthenticated ? (
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/registro" element={<Registro />} />
               <Route path="/recuperar" element={<RecuperarContrasenia />} />
 
+            </>
+            ):
+              <Route path="/login" element={<Navigate to='/' replace="false"/>} />
+          }
+
+          {user?.rol === "admin" && (
+            <>
+              <Route path="/admin/*" element={<AdminRouter />} />
             </>
           )}
 

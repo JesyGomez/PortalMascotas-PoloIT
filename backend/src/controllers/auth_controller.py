@@ -72,6 +72,8 @@ def register():
         for field in required_fields:
             if not data.get(field):
                 return jsonify({'message': f'El campo {field} es requerido'}), 400
+            
+        data['hogarTransito'] = data.get('hogarTransito', False)
 
         data['rol'] = data.get('rol', 'usuario')
 
@@ -82,7 +84,7 @@ def register():
         if not result['success']:
             return jsonify({'message': result.get('message', 'Error al registrar usuario')}), 400
         
-        return build_auth_response(result['id'], data['nombre'], data['rol']), 201
+        return build_auth_response(result['id'], data['nombre'], data['rol'])
 
     except Exception as e:
         print(f"[ERROR en register]: {e}")
