@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import {Dashboard, Solicitudes, Mascotas} from "../pages";
+import {Dashboard, Solicitudes, Mascotas, Configuracion} from "../pages";
 import "../styles/dashboard.css";
 import { useAuthStore } from "../../hooks/useAuthStore";
 
@@ -51,6 +51,12 @@ export const AdminRouter = () => {
               {!collapsed && <span>Mascotas</span>}
             </Link>
           </li>
+                    <li className="nav-item">
+            <Link className="nav-link" to="/admin/configuracion">
+              <i className="bi bi-gear me-2"></i>
+              {!collapsed && <span>Configuración</span>}
+            </Link>
+          </li>
           <li className="nav-item">
             <button className="sidebar-logout-btn" onClick={handleLogout}>
               <i className="bi bi-box-arrow-right me-2"></i>
@@ -66,6 +72,7 @@ export const AdminRouter = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/solicitudes" element={<Solicitudes />} />
           <Route path="/mascotas" element={<Mascotas />} />
+          <Route path="/configuracion*" element={<Configuracion />} /> 
           <Route path="" element={<Dashboard />} />
         </Routes>
       </main>

@@ -55,7 +55,7 @@ export const useAdminStore = () => {
   const loadMascotas = async () => {
     dispatch(onStartLoading());
     try {
-      const { data } = await api.get('/api/mascotas');
+      const { data } = await api.get('/api/mascotas/?limit=1000');
       dispatch(onLoadMascotasSuccess(data.data));
     } catch (err) {
       dispatch(onLoadError('Error al cargar mascotas'));
