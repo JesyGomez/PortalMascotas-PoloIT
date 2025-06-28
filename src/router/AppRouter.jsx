@@ -20,7 +20,6 @@ export const AppRouter = ()=> {
   const {checkAuthToken, status, user} = useAuthStore();
 
   const isAuthenticated = status === 'authenticated';
-    console.log(isAuthenticated)
   useEffect(() => {
     checkAuthToken()
   }, [])

@@ -30,17 +30,21 @@ export const Registro = () => {
     clearErrorMessage();
     clearSuccessMessage();
     setLocalError(null);
-  }, [clearErrorMessage, clearSuccessMessage]);
+  }, [])
+
+
+  useEffect(() => {
+    errorMessage&&clearErrorMessage();
+  }, [formData])
+  
 
   useEffect(() => {
     if (status === 'not-authenticated' && successMessage) {
       const timeout = setTimeout(() => {
-        clearSuccessMessage();
         navigate('/login');
       }, 2000);
-      return () => clearTimeout(timeout);
     }
-  }, [successMessage, status, navigate, clearSuccessMessage]);
+  }, [successMessage]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -54,7 +58,7 @@ export const Registro = () => {
     e.preventDefault();
     setLocalError(null);
     clearErrorMessage();
-
+    clearSuccessMessage();
     if (formData.password !== formData.confirmPassword) {
       setLocalError('Las contraseñas no coinciden.');
       return;

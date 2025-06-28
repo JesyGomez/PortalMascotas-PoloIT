@@ -11,9 +11,16 @@ export const Login = () => {
   const [recordarme, setRecordarme] = useState(false);
 
   const navigate = useNavigate();
-  const { startLogin, status, user, errorMessage } = useAuthStore();
+  const { startLogin, status, user, errorMessage, clearErrorMessage, clearSuccessMessage } = useAuthStore();
 
   const isAuthenticating = status === 'checking';
+
+
+    useEffect(() => {
+      clearErrorMessage();
+      clearSuccessMessage();
+    }, [])
+  
 
   useEffect(() => {
     const emailGuardado = localStorage.getItem('emailGuardado');
@@ -22,6 +29,11 @@ export const Login = () => {
       setRecordarme(true);
     }
   }, []);
+
+  useEffect(() => {
+    clearErrorMessage();
+  }, [email,password])
+  
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -39,6 +51,7 @@ export const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setMensaje('');
+    clearErrorMessage();
     if (recordarme) {
       localStorage.setItem('emailGuardado', email);
     } else {
