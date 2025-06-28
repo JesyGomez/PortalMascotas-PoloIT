@@ -159,6 +159,10 @@ export const RecuperarContrasenia = () => {
         </div>
       </div>
 
+     <div className="auth-right">
+        <img src="/logobg.png" alt="Logo Patitas" className="logo" />
+        <img src="/people.png" alt="Personas con mascotas" className="people" />
+      </div>
     </div>
   );
 };
