@@ -6,8 +6,8 @@ import {
   onLogin,
   onLogout,
   onRegisterSuccess,
-  clearErrorMessage,
-  clearSuccessMessage,
+  onClearErrorMessage,
+  onClearSuccessMessage,
 } from '../store';
 
 export const useAuthStore = () => {
@@ -23,7 +23,6 @@ export const useAuthStore = () => {
       dispatch(onLogin(data));
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Credenciales incorrectas'));
-      setTimeout(() => dispatch(clearErrorMessage()), 10);
     }
   };
 
@@ -34,7 +33,6 @@ export const useAuthStore = () => {
       dispatch(onRegisterSuccess('Registrado correctamente. Iniciá sesión.'));
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Error al registrar'));
-      setTimeout(() => dispatch(clearErrorMessage()), 10);
     }
   };
 
@@ -67,11 +65,11 @@ export const useAuthStore = () => {
         },
       });
       dispatch(onLogin({ ...user, ...data }));
-      dispatch(clearErrorMessage());
+      dispatch(onClearErrorMessage());
       return true;
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Error al actualizar perfil'));
-      setTimeout(() => dispatch(clearErrorMessage()), 10);
+      setTimeout(() => dispatch(onClearErrorMessage()), 10);
       return false;
     }
   };
@@ -93,7 +91,7 @@ export const useAuthStore = () => {
       throw new Error('No se pudo eliminar la cuenta');
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Error al eliminar cuenta'));
-      setTimeout(() => dispatch(clearErrorMessage()), 10);
+      setTimeout(() => dispatch(onClearErrorMessage()), 10);
       return false;
     }
   };
@@ -133,8 +131,12 @@ const startResetPassword = async ({ email, code, newPassword }) => {
     };
   }
 };
-
-  
+const clearErrorMessage=()=>{
+  dispatch(onClearErrorMessage());
+}
+const clearSuccessMessage=()=>{
+  dispatch(onClearSuccessMessage());
+} 
 
 return {
   // State

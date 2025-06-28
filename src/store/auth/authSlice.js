@@ -35,10 +35,10 @@ export const authSlice = createSlice({
       state.errorMessage = null;
       state.successMessage = action.payload;
     },
-    clearErrorMessage: (state) => {
+    onClearErrorMessage: (state) => {
       state.errorMessage = null;
     },
-    clearSuccessMessage: (state) => {
+    onClearSuccessMessage: (state) => {
       state.successMessage = null;
     },
   },
@@ -49,8 +49,8 @@ export const {
   onLogin,
   onLogout,
   onRegisterSuccess,
-  clearErrorMessage,
-  clearSuccessMessage,
+  onClearErrorMessage,
+  onClearSuccessMessage,
 } = authSlice.actions;
 
 export default authSlice.reducer;

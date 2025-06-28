@@ -21,7 +21,7 @@ export const RecuperarContrasenia = () => {
   useEffect(() => {
     clearErrorMessage();
     setMessage("");
-  }, [clearErrorMessage]);
+  }, []);
 
   const handleRequestReset = async (e) => {
     e.preventDefault();
