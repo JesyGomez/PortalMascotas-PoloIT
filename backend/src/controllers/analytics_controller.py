@@ -1,30 +1,23 @@
-from flask import Blueprint, jsonify
+from flask import jsonify
 from src.db import get_db_connection
 
-analytics_bp = Blueprint('analytics', __name__)
-
-@analytics_bp.route('/api/analytics', methods=['GET'])
-def get_analytics():
+def get_analytics_data():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Contar mascotas
         cursor.execute("SELECT COUNT(*) FROM mascotas")
         total_mascotas = cursor.fetchone()[0]
 
-        # Contar usuarios
         cursor.execute("SELECT COUNT(*) FROM usuarios")
         total_usuarios = cursor.fetchone()[0]
 
-        # Simulación: total solicitudes y adopciones
-        total_solicitudes = 58  # dato simulado
-        total_adopciones = 34  # dato simulado
+        total_solicitudes = 58  # simulado
+        total_adopciones = 34   # simulado
 
-        # Opcional: más métricas simuladas
         tasa_adopcion = round((total_adopciones / total_solicitudes) * 100, 1) if total_solicitudes > 0 else 0
-        tiempo_promedio = 12  # días promedio (simulado)
-        satisfaccion = 4.7    # puntuación promedio (simulado)
+        tiempo_promedio = 12
+        satisfaccion = 4.7
 
         data = {
             "topMetrics": {
