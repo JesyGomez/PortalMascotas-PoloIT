@@ -1,4 +1,4 @@
-from db import get_db_connection
+from src.db import get_db_connection
 import bcrypt
 
 def get_user_by_email(email):

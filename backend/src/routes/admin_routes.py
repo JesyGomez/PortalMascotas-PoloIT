@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from utils.jwt import decode_token
-from db import get_db_connection
+from src.utils.jwt import decode_token
+from src.db import get_db_connection
 
 admin_bp = Blueprint('admin_bp', __name__)
 

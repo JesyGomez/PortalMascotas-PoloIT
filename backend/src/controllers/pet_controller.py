@@ -1,7 +1,7 @@
 from flask import request, jsonify
-from db import get_db_connection
-from utils.jwt import decode_token
-from models.pet_model import insert_pet
+from src.db import get_db_connection
+from src.utils.jwt import decode_token
+from src.models.pet_model import insert_pet
 
 # REGISTRAR NUEVA MASCOTA
 

@@ -1,4 +1,4 @@
-from db import get_db_connection
+from src.db import get_db_connection
 
 def insert_pet(data, user_id):
     try:
