@@ -1,0 +1,32 @@
+:root {
+  --color-bg: #fafafa;
+  --color-primary: #cb6c77;
+  --color-primary-hover: #a34e58;
+  --color-secondary: #d9b391;
+  --color-secondary-light: #e2bda5;
+  --color-light: #fff;
+  --color-error: #b00020;
+  --color-success: #2e7d32;
+  --font-main: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+}
+
+h2 {
+  font-weight: bold;
+  margin: 0;
+}
+
+::placeholder {
+  font-size: 1rem;
+}
+
+@media (max-width: 575.98px) {
+  ::placeholder {
+    font-size: 0.75rem;
+  }
+}

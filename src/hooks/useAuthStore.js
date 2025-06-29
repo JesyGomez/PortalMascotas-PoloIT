@@ -1,48 +1,38 @@
-// src/hooks/useAuthStore.js (o donde tengas el hook)
-
+// src/hooks/useAuthStore.js
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../helpers';
 import {
-  clearErrorMessage,
   onChecking,
   onLogin,
   onLogout,
+  onRegisterSuccess,
+  onClearErrorMessage,
+  onClearSuccessMessage,
 } from '../store';
 
 export const useAuthStore = () => {
-  const { status, user, errorMessage } = useSelector((state) => state.auth);
+  const { status, user, errorMessage, successMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-   const startLogin = async ({ email, password }) => {
+  const startLogin = async ({ email, password }) => {
     dispatch(onChecking());
     try {
       const { data } = await api.post('/api/auth/login', { email, password });
-      console.log(data)
       localStorage.setItem('token', data.token);
       localStorage.setItem('token-init-date', new Date().getTime());
-      console.log(data)
       dispatch(onLogin(data));
-
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Credenciales incorrectas'));
-      setTimeout(() => {
-        dispatch(clearErrorMessage());
-      }, 10);
     }
   };
 
   const startRegister = async (formData) => {
     dispatch(onChecking());
     try {
-      const { data } = await api.post('/api/auth/register', formData);
-      console.log(data)
-
-      dispatch(onLogout('Registrado correctamente. Iniciá sesión.'));
+      await api.post('/api/auth/register', formData);
+      dispatch(onRegisterSuccess('Registrado correctamente. Iniciá sesión.'));
     } catch (error) {
-      dispatch(onLogout(error.response?.data?.error || 'Error al registrar'));
-      setTimeout(() => {
-        dispatch(clearErrorMessage());
-      }, 10);
+      dispatch(onLogout(error.response?.data?.message || 'Error al registrar'));
     }
   };
 
@@ -51,12 +41,10 @@ export const useAuthStore = () => {
     if (!token) return dispatch(onLogout());
 
     try {
-        const { data } = await api.get('/api/auth/renew');
-       console.log(data)
-        localStorage.setItem('token', data.token );
-        localStorage.setItem('token-init-date', new Date().getTime() );
-     
-        dispatch( onLogin(data) );
+      const { data } = await api.get('/api/auth/renew');
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('token-init-date', new Date().getTime());
+      dispatch(onLogin(data));
     } catch (error) {
       localStorage.clear();
       dispatch(onLogout());
@@ -76,18 +64,12 @@ export const useAuthStore = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      // Actualizo el user en redux con la info nueva (data debería traer el user actualizado)
-      dispatch(onLogin({
-        ...user,             // mantengo lo que haya
-        ...data,             // actualizo con datos nuevos
-      }));
-      dispatch(clearErrorMessage());
+      dispatch(onLogin({ ...user, ...data }));
+      dispatch(onClearErrorMessage());
       return true;
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Error al actualizar perfil'));
-      setTimeout(() => {
-        dispatch(clearErrorMessage());
-      }, 10);
+      setTimeout(() => dispatch(onClearErrorMessage()), 10);
       return false;
     }
   };
@@ -109,23 +91,71 @@ export const useAuthStore = () => {
       throw new Error('No se pudo eliminar la cuenta');
     } catch (error) {
       dispatch(onLogout(error.response?.data?.message || 'Error al eliminar cuenta'));
-      setTimeout(() => {
-        dispatch(clearErrorMessage());
-      }, 10);
+      setTimeout(() => dispatch(onClearErrorMessage()), 10);
       return false;
     }
   };
 
-  return {
-    status,
-    user,
-    errorMessage,
+const startRequestReset = async (email) => {
+  dispatch(onChecking());
+  try {
+    const { data } = await api.post('/api/auth/request-reset', { email });
+    // Podés usar onLogout solo para dejar el estado como "not-authenticated"
+    dispatch(onLogout());
+    return { ok: true, msg: data.message || 'Código enviado' };
+  } catch (error) {
+    dispatch(onLogout());
+    return {
+      ok: false,
+      msg: error.response?.data?.message || 'Error al enviar el código',
+    };
+  }
+};
 
-    startLogin,
-    startRegister,
-    checkAuthToken,
-    startLogout,
-    startUpdateUser,
-    startDeleteUser,
-  };
+
+const startResetPassword = async ({ email, code, newPassword }) => {
+  dispatch(onChecking());
+  try {
+    const { data } = await api.post('/api/auth/reset-password', {
+      email,
+      code,
+      new_password: newPassword,
+    });
+    dispatch(onLogout());
+    return { ok: true, msg: data.message || 'Contraseña actualizada' };
+  } catch (error) {
+    dispatch(onLogout());
+    return {
+      ok: false,
+      msg: error.response?.data?.message || 'Error al cambiar contraseña',
+    };
+  }
+};
+const clearErrorMessage=()=>{
+  dispatch(onClearErrorMessage());
+}
+const clearSuccessMessage=()=>{
+  dispatch(onClearSuccessMessage());
+} 
+
+return {
+  // State
+  status,
+  user,
+  errorMessage,
+  successMessage,
+
+  // Actions
+  startLogin,
+  startRegister,
+  checkAuthToken,
+  startLogout,
+  startUpdateUser,
+  startDeleteUser,
+  startRequestReset,
+  startResetPassword,
+
+  clearErrorMessage,
+  clearSuccessMessage,
+};
 };

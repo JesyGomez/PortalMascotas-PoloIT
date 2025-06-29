@@ -12,7 +12,7 @@ const traducciones = {
 const FiltroSidebar = ({ filtros, setFiltros }) => {
   const opcionesPorDefecto = {
     especie: ["Perro", "Gato", "Conejo", "Ave"],
-    estado: ["Disponible", "Adoptado", "En tránsito"],
+    estado: ["Disponible", "Adoptado", "en tránsito"],
     tamanio: ["Pequeño", "Mediano", "Grande"],
     ubicacion: ["CABA", "Buenos Aires", "Córdoba", "Santa Fe"],
   };
