@@ -65,7 +65,6 @@ def get_admin_stats():
 
 @admin_bp.route('/usuarios', methods=['GET'])
 def obtener_todos_los_usuarios():
-    # 1. Verificar token y rol
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
         return jsonify({"message": "Token no proporcionado"}), 401
@@ -75,21 +74,26 @@ def obtener_todos_los_usuarios():
         user_data = decode_token(token)
         if user_data.get('rol') != 'admin':
             return jsonify({"message": "Acceso restringido a administradores"}), 403
-    except Exception as e:
+    except Exception:
         return jsonify({"message": "Token inválido"}), 401
 
-    # 2. Obtener todos los usuarios
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
             SELECT id, nombre, apellido, email, provincia, localidad, calle,
-                    imagenDePerfil, rol, puntajeUsuario, habilitado_adoptar,
-                    habilitado_dador, hogar_transito
+                   imagenDePerfil, rol, puntajeUsuario, habilitado_adoptar,
+                   habilitado_dador, hogar_transito
             FROM usuarios
         """)
         usuarios = cursor.fetchall()
+
+        # Conversión segura para evitar valores None
+        for u in usuarios:
+            u["habilitado_adoptar"] = int(u.get("habilitado_adoptar") or 0)
+            u["habilitado_dador"] = int(u.get("habilitado_dador") or 0)
+            u["hogar_transito"] = int(u.get("hogar_transito") or 0)
 
         cursor.close()
         conn.close()
@@ -99,3 +103,47 @@ def obtener_todos_los_usuarios():
     except Exception as e:
         print(f"[ERROR] al obtener usuarios: {e}")
         return jsonify({"message": "Error al obtener usuarios"}), 500
+
+@admin_bp.route('/usuarios/<int:user_id>', methods=['PUT'])
+def actualizar_usuario(user_id):
+    # Verificar token y rol (como en el GET)
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"message": "Token no proporcionado"}), 401
+
+    token = auth_header.split(" ")[1]
+    try:
+        user_data = decode_token(token)
+        if user_data.get('rol') != 'admin':
+            return jsonify({"message": "Acceso restringido a administradores"}), 403
+    except Exception:
+        return jsonify({"message": "Token inválido"}), 401
+
+    data = request.get_json()
+    rol = data.get('rol')
+    habilitado_adoptar = data.get('habilitado_adoptar')
+    habilitado_dador = data.get('habilitado_dador')
+    hogar_transito = data.get('hogar_transito')
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE usuarios SET
+                rol = %s,
+                habilitado_adoptar = %s,
+                habilitado_dador = %s,
+                hogar_transito = %s
+            WHERE id = %s
+        """, (rol, habilitado_adoptar, habilitado_dador, hogar_transito, user_id))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": "Usuario actualizado correctamente"}), 200
+
+    except Exception as e:
+        print(f"[ERROR] al actualizar usuario: {e}")
+        return jsonify({"message": "Error al actualizar usuario"}), 500

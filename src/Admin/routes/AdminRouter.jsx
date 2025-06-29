@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; 
 import {
   Dashboard,
   Solicitudes,
@@ -17,9 +18,24 @@ export const AdminRouter = () => {
   const { startLogout } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    navigate("/login");
-    startLogout();
+const handleLogout = () => {
+    Swal.fire({
+      title: "¡Hasta luego!",
+      text: "Gracias por visitarnos. Que tengas un excelente día 😊",
+      icon: "success",
+      background: "#4b3621", 
+      color: "#fff",
+      confirmButtonText: "Cerrar sesión",
+      confirmButtonColor: "#8B5E3C",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#6c757d",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startLogout();
+        navigate("/login");
+      }
+    });
   };
 
   return (

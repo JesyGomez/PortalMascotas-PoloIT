@@ -212,3 +212,28 @@ font-family: 'Montserrat', sans-serif;
   padding: 0.4em 0.6em;
   border-radius: 0.5rem;
 }
+/* Estilos modal de usuarios */
+.modal-backdrop.show {
+  background-color: #000;
+  opacity: 1 !important;
+}
+
+.modal-content {
+  background-color: #1a1a1a; 
+  color: #f1f1f1; 
+  border: none;
+}
+
+.modal-header, .modal-footer {
+  background-color: #2a2a2a; 
+  border-color: #3a3a3a; 
+}
+
+.modal-title {
+  color: #f1f1f1;
+}
+
+.modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 2;
+}

@@ -195,24 +195,23 @@ export const Mascotas = () => {
         </div>
       </form>
 
-{/* Campo de búsqueda con icono */}
-<div className="row mb-3">
-  <div className="col-md-6">
-    <div className="input-group"> {/* <--- Agrega el input-group aquí */}
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Buscar por nombre, especie o descripción"
-        value={busqueda}
-        onChange={(e) => setBusqueda(e.target.value)}
-      />
-      {/* <--- Agrega el icono aquí, puede ser un span o un button */}
-      <span className="input-group-text"> {/* O btn btn-primary para un botón */}
-        <i className="bi bi-search"></i> {/* El icono de búsqueda */}
-      </span>
-    </div>
-  </div>
-</div>
+      {/* Campo de búsqueda con icono */}
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar por nombre, especie o descripción"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+            />
+            <span className="input-group-text">
+              <i className="bi bi-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
       {/* Grid de tarjetas */}
       {isLoading ? (
         <p>Cargando mascotas...</p>
