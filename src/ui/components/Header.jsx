@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,
@@ -52,20 +54,58 @@ export const Header = ({ isAuthenticated }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+export const Header = ({ isAuthenticated }) => {
+  const { user, startLogout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [dropdownAbierto, setDropdownAbierto] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const toggleMenu = () => {
+    closeDropdown(); // cierro dropdown si estaba abierto
+    setMenuAbierto(!menuAbierto);
+  };
+
+  const toggleDropdown = () => setDropdownAbierto(!dropdownAbierto);
+  const closeDropdown = () => setDropdownAbierto(false);
+
+  const handleLogout = () => {
+    startLogout();
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        closeDropdown();
+      }
+    };
+
+    const handleScroll = () => {
+      closeDropdown();
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <div className="navbar-left">
         <div className="navbar-logo">
           <Link to="/">
             <img
-              src="/Logobg.png"
+              src="/logobg.png"
               alt="Portal de Mascotas"
               className="logo-img"
             />
           </Link>
-        </div>
         </div>
 
         <div className="navbar-center">

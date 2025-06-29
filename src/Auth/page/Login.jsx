@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../hooks/useAuthStore";
-import "../styles/login.css"; 
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../hooks/useAuthStore';
+import '../styles/auth.css';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -43,10 +43,23 @@ export const Login = () => {
           navigate('/admin/dashboard');
         } else {
           navigate('/');
+          navigate('/');
         }
       }, 2000);
     }
   }, [status, user, navigate]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setMensaje('');
+    clearErrorMessage();
+    if (recordarme) {
+      localStorage.setItem('emailGuardado', email);
+    } else {
+      localStorage.removeItem('emailGuardado');
+    }
+    startLogin({ email, password });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();

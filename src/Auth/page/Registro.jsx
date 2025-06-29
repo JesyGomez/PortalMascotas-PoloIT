@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../hooks/useAuthStore';
-import '../styles/registro.css';
+import '../styles/auth.css';
 
 export const Registro = () => {
   const navigate = useNavigate();

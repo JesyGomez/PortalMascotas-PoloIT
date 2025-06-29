@@ -17,6 +17,14 @@ export const authSlice = createSlice({
       state.errorMessage = null;
       state.successMessage = null;
     },
+<<<<<<< HEAD
+=======
+    onStopChecking: (state) => {
+      if (state.status === 'checking') {
+        state.status = 'idle';
+      }
+    },
+>>>>>>> origin/main
     onLogin: (state, action) => {
       state.status = 'authenticated';
       state.user = action.payload;
@@ -46,6 +54,7 @@ export const authSlice = createSlice({
 
 export const {
   onChecking,
+  onStopChecking,
   onLogin,
   onLogout,
   onRegisterSuccess,

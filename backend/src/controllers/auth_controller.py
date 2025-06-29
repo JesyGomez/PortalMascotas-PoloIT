@@ -1,13 +1,13 @@
 from werkzeug.exceptions import BadRequest
 from flask import request, jsonify
-from utils.jwt import generate_token, decode_token
+from src.utils.jwt import generate_token, decode_token
 import bcrypt
 import random
 import string
 from datetime import datetime, timedelta
-from models.user_model import get_user_by_email, update_user_password, create_user, get_user_by_id
-from models.reset_model import save_reset_code, verify_reset_code
-from db import get_db_connection
+from src.models.user_model import get_user_by_email, update_user_password, create_user, get_user_by_id
+from src.models.reset_model import save_reset_code, verify_reset_code
+from src.db import get_db_connection
 
 # Función para construir respuestas de autenticación
 def build_auth_response(user_id, nombre, rol):
@@ -88,6 +88,24 @@ def register():
 
     except Exception as e:
         print(f"[ERROR en register]: {e}")
+        return jsonify({'message': 'Error interno del servidor'}), 500
+
+def verify_code_only():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        code = data.get('code')
+
+        if not email or not code:
+            return jsonify({'message': 'Email y código son requeridos'}), 400
+
+        if verify_reset_code(email, code):
+            return jsonify({'message': 'Código válido'}), 200
+        else:
+            return jsonify({'message': 'Código inválido o expirado'}), 400
+
+    except Exception as e:
+        print(f"[ERROR en verify_code_only]: {e}")
         return jsonify({'message': 'Error interno del servidor'}), 500
 
 

@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers.pet_controller import register_pet, get_user_pets, get_all_pets, update_pet, get_pet, delete_pet, obtener_filtros
+from src.controllers.pet_controller import register_pet, get_user_pets, get_all_pets, update_pet, get_pet, delete_pet, obtener_filtros
 
 
 pet_bp = Blueprint('pet_bp', __name__)

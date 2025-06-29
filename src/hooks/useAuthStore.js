@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../helpers';
 import {
   onChecking,
+  onStopChecking,
   onLogin,
   onLogout,
   onRegisterSuccess,
@@ -112,6 +113,32 @@ const startRequestReset = async (email) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+const verifyResetPassword = async ({ email, code }) => {
+  if (!email || !code) {
+    return { ok: false, msg: 'Email y código son requeridos' };
+  }
+
+  dispatch(onChecking());
+
+  try {
+    const { data } = await api.post('/api/auth/verify-reset-code', {
+      email,
+      code,
+    });
+    dispatch(onStopChecking());
+    return { ok: true, msg: data.message || 'Código verificado', data };
+  } catch (error) {
+    dispatch(onStopChecking());
+    return {
+      ok: false,
+      msg: error.response?.data?.message || 'Error al verificar el código',
+    };
+  }
+};
+
+>>>>>>> origin/main
 
 const startResetPassword = async ({ email, code, newPassword }) => {
   dispatch(onChecking());
@@ -154,6 +181,10 @@ return {
   startDeleteUser,
   startRequestReset,
   startResetPassword,
+<<<<<<< HEAD
+=======
+  verifyResetPassword,
+>>>>>>> origin/main
 
   clearErrorMessage,
   clearSuccessMessage,

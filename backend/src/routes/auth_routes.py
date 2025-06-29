@@ -1,11 +1,12 @@
 from flask import Blueprint
-from controllers.auth_controller import login, register, renew_token, request_password_reset, reset_password, get_user_info, update_user_info_controller, delete_user_controller
+from src.controllers.auth_controller import login, register, renew_token, verify_code_only, request_password_reset, reset_password, get_user_info, update_user_info_controller, delete_user_controller
 
 auth_bp = Blueprint('auth_bp', __name__)
 
 auth_bp.route('/login', methods=['POST'])(login)
 auth_bp.route('/register', methods=['POST'])(register)
 
+auth_bp.route('/verify-reset-code', methods=['POST'])(verify_code_only)
 auth_bp.route('/request-reset', methods=['POST'])(request_password_reset)
 auth_bp.route('/reset-password', methods=['POST'])(reset_password)
 auth_bp.route('/user-info', methods=['GET'])(get_user_info)

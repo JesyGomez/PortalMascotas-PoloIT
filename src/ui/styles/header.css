@@ -16,31 +16,25 @@
   transform: translateX(-300px);
 }
 
-.navbar-logo {
-  flex: 0 0 auto;
+.navbar-logo a {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #733702;
+  text-decoration: none;
 }
 
 .logo-img {
-  height: 140px;
-  height: 140px;
+  height: 50px;
   width: auto;
   border-radius: 50%;
   object-fit: contain;
-  margin-right: 15rem;
 }
 
-.navbar-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
+/* ========== LINKS Y DROPDOWNS ========== */
 .navbar-links {
-  display: flex;
-  gap: 5rem;
   list-style: none;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  gap: 2rem;
 }
 
 .navbar-links li {
@@ -55,11 +49,6 @@
   font-weight: 600;
   font-size: 1.4rem;
   transition: color 0.3s, transform 0.2s;
-  white-space: nowrap;
-  background: none;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
 }
 
 .navbar-links li a:hover,
@@ -80,89 +69,14 @@
   margin-left: auto;
 }
 
-/* ========== ÍCONOS Y BOTONES ========== */
-.navbar-icons {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-right: 1.4rem;
-}
-
-.logout-icon,
-.cart-button {
+.hamburger {
+  display: none;
+  font-size: 2rem;
   background: none;
   border: none;
   color: #c66398;
   cursor: pointer;
-  padding: 0;
-  font-size: 1.2rem;
-}
-
-.logout-icon:hover {
-  color: red;
-  transform: scale(1.1);
-}
-
-.user-saludo {
-  margin-right: 10px;
-  font-weight: bold;
-  color: #444;
-}
-
-/* ========== BOTÓN PUBLICAR ========== */
-.btn-publicar {
-  margin-left: 15px;
-  padding: 6px 12px;
-  background: linear-gradient(45deg, #9b808e, #c66398);
-  color: white !important;
-  border: none;
-  border-radius: 25px;
-  font-weight: 200;
-  font-size: 0.45rem;
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1.2;
-  text-align: center;
-}
-
-.btn-publicar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.5);
-}
-
-.linea-arriba,
-.linea-abajo {
-  display: block;
-}
-
-/* ========== BOTÓN LOGIN EN CÍRCULO ========== */
-.login-button {
-  background-color: #f8f1ea;
-  border-radius: 50%;
-  padding: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-}
-
-.login-icon {
-  font-size: 1.5rem;
-  color: #733702;
-  transition: color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: #fde9e5;
-}
-
-.login-button:hover .login-icon {
-  color: #c0392b;
+  margin-left: auto;
 }
 
 /* ========== DROPDOWN ========== */
@@ -189,7 +103,6 @@
   align-items: center;
   gap: 6px;
 }
-
 .dropdown .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -251,31 +164,27 @@
 }
 
 /* ========== HAMBURGUESA (Responsive) ========== */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #733702;
+  cursor: pointer;
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
-    font-size: 3rem;
-    background: none;
-    border: none;
-    color: #c66398;
-    cursor: pointer;
   }
 
   .navbar-links {
     flex-direction: column;
-    align-items: flex-end;
-    align-items: flex-end;
+    align-items: flex-start;
     display: none;
     gap: 1rem;
     margin-top: 1rem;
-    position: absolute;
-    top: 80px;
-    left: 0;
-    width: 100%;
-    background-color: #D9B391;
-    padding: 1rem 2rem;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
   
   .navbar-links.active {
@@ -288,34 +197,4 @@
     margin-top: 1rem;
     gap: 1.5rem;
   }
-
-  .navbar-content {
-    padding: 0.5rem 1rem;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-  }
-
-  .logo-img {
-    height: 70px;
-    margin-right: 0;
-  }
-
-  .navbar-center {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .navbar-content {
-    transform: none;
-    padding: 0.5rem 1rem;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo-img {
-    height: 70px;
-    margin-right: 0;
-  }
 }
-
