@@ -6,6 +6,7 @@ import {
   onLoadSolicitudesSuccess,
   onLoadMascotasSuccess,
   onLoadError,
+  onLoadUsuariosSuccess,
 } from '../store/admin/adminSlice';
 import { api } from '../helpers';
 
@@ -83,6 +84,15 @@ export const useAdminStore = () => {
       dispatch(onLoadError('Error al eliminar mascota'));
     }
   };
+const loadUsuarios = async () => {
+  dispatch(onStartLoading());
+  try {
+    const { data } = await api.get('/api/admin/usuarios'); // `api` ya agrega el token
+    dispatch(onLoadUsuariosSuccess(data));
+  } catch (err) {
+    dispatch(onLoadError('Error al cargar usuarios'));
+  }
+};
 
   return {
     stats,
@@ -101,5 +111,7 @@ export const useAdminStore = () => {
     loadMascotas,
     createOrUpdateMascota,
     deleteMascota,
+
+    loadUsuarios,
   };
 };

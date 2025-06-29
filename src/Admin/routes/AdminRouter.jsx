@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import {Dashboard, Solicitudes, Mascotas, Configuracion} from "../pages";
+import {
+  Dashboard,
+  Solicitudes,
+  Mascotas,
+  Configuracion,
+  GestiondeUsuarios,
+  Analytics,
+} from "../pages";
 import "../styles/dashboard.css";
 import { useAuthStore } from "../../hooks/useAuthStore";
+import Notificaciones from "../pages/Notificaciones";
 
 export const AdminRouter = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { startLogout } = useAuthStore();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate("/login");
     startLogout();
   };
 
@@ -51,7 +59,25 @@ export const AdminRouter = () => {
               {!collapsed && <span>Mascotas</span>}
             </Link>
           </li>
-                    <li className="nav-item">
+          <li className="nav-item">
+            <Link className="nav-link" to="/admin/gestiondeusuarios">
+              <i className="bi bi-people me-2"></i>
+              {!collapsed && <span>Gestión de Usuario</span>}
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/admin/analytics">
+              <i className="bi bi-graph-up me-2"></i>
+              {!collapsed && <span>Analisis</span>}
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/admin/notificaciones">
+              <i className="bi bi-bell me-2"></i>
+              {!collapsed && <span>Notificaciones</span>}
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link className="nav-link" to="/admin/configuracion">
               <i className="bi bi-gear me-2"></i>
               {!collapsed && <span>Configuración</span>}
@@ -72,11 +98,14 @@ export const AdminRouter = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/solicitudes" element={<Solicitudes />} />
           <Route path="/mascotas" element={<Mascotas />} />
-          <Route path="/configuracion*" element={<Configuracion />} /> 
+          <Route path="/gestiondeusuarios*" element={<GestiondeUsuarios />} />
+          <Route path="/analytics*" element={<Analytics />} />
+          <Route path="/notificaciones*" element={<Notificaciones />} />
+          <Route path="/configuracion*" element={<Configuracion />} />
+
           <Route path="" element={<Dashboard />} />
         </Routes>
       </main>
     </div>
   );
 };
-

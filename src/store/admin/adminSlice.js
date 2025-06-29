@@ -5,6 +5,7 @@ const initialState = {
   stats: null,
   solicitudes: [],
   mascotas: [],
+  usuarios: [], 
   isLoading: false,
   error: null,
 };
@@ -29,6 +30,11 @@ export const adminSlice = createSlice({
       state.mascotas = payload;
       state.isLoading = false;
     },
+    onLoadUsuariosSuccess: (state, { payload }) => {
+  state.usuarios = payload;
+  state.isLoading = false;
+},
+
     onLoadError: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
@@ -41,6 +47,7 @@ export const {
   onLoadStatsSuccess,
   onLoadSolicitudesSuccess,
   onLoadMascotasSuccess,
+  onLoadUsuariosSuccess, 
   onLoadError,
 } = adminSlice.actions;
 

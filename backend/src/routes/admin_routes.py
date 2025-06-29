@@ -62,3 +62,40 @@ def get_admin_stats():
     except Exception as e:
         print(f"Error al obtener estadísticas: {e}")
         return jsonify({"message": "Error interno al obtener estadísticas"}), 500
+
+@admin_bp.route('/usuarios', methods=['GET'])
+def obtener_todos_los_usuarios():
+    # 1. Verificar token y rol
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"message": "Token no proporcionado"}), 401
+
+    token = auth_header.split(" ")[1]
+    try:
+        user_data = decode_token(token)
+        if user_data.get('rol') != 'admin':
+            return jsonify({"message": "Acceso restringido a administradores"}), 403
+    except Exception as e:
+        return jsonify({"message": "Token inválido"}), 401
+
+    # 2. Obtener todos los usuarios
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT id, nombre, apellido, email, provincia, localidad, calle,
+                    imagenDePerfil, rol, puntajeUsuario, habilitado_adoptar,
+                    habilitado_dador, hogar_transito
+            FROM usuarios
+        """)
+        usuarios = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(usuarios), 200
+
+    except Exception as e:
+        print(f"[ERROR] al obtener usuarios: {e}")
+        return jsonify({"message": "Error al obtener usuarios"}), 500
