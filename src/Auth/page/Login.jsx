@@ -61,18 +61,6 @@ export const Login = () => {
     startLogin({ email, password });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setMensaje('');
-    clearErrorMessage();
-    if (recordarme) {
-      localStorage.setItem('emailGuardado', email);
-    } else {
-      localStorage.removeItem('emailGuardado');
-    }
-    startLogin({ email, password });
-  };
-
   return (
     <div className="auth-wrapper">
       <div className="auth-left">

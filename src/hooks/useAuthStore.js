@@ -113,8 +113,6 @@ const startRequestReset = async (email) => {
   }
 };
 
-<<<<<<< HEAD
-=======
 const verifyResetPassword = async ({ email, code }) => {
   if (!email || !code) {
     return { ok: false, msg: 'Email y código son requeridos' };
@@ -138,7 +136,6 @@ const verifyResetPassword = async ({ email, code }) => {
   }
 };
 
->>>>>>> origin/main
 
 const startResetPassword = async ({ email, code, newPassword }) => {
   dispatch(onChecking());
@@ -181,10 +178,7 @@ return {
   startDeleteUser,
   startRequestReset,
   startResetPassword,
-<<<<<<< HEAD
-=======
   verifyResetPassword,
->>>>>>> origin/main
 
   clearErrorMessage,
   clearSuccessMessage,
