@@ -69,20 +69,19 @@ export const RecuperarContrasenia = () => {
               (  
                 <>
                   <img src="./candado.png" alt="candado" />
-                  <h2>¿Olvidaste tu Contraseña?</h2>
+                  <h2>¿Olvidaste tu contraseña?</h2>
                 </>
               )
               :
               (
                 <>
                   <img src="./buzon.png" alt="buzon" />
-                  <h2>Verifica tu Correo</h2>
+                  <h2>Verificá tu correo</h2>
                 </>
               )
             }
           </div>
 
-     
             {step === 1 && (
               <StepOneReset handleRequestReset={handleRequestReset} status={status} email={email} setEmail={setEmail} message={message} errorMessage={errorMessage}    clearErrorMessage={clearErrorMessage} setMessage={setMessage} setLocalError={setLocalError} />
             )}
