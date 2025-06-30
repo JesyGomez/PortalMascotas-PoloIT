@@ -22,11 +22,19 @@
 
 .home-acciones {
   background-color: white;
+<<<<<<< HEAD
   padding: 3rem 2rem; /* Aumentamos padding */
   display: flex;
   justify-content: center;
   gap: 20rem;
   flex-wrap: wrap; /* para móviles */
+=======
+  padding: 3rem 2rem; 
+  display: flex;
+  justify-content: center;
+  gap: 20rem;
+  flex-wrap: wrap;
+>>>>>>> main
 }
 
 .btn-voluntariado,
@@ -38,12 +46,20 @@
   font-size: 1.2rem;
   border-radius: 10px;
   cursor: pointer;
+<<<<<<< HEAD
   transition: background-color 0.3s ease;  
+=======
+  transition: background-color 0.4s ease;  
+>>>>>>> main
 }
 
 .btn-voluntariado:hover,
 .btn-transito:hover {
+<<<<<<< HEAD
   background-color: #bf6576;
+=======
+  background-color: #8f525e;
+>>>>>>> main
 }
 
 .home-nosotros {
@@ -60,7 +76,11 @@
   gap: 3rem;
   flex-wrap: wrap;
   width: 100%;
+<<<<<<< HEAD
   max-width: 1400px; /* para que no se pase de cierto ancho */
+=======
+  max-width: 1400px; /* si querés reducir un poco más */
+>>>>>>> main
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -181,5 +201,21 @@
     width: 40px;
     height: 28px;
     font-size: 0.9rem;
+  }
+
+  .nosotros-caja p {
+  font-size: 1rem;
+  }
+
+  .btn-voluntariado,
+.btn-transito {
+  width: 70%;
+    font-size: 0.9rem;
+    padding: 0.6rem;
+    margin: 0;  
+  }
+
+  .home-acciones {
+  gap: 1rem;
   }
 }

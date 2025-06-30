@@ -37,8 +37,13 @@ export const Home = () => {
 
       <section className="home-banner">
         <p>
+<<<<<<< HEAD
           ¿Quieres convertirte en su segunda oportunidad?<br />
           <strong>¡Conócelos!</strong>
+=======
+          ¿Querés convertirte en su segunda oportunidad?<br />
+          <strong>¡Conocelos!</strong>
+>>>>>>> main
         </p>
       </section>
 

@@ -28,10 +28,27 @@
   width: auto;
   border-radius: 50%;
   object-fit: contain;
+<<<<<<< HEAD
+=======
+  margin: 0 0 0 4rem !important;
+}
+
+/* Contenedor central: links y hamburguesa */
+.navbar-center {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+>>>>>>> main
 }
 
 /* ========== LINKS Y DROPDOWNS ========== */
 .navbar-links {
+<<<<<<< HEAD
+=======
+  display: flex;
+  gap: 6rem;
+>>>>>>> main
   list-style: none;
   display: flex;
   gap: 2rem;
@@ -197,4 +214,24 @@
     margin-top: 1rem;
     gap: 1.5rem;
   }
+<<<<<<< HEAD
+=======
+
+  .navbar-content {
+    padding: 0.5rem 1rem;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .logo-img {
+    height: 70px;
+    margin: 0 !important;
+  }
+
+  .navbar-center {
+    width: 100%;
+    justify-content: space-between;
+  }
+>>>>>>> main
 }

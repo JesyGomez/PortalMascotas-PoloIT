@@ -1,0 +1,63 @@
+.donaciones-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  background-color: #f5f5f5;
+  gap: 10rem;
+  flex-wrap: wrap;
+}
+
+.donaciones-img-section img {
+  max-width: 500px;
+  border-radius: 40px;
+}
+
+.donaciones-info {
+  max-width: 400px;
+  text-align: center;
+}
+
+.donaciones-text {
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mercado-logo {
+  width: 180px;
+  margin-bottom: 0.5rem;
+}
+
+.donaciones-alias {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.donaciones-linea {
+  border: none;
+  border-top: 3px solid #d9b391; /* mismo color que el fondo del navbar */
+  margin: 0 auto 1.5rem;
+  width: 80%;
+}
+
+.donaciones-btn {
+  background-color: #c46879;
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.donaciones-btn:hover {
+  background-color: #a35664;
+}
+
+@media (max-width: 576px) {
+.donaciones-container {
+  gap: 2rem;
+}
+}
