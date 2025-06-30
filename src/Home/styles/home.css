@@ -1,7 +1,15 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+.home {
+  margin-bottom: 4rem;
+}
+
 .home-hero {
   background: url('/public/fondoInicio.jpg') no-repeat center center;
   background-size: cover;
-  height: 100vh;
+  height: 70vh;
 }
 
 .btn {
@@ -14,27 +22,28 @@
 
 .home-acciones {
   background-color: white;
-  padding: 2rem;
+  padding: 3rem 2rem; /* Aumentamos padding */
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 20rem;
+  flex-wrap: wrap; /* para móviles */
 }
 
 .btn-voluntariado,
 .btn-transito {
-  background-color: #bb6b75;
+  background-color: #bf6576;
   color: white;
   border: none;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border-radius: 8px;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;  
 }
 
 .btn-voluntariado:hover,
 .btn-transito:hover {
-  background-color: #a3535e;
+  background-color: #bf6576;
 }
 
 .home-nosotros {
@@ -45,56 +54,63 @@
 }
 
 .nosotros-wrapper {
-  max-width: 1200px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 3rem;
   flex-wrap: wrap;
-  justify-content: center;
+  width: 100%;
+  max-width: 1400px; /* si querés reducir un poco más */
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .nosotros-corazon {
-  max-width: 300px;
+  max-width: 350px;
   height: auto;
 }
 
 .nosotros-caja {
+  position: relative;
   background: linear-gradient(to right, #735F4D80, #D9B391);
   border-radius: 1.5rem;
   padding: 2rem;
-  max-width: 600px;
+  max-width: 800px;
+  overflow: hidden;
 }
 
+
 .nosotros-caja h2 {
-  font-size: 1.8rem;
-  color: #8c4c32;
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 1rem;
+  color: #733702;
 }
 
 .nosotros-caja p {
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: #333;
   line-height: 1.6;
+  text-align: justify;
 }
 
 .home-banner {
-  background-color: #f0d3b8;
+  background-color: #edd1b8;
+  height: 90px;
   text-align: center;
-  padding: 1.5rem 1rem;
-  font-size: 1.1rem;
-  color: #8c4c32;
-  font-weight: 500;
+  padding: 1rem 1rem 0 1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #733702;
+  border-bottom: 3px solid #888; /* línea gris */
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2); /* sombra gris */
+  margin-top: 2rem;
 }
 
 .home-banner strong {
   display: block;
-  font-size: 1.3rem;
-  margin-top: 0.5rem;
-  color: #a3533b;
-}
-.custom-pagination .page-item {
-  position: relative;
-  margin: 0 0.4rem;
+  font-size: 1.4rem;
+  color: #733702;
 }
 
 /* Botón con forma hexagonal y fondo blanco */
@@ -132,7 +148,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(191, 101, 118, 1);
+  background-color: rgb(191, 101, 118);
   clip-path: inherit;
   z-index: -1;
   transition: all 0.3s ease;

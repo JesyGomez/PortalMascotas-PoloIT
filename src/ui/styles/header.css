@@ -18,7 +18,7 @@
   width: auto;
   border-radius: 50%;
   object-fit: contain;
-  margin: 0 !important;
+  margin: 0 0 0 4rem !important;
 }
 
 /* Contenedor central: links y hamburguesa */
@@ -31,7 +31,7 @@
 
 .navbar-links {
   display: flex;
-  gap: 3rem;
+  gap: 8rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -193,7 +193,7 @@
 
   .logo-img {
     height: 70px;
-    margin-right: 0;
+    margin: 0 !important;
   }
 
   .navbar-center {
