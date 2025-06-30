@@ -33,5 +33,6 @@
 @media (max-width: 576px) {
 .jornadas-container {
   justify-content: center;
+  margin: 0 1rem;
 }
 }
