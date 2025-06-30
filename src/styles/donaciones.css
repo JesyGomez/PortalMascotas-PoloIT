@@ -4,7 +4,7 @@
   align-items: center;
   padding: 5rem 2rem;
   background-color: #f5f5f5;
-  gap: 3rem;
+  gap: 10rem;
   flex-wrap: wrap;
 }
 
@@ -54,4 +54,10 @@
 
 .donaciones-btn:hover {
   background-color: #a35664;
+}
+
+@media (max-width: 576px) {
+.donaciones-container {
+  gap: 2rem;
+}
 }

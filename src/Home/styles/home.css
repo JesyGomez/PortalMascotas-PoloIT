@@ -22,11 +22,11 @@
 
 .home-acciones {
   background-color: white;
-  padding: 3rem 2rem; /* Aumentamos padding */
+  padding: 3rem 2rem; 
   display: flex;
   justify-content: center;
   gap: 20rem;
-  flex-wrap: wrap; /* para móviles */
+  flex-wrap: wrap;
 }
 
 .btn-voluntariado,
@@ -38,12 +38,12 @@
   font-size: 1.2rem;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;  
+  transition: background-color 0.4s ease;  
 }
 
 .btn-voluntariado:hover,
 .btn-transito:hover {
-  background-color: #bf6576;
+  background-color: #8f525e;
 }
 
 .home-nosotros {
@@ -180,5 +180,21 @@
     width: 40px;
     height: 28px;
     font-size: 0.9rem;
+  }
+
+  .nosotros-caja p {
+  font-size: 1rem;
+  }
+
+  .btn-voluntariado,
+.btn-transito {
+  width: 70%;
+    font-size: 0.9rem;
+    padding: 0.6rem;
+    margin: 0;  
+  }
+
+  .home-acciones {
+  gap: 1rem;
   }
 }
