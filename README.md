@@ -1,3 +1,6 @@
+¡Claro Jesy! Acá tenés tu README actualizado con los íconos corregidos, los dos nuevos agregados ("Ver detalle" y "Dejar mensajes") **dentro** de la lista de la ficha, y con el **vínculo de Figma** de la diseñadora incluido (usé un enlace genérico, reemplazalo por el real si querés):
+
+```markdown
 # 🐾 Portal de Adopción de Mascotas
 
 ¡Bienvenidos a nuestro portal de adopción! Esta plataforma está pensada para unir a animales que buscan un hogar con personas que desean adoptar, brindar tránsito o simplemente ayudar. ❤️
@@ -16,6 +19,8 @@
   - 💖 Marcar como favorita.
   - 📌 Guardar para ver más tarde.
   - 🔗 Compartir.
+  - 📋 Ver detalle.
+  - 💬 Dejar mensajes.
 
 ### 🛠️ Panel de Administración
 - Acceso exclusivo para administradores.
@@ -47,11 +52,11 @@
 
 ## 👩‍💻 Desarrolladores
 
-| Rol               | Nombre                | 
-|-------------------|------------------------|
-| 🎨 Diseñadora UX/UI | Kerby | 
-| 🖥️ Frontend         | Neuyin - Paloma - Regina           | 
-| ⚙️ Backend          | Alex - Jesica  | 
+| Rol               | Nombre                | Enlace |
+|-------------------|------------------------|--------|
+| 🎨 Diseñadora UX/UI | Kerby Tovar | [Ver diseño en Figma](https://www.figma.com/file/kerby-ejemplo) |
+| 🖥️ Frontend         | Neuyin Herrera - Paloma González - Regina Zaccardo | 
+| ⚙️ Backend          | Alex Rodríguez - Jesica Gomez | 
 
 > ¡Gracias a este gran equipo que hizo posible esta hermosa plataforma de adopción! 🐶🐱💖
 
