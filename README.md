@@ -47,11 +47,11 @@
 
 ## 👩‍💻 Desarrolladores
 
-| Rol               | Nombre                | Emoji Representativo |
-|-------------------|------------------------|-----------------------|
-| 🎨 Diseñadora UX/UI | Kerby | ![🎨](https://emojicdn.elk.sh/🎨) |
-| 🖥️ Frontend         | Neuyin - Paloma - Regina           | ![🖥️](https://emojicdn.elk.sh/🖥️) |
-| ⚙️ Backend          | Alex - Jesica  | ![⚙️](https://emojicdn.elk.sh/⚙️) |
+| Rol               | Nombre                | 
+|-------------------|------------------------|
+| 🎨 Diseñadora UX/UI | Kerby | 
+| 🖥️ Frontend         | Neuyin - Paloma - Regina           | 
+| ⚙️ Backend          | Alex - Jesica  | 
 
 > ¡Gracias a este gran equipo que hizo posible esta hermosa plataforma de adopción! 🐶🐱💖
 
