@@ -3,7 +3,7 @@ import PetCard from "../components/PetCard";
 import FiltroSidebar from "../components/FiltroSidebar";
 import { usePetsStore } from "../../hooks/usePetStore";
 import "../styles/home.css";
-
+import Swal from 'sweetalert2'
 export const Home = () => {
   const [filtros, setFiltros] = useState({});
   const [paginaActual, setPaginaActual] = useState(1);
@@ -13,14 +13,34 @@ export const Home = () => {
   useEffect(() => {
     startLoadingPets(filtros, paginaActual);
   }, [filtros, paginaActual]);
+const handleVoluntariado = () => {
+    Swal.fire({
+      title: '¡Gracias por tu interés!',
+      text: 'Para ser voluntario, escribinos a voluntariado@patitasencasa.org 😊',
+      icon: 'info',
+      confirmButtonText: 'Cerrar',
+      background: '#f0f9ff',
+      confirmButtonColor: '#3085d6',
+    });
+  };
 
+  const handleHogarTransito = () => {
+    Swal.fire({
+      title: '¡Queremos ayudarte!',
+      text: 'Para ser hogar de tránsito, enviá un mail a transito@patitasencasa.org 🐾',
+      icon: 'success',
+      confirmButtonText: 'Genial',
+      background: '#e6ffe6',
+      confirmButtonColor: '#28a745',
+    });
+  };
   return (
     <div className="home">
       <section className="home-hero"></section>
 
       <section className="home-acciones">
-        <button className="btn-voluntariado">VOLUNTARIADO</button>
-        <button className="btn-transito">QUIERO SER HOGAR DE TRÁNSITO</button>
+        <button className="btn-voluntariado" onClick={handleVoluntariado}>VOLUNTARIADO</button>
+        <button className="btn-transito" onClick={handleHogarTransito}>QUIERO SER HOGAR DE TRÁNSITO</button>
       </section>
 
       <section className="home-nosotros">

@@ -15,10 +15,15 @@ export const Mascotas = () => {
   const [form, setForm] = useState({
     nombre: "",
     especie: "",
+    raza: "",
     edad: "",
-    info_adicional: "",
-    estado: "Disponible",
+    sexo: "desconocido",
     imagen_url: "",
+    estado: "Disponible",
+    salud: "",
+    tamanio: "",
+    ubicacion: "",
+    info_adicional: "",
   });
 
   const [editandoId, setEditandoId] = useState(null);
@@ -51,11 +56,17 @@ export const Mascotas = () => {
     setForm({
       nombre: mascota.nombre,
       especie: mascota.especie,
+      raza: mascota.raza || "",
       edad: mascota.edad,
-      info_adicional: mascota.info_adicional,
-      estado: mascota.estado,
+      sexo: mascota.sexo || "desconocido",
       imagen_url: mascota.imagen_url || "",
+      estado: mascota.estado,
+      salud: mascota.salud || "",
+      tamanio: mascota.tamanio || "",
+      ubicacion: mascota.ubicacion || "",
+      info_adicional: mascota.info_adicional || "",
     });
+
     setEditandoId(mascota.id);
   };
 
@@ -188,6 +199,49 @@ export const Mascotas = () => {
             onChange={handleChange}
           />
         </div>
+        <input
+          name="raza"
+          className="form-control"
+          placeholder="Raza"
+          value={form.raza}
+          onChange={handleChange}
+        />
+
+        <select
+          name="sexo"
+          className="form-select"
+          value={form.sexo}
+          onChange={handleChange}
+        >
+          <option value="desconocido">Desconocido</option>
+          <option value="macho">Macho</option>
+          <option value="hembra">Hembra</option>
+        </select>
+
+        <input
+          name="salud"
+          className="form-control"
+          placeholder="Salud"
+          value={form.salud}
+          onChange={handleChange}
+        />
+
+        <input
+          name="tamanio"
+          className="form-control"
+          placeholder="Tamaño"
+          value={form.tamanio}
+          onChange={handleChange}
+        />
+
+        <input
+          name="ubicacion"
+          className="form-control"
+          placeholder="Ubicación"
+          value={form.ubicacion}
+          onChange={handleChange}
+        />
+
         <div className="col-12 text-end">
           <button type="submit" className="btn btn-success">
             {editandoId ? "Actualizar Mascota" : "Agregar Mascota"}

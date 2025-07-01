@@ -284,11 +284,10 @@ function EditUserModal({ user, onClose, onUpdated }) {
   const [habilitadoAdoptar, setHabilitadoAdoptar] = useState(!!(user.habilitado_adoptar ?? 0));
   const [habilitadoDador, setHabilitadoDador] = useState(!!(user.habilitado_dador ?? 0));
   const [hogarTransito, setHogarTransito] = useState(!!(user.hogar_transito ?? 0));
-
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/usuarios/${user.id}`, {
+      await fetch(`http://localhost:5000/api/admin/usuarios/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -400,11 +399,15 @@ function ConfirmBlockModal({ user, onClose, onBlocked }) {
   const handleBlock = async () => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/usuarios/${user.id}/bloquear`, {
+      await fetch(`http://localhost:5000/api/admin/usuarios/${user.id}`, {
         method: "PUT",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          activo: 0, // bloquear usuario poniendo activo = 0
+        }),
       });
       onBlocked();
       onClose();
@@ -424,8 +427,7 @@ function ConfirmBlockModal({ user, onClose, onBlocked }) {
             </div>
             <div className="modal-body">
               <p>
-                ¿Estás segura de que querés bloquear a{" "}
-                <strong>{user.nombre}</strong>?
+                ¿Estás segura de que querés bloquear a <strong>{user.nombre}</strong>?
               </p>
             </div>
             <div className="modal-footer">

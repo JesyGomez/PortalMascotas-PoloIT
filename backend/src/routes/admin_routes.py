@@ -84,7 +84,7 @@ def obtener_todos_los_usuarios():
         cursor.execute("""
             SELECT id, nombre, apellido, email, provincia, localidad, calle,
                    imagenDePerfil, rol, puntajeUsuario, habilitado_adoptar,
-                   habilitado_dador, hogar_transito
+                   habilitado_dador, hogar_transito, activo
             FROM usuarios
         """)
         usuarios = cursor.fetchall()
@@ -94,6 +94,7 @@ def obtener_todos_los_usuarios():
             u["habilitado_adoptar"] = int(u.get("habilitado_adoptar") or 0)
             u["habilitado_dador"] = int(u.get("habilitado_dador") or 0)
             u["hogar_transito"] = int(u.get("hogar_transito") or 0)
+            u["activo"] = int(u.get("activo") or 0)
 
         cursor.close()
         conn.close()
@@ -124,6 +125,8 @@ def actualizar_usuario(user_id):
     habilitado_adoptar = data.get('habilitado_adoptar')
     habilitado_dador = data.get('habilitado_dador')
     hogar_transito = data.get('hogar_transito')
+    activo = data.get('activo')
+
 
     try:
         conn = get_db_connection()
@@ -134,9 +137,11 @@ def actualizar_usuario(user_id):
                 rol = %s,
                 habilitado_adoptar = %s,
                 habilitado_dador = %s,
-                hogar_transito = %s
+                hogar_transito = %s,
+                activo = %s
             WHERE id = %s
-        """, (rol, habilitado_adoptar, habilitado_dador, hogar_transito, user_id))
+        """, (rol, habilitado_adoptar, habilitado_dador, hogar_transito, activo, user_id))
+
 
         conn.commit()
         cursor.close()

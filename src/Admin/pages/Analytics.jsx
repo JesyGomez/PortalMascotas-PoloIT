@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { TrendingUp, Download, Users, Heart, PawPrint } from "lucide-react";
 
 export function Analytics() {
-  console.log("Renderizando Analytics 🚀");
 
   const [analyticsData, setAnalyticsData] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("6months");
