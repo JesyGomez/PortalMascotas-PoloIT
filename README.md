@@ -1,132 +1,59 @@
-# 🐾 Portal Mascotas - Guía de Instalación
+# 🐾 Portal de Adopción de Mascotas
 
-Este proyecto está dividido en **frontend (React)** y **backend (Flask)**.
-Seguí estos pasos para clonar y correr el proyecto correctamente.
+¡Bienvenidos a nuestro portal de adopción! Esta plataforma está pensada para unir a animales que buscan un hogar con personas que desean adoptar, brindar tránsito o simplemente ayudar. ❤️
 
----
+## ✨ Funcionalidades principales
 
-## ✅ Requisitos previos
+### 🧑‍💻 Usuarios
+- Registro de usuarios con datos personales y foto de perfil.
+- Login con autenticación segura usando JWT.
+- Recuperación de contraseña vía email.
+- Panel de usuario personalizado con opciones de adoptar, dar en adopción o ser hogar de tránsito.
 
-Asegurate de tener instalado:
+### 🐶 Mascotas
+- Catálogo completo de mascotas con filtros por tipo, tamaño, provincia y más.
+- Cada ficha de mascota permite:
+  - 💖 Marcar como favorita.
+  - 📌 Guardar para ver más tarde.
+  - 🔗 Compartir.
 
-* [Git](https://git-scm.com/)
-* [Node.js y npm](https://nodejs.org/) (para React)
-* [Python 3](https://www.python.org/) (para Flask)
-* [XAMPP](https://www.apachefriends.org/index.html) (para MySQL y phpMyAdmin)
+### 🛠️ Panel de Administración
+- Acceso exclusivo para administradores.
+- Gestión CRUD de usuarios y mascotas.
+- Activación y desactivación de usuarios.
+- Control de permisos: adoptar, dar en adopción, ser hogar de tránsito.
+- Módulos de:
+  - 📊 Analíticas (stats de usuarios, mascotas, solicitudes).
+  - 🔔 Notificaciones.
+  - ⚙️ Configuración general del sistema.
 
----
+## 💡 Tecnologías utilizadas
 
-## 🧠 Clonar el repositorio
+| Frontend        | Backend           | Base de Datos     | Librerías y Herramientas |
+|-----------------|-------------------|-------------------|---------------------------|
+| React 19        | Python 3 + Flask  | MySQL             | Bootstrap 5, SweetAlert2, JWT, Fetch API |
 
-```bash
-git clone https://github.com/JesyGomez/PortalMascotas-PoloIT.git
-cd portal-mascotas-polo-it
-```
+- Todo el sitio es **responsive** y está optimizado para dispositivos móviles 📱.
+- Se utilizó `React Router` para navegación protegida.
+- Gestión de estado con `Redux`.
 
----
+## 🚀 Cómo correr el proyecto
 
-## 🚀 Configuración del Frontend (React)
+### Requisitos previos
+- Node.js + npm
+- Python 3.x
+- MySQL
+- XAMPP o similar (opcional)
 
-```bash
-cd frontend
-npm install
-npm start
-```
+## 👩‍💻 Desarrolladores
 
-> Esto levanta React en `http://localhost:3000`
+| Rol               | Nombre                | Emoji Representativo |
+|-------------------|------------------------|-----------------------|
+| 🎨 Diseñadora UX/UI | Kerby | ![🎨](https://emojicdn.elk.sh/🎨) |
+| 🖥️ Frontend         | Neuyin - Paloma - Regina           | ![🖥️](https://emojicdn.elk.sh/🖥️) |
+| ⚙️ Backend          | Alex - Jesica  | ![⚙️](https://emojicdn.elk.sh/⚙️) |
 
----
+> ¡Gracias a este gran equipo que hizo posible esta hermosa plataforma de adopción! 🐶🐱💖
 
-## 🪩 Configuración del Backend (Flask)
-
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate     # En Windows
-# o
-source venv/bin/activate  # En Mac/Linux
-pip install flask flask-cors
-```
-
-> Para guardar dependencias:
-
-```bash
-pip freeze > requirements.txt
-```
-
-Luego:
-
-```bash
-python app.py
-```
-
-> Esto levanta el servidor Flask en `http://localhost:5000`
-
----
-
-## 🛎️ Conexión entre Front y Back
-
-Ya está configurada en el frontend:
-
-```js
-fetch('http://localhost:5000/login', { ... })
-```
-
-> Cuando se conecte a una base de datos real, se actualizará el backend para hacer la validación desde MySQL en lugar de datos hardcodeados.
-
----
-
-## 🐘 Instalación de XAMPP y preparación de la base de datos
-
-1. Descargar XAMPP desde [apachefriends.org](https://www.apachefriends.org/index.html) e instalarlo.
-
-2. Abrir el panel de control de XAMPP y encender **Apache** y **MySQL**.
-
-3. Ir a `http://localhost/phpmyadmin` desde el navegador.
-
-4. Crear una nueva base de datos llamada `portal_mascotas`.
-
-5. Crear una tabla llamada `usuarios` con las siguientes columnas como ejemplo:
-
-   ```sql
-   CREATE TABLE usuarios (
-     id INT AUTO_INCREMENT PRIMARY KEY,
-     email VARCHAR(100) NOT NULL,
-     password VARCHAR(100) NOT NULL,
-     rol: ENUM('admin', 'usuario')
-   );
-   ```
-
-6. Insertar un usuario demo si querés testear desde el login:
-
-   ```sql
-   INSERT INTO usuarios (email, password) VALUES ('admin@admin.com', '1234');
-   ```
-
-7. Más adelante se agregará la conexión en Flask con `mysql.connector` o `SQLAlchemy`.
-
----
-
-## 📂 Notas adicionales
-
-* Si usamos variables de entorno, se incluirá un archivo `.env.example`
-* Usuario demo (modo hardcodeado): `admin@admin.com` / `1234`
-
----
-
-## 📃 Comandos útiles
-
-| Acción                      | Comando                        |
-| --------------------------- | ------------------------------ |
-| Clonar repo                 | `git clone URL`                |
-| Instalar dependencias React | `npm install`                  |
-| Iniciar React               | `npm start`                    |
-| Crear entorno Python        | `python -m venv venv`          |
-| Activar entorno             | `venv\Scripts\activate` (Win)  |
-| Instalar Flask              | `pip install flask flask-cors` |
-| Iniciar Flask               | `python app.py`                |
-| Iniciar XAMPP               | Desde el panel de control      |
-| Abrir phpMyAdmin            | `http://localhost/phpmyadmin`  |
-
----
-
+  
+> *Hecho con 💙 por un equipo que cree que cada mascota merece una segunda oportunidad.*
