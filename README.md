@@ -1,6 +1,3 @@
-¡Claro Jesy! Acá tenés tu README actualizado con los íconos corregidos, los dos nuevos agregados ("Ver detalle" y "Dejar mensajes") **dentro** de la lista de la ficha, y con el **vínculo de Figma** de la diseñadora incluido (usé un enlace genérico, reemplazalo por el real si querés):
-
-```markdown
 # 🐾 Portal de Adopción de Mascotas
 
 ¡Bienvenidos a nuestro portal de adopción! Esta plataforma está pensada para unir a animales que buscan un hogar con personas que desean adoptar, brindar tránsito o simplemente ayudar. ❤️
